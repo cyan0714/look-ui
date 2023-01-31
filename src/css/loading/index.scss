@@ -1,0 +1,15 @@
+@import '../index.scss';
+.lookui-loading {
+  .el-loading-spinner  {
+    .path {
+      stroke: $--themeColor;
+    }
+    i {
+      font-size: 30px;
+      color: #fff;
+    }
+    .el-loading-text {
+      color: #fff;
+    }
+  }
+}

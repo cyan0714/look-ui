@@ -1,0 +1,12 @@
+{
+  "name": "look-ui",
+  "version": "1.0.4",
+  "description": "a ui library which is based on element-ui",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Shiyan Chen",
+  "license": "ISC"
+}

@@ -1,0 +1,10 @@
+@import '../index.scss';
+.lookui-notification {
+  .el-notification__title {
+    color: $--themeColor;
+    font-weight: normal;
+  }
+  h2 {
+    border-bottom: none;
+  }
+}
