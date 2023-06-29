@@ -1,0 +1,19 @@
+@import '../variable.scss';
+.lookui-transfer {
+  .el-checkbox__input.is-checked, .el-checkbox__input.is-indeterminate {
+    .el-checkbox__inner {
+      border-color: $--themeColor;
+      background-color: $--themeColor;
+    }
+  }
+  .el-button--primary {
+    background-color: $--themeColor;
+    border-color: $--themeColor;
+  }
+  .el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #666;
+  }
+  .el-transfer-panel__item:hover {
+    color: $--themeColor;
+  }
+}

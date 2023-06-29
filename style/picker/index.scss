@@ -1,0 +1,17 @@
+@import '../variable.scss';
+.lookui-picker {
+  &.el-input.is-active .el-input__inner {
+    border-color: $--themeColor;
+  }
+  .el-input__inner {
+    &:focus {
+      border-color: $--themeColor;
+    }
+  }
+  &.el-range-editor.is-active {
+    border-color: $--themeColor;
+    &:hover {
+      border-color: $--themeColor;
+    }
+  }
+}

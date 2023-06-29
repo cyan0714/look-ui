@@ -1,0 +1,73 @@
+@import '../variable.scss';
+.lookui-date-popper {
+  .el-date-table td {
+    &.today span {
+      color: $--themeColor;
+    }
+    &.available:hover {
+      color: $--themeColor;
+    }
+    // 选中的日期
+    &.current:not(.disabled) span {
+      background-color: $--themeColor;
+      color: #fff;
+    }
+    // 多个日期
+    &.selected span {
+      background-color: $--themeColor;
+    }
+    // 日期范围（今天日期（开始 || 结束））
+    &.today.end-date span {
+      color: #fff;
+    }
+    &.today.start-date span {
+      color: #fff;
+    }
+    // 周：
+    &.start-date span {
+      background-color: $--themeColor;
+    }
+    &.end-date span {
+      background-color: $--themeColor;
+    }
+  }
+  // 月、年
+  .el-month-table td, .el-year-table td {
+    &.today .cell {
+      color: $--themeColor;
+    }
+    .cell:hover {
+      color: $--themeColor;
+    }
+    // 选中的月份
+    &.current:not(.disabled) .cell {
+      color: $--themeColor;
+    }
+    // 月份范围（选中月份（开始 || 结束））
+    &.start-date .cell {
+      background-color: $--themeColor;
+      color: #fff;
+    }
+    &.end-date .cell {
+      background-color: $--themeColor;
+      color: #fff;
+    }
+  }
+  // 顶部年份切换箭头
+  .el-picker-panel__icon-btn:hover {
+    color: $--themeColor;
+  }
+  // 顶部年份切换 label
+  .el-date-picker__header-label {
+    &.active {
+      color: $--themeColor;
+    }
+    &:hover {
+      color: $--themeColor;
+    }
+  }
+  // 快捷选项
+  .el-picker-panel__shortcut:hover {
+    color: $--themeColor;
+  }
+}
