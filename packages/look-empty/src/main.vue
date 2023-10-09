@@ -4,11 +4,10 @@
 
 <script>
 export default {
-  name: 'lookui-empty',
+  name: 'look-empty',
   components: {},
   data() {
     return {
-      msg: '嘻嘻'
     }
   },
   props: {},
