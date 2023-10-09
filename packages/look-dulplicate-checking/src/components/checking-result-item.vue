@@ -88,10 +88,14 @@ export default {
   methods: {
     closeMissionResolve(val) {
     },
-    handleSubscribe() {},
+    handleSubscribe() {
+      this.$emit('handleSubscribe');
+    },
     handleMerge() {
+      this.$emit('handleMerge');
     },
     handleInsert() {
+      this.$emit('handleInsert');
     },
     mapStatus(status) {
       switch (status) {

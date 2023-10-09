@@ -9,7 +9,7 @@
         </div>
         <div class="checkboxs">
           <span>来源及要求:</span>
-          <el-checkbox-group v-model="checkedTags" @change="handlecheckedTagsChange">
+          <el-checkbox-group v-model="checkedTags" @change="handleCheckedTagsChange">
             <el-checkbox class="lookui-checkbox" v-for="tag in tags" :label="tag" :key="tag">{{ tag }}</el-checkbox>
           </el-checkbox-group>
         </div>
@@ -48,6 +48,7 @@
                   :key="index"
                   :class="['mission-item', currentNoDealSimilarIndex === index ? 'mission-item-actived' : '']"
                   @click.native="handleNoDealSimilarClick(index)"
+                  @onViewDetailsClick="goDetail"
                   @checkChange="handleNoDealSimilarCheckedChange"/>
               </section>
             </el-collapse-item>
@@ -67,6 +68,7 @@
                   :key="index"
                   :class="['mission-item', currentNoDealDissimilarIndex === index ? 'mission-item-actived' : '']"
                   @click.native="handleNoDealDissimilarClick(index)"
+                  @onViewDetailsClick="goDetail"
                   @checkChange="handleNoDealDissimilarCheckedChange"/>
               </section>
             </el-collapse-item>
@@ -81,7 +83,7 @@
               >全选未处理任务</el-checkbox>
             <span>已选 {{ hadCheckNoDealCount }} 条任务</span>
           </div>
-          <div class="bb-right">批量创建任务</div>
+          <div class="bb-right" @click="createTasks">批量创建任务</div>
         </div>
 
         <div class="collapse-container" v-show="currentMissionType === 1">
@@ -97,6 +99,7 @@
                   :item="item"
                   :key="index"
                   :class="['mission-item', currentDealSimilarIndex === index ? 'mission-item-actived' : '']"
+                  @onViewDetailsClick="goDetail"
                   @click.native="handleDealSimilarClick(index)"
                   isDealMission/>
               </section>
@@ -112,6 +115,7 @@
                   :item="item"
                   :key="index"
                   :class="['mission-item', currentDealDissimilarIndex === index ? 'mission-item-actived' : '']"
+                  @onViewDetailsClick="goDetail"
                   @click.native="handleDealDissimilarClick(index)"
                   isDealMission/>
               </section>
@@ -127,7 +131,13 @@
         <span class="count"> 3</span>
       </header>
       <section class="right-container-section">
-        <checking-result-item v-for="(item, index) in checkingResultList" :item="item" :key="index"/>
+        <checking-result-item
+          v-for="(item, index) in checkingResultList"
+          :item="item"
+          :key="index"
+          @handleSubscribe="handleSubscribe"
+          @handleMerge="handleMerge"
+          @handleInsert="handleInsert"/>
       </section>
     </div>
   </div>
@@ -388,6 +398,30 @@ export default {
   },
   mounted() {},
   methods: {
+    // 查看详情
+    goDetail() {
+      this.$emit('onViewDetailsClick')
+    },
+    // 批量创建任务
+    createTasks() {
+      this.$emit('createTasks');
+    },
+    // 关注
+    handleSubscribe() {
+      this.$emit('handleSubscribe');
+    },
+    // 归并
+    handleMerge() {
+      this.$emit('handleMerge');
+    },
+    // 插入
+    handleInsert() {
+      this.$emit('handleInsert');
+    },
+    // 切换来源
+    handleCheckedTagsChange(val) {
+      this.$emit('toggleSource', val);
+    },
     // 全选未处理任务
     handleCheckAllNoDeal(val) {
       this.noDealSimilarList.forEach(item => (item.checked = val));
@@ -443,7 +477,7 @@ export default {
     toggleTag(index) {
       this.currentMissionType = index;
     },
-    handlecheckedTagsChange() {},
+
   },
 };
 </script>

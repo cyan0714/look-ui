@@ -2,7 +2,7 @@
   <div class="mission-item">
     <div class="left">
       <div class="title">{{ item.title }}</div>
-      <div class="txt-btn">查看详情<i class="el-icon-arrow-right"></i></div>
+      <div class="txt-btn" @click="goDetail">查看详情<i class="el-icon-arrow-right"></i></div>
       <div class="result">
         <div class="result-left">
           <div :class="['rl-txt', hasList ? '' : 'dissimilar']">查重结果</div>
@@ -59,6 +59,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    goDetail() {
+      this.$emit('onViewDetailsClick')
+    },
     mapStatus(status) {
       switch (status) {
         case 0:
