@@ -1,0 +1,9 @@
+@import '../variable.scss';
+.lookui-form {
+  overflow: hidden;
+  .el-button--primary {
+    color: #FFF;
+    background-color: $--themeColor;
+    border-color: $--themeColor;
+  }
+}

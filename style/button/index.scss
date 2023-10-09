@@ -1,0 +1,250 @@
+@import '../variable.scss';
+
+.lookui-btn {
+  &.el-button {
+    &--default {
+      color: #666;
+      // background-color: $--themeColor;
+      // border-color: $--themeColor;
+      &:hover {
+        color: $--themeColor;
+        background-color: #f1f4fa;
+        border-color: $--themeColor-100;
+      }
+      &:focus {
+        color: $--themeColor;
+        background-color: #f1f4fa;
+        border-color: $--themeColor-700;
+      }
+      &.is-disabled {
+        color: #bfbfbf;
+        background-color: #f5f5f5;
+        border-color: #d9d9d9;
+      }
+      &.is-plain {
+        color: #666;
+        &:hover {
+          color: $--themeColor;
+          background-color: #f1f4fa;
+          border-color: $--themeColor-100;
+        }
+        &:focus {
+          color: $--themeColor;
+          background-color: #f1f4fa;
+          border-color: $--themeColor-700;
+        }
+        &.is-disabled {
+          color: #bfbfbf;
+          background-color: #f5f5f5;
+          border-color: #d9d9d9;
+        }
+      }
+    }
+    &--primary {
+      color: #fff;
+      background-color: $--themeColor;
+      border-color: $--themeColor;
+      &:hover {
+        color: #fff;
+        background-color: $--themeColor-700;
+        border-color: $--themeColor-700;
+      }
+      &:focus {
+        color: #fff;
+        background-color: #3f57ae;
+        border-color: #3f57ae;
+      }
+      &.is-disabled {
+        color: #fff;
+        background-color: $--themeColor-400;
+        border-color: $--themeColor-400;
+      }
+      &.is-plain {
+        color: $--themeColor;
+        background-color: $--themeColor-100;
+        border-color: $--themeColor-400;
+        &:hover {
+          color: #fff;
+          background-color: $--themeColor;
+          border-color: $--themeColor;
+        }
+        &:focus {
+          color: #fff;
+          background-color: #3f57ae;
+          border-color: #3f57ae;
+        }
+        &.is-disabled {
+          color: $--themeColor-400;
+          background-color: $--themeColor-100;
+          border-color: $--themeColor-400;
+        }
+      }
+    }
+    &--success {
+      color: #fff;
+      background-color: $--green-900;
+      border-color: $--green-900;
+      &:hover {
+        color: #fff;
+        background-color: $--green-700;
+        border-color: $--green-700;
+      }
+      &:focus {
+        color: #fff;
+        background-color: #5ba88a;
+        border-color: #5ba88a;
+      }
+      &.is-disabled {
+        color: #fff;
+        background-color: $--green-400;
+        border-color: $--green-400;
+      }
+      &.is-plain {
+        color: $--green-900;
+        background-color: $--green-100;
+        border-color: $--green-400;
+        &:hover {
+          color: #fff;
+          background-color: $--green-900;
+          border-color: $--green-900;
+        }
+        &:focus {
+          color: #fff;
+          background-color: #5ba88a;
+          border-color: #5ba88a;
+        }
+        &.is-disabled {
+          color: $--green-400;
+          background-color: $--green-100;
+          border-color: $--green-400;
+        }
+      }
+    }
+    &--info {
+      color: #6b5400;
+      background-color: $--yellow-900;
+      border-color: $--yellow-900;
+      &:hover {
+        color: #6b5400;
+        background-color: $--yellow-700;
+        border-color: $--yellow-700;
+      }
+      &:focus {
+        color: #6b5400;
+        background-color: #deb148;
+        border-color: #deb148;
+      }
+      &.is-disabled {
+        color: #fff;
+        background-color: $--yellow-400;
+        border-color: $--yellow-400;
+      }
+      &.is-plain {
+        color: #6b5400;
+        background-color: $--yellow-100;
+        border-color: $--yellow-400;
+        &:hover {
+          color: #6b5400;
+          background-color: $--yellow-900;
+          border-color: $--yellow-900;
+        }
+        &:focus {
+          color: #6b5400;
+          background-color: #deb148;
+          border-color: #deb148;
+        }
+        &.is-disabled {
+          color: $--yellow-400;
+          background-color: $--yellow-100;
+          border-color: $--yellow-400;
+        }
+      }
+    }
+    &--warning {
+      color: #fff;
+      background-color: $--orange-900;
+      border-color: $--orange-900;
+      &:hover {
+        color: #fff;
+        background-color: $--orange-700;
+        border-color: $--orange-700;
+      }
+      &:focus {
+        color: #fff;
+        background-color: #d4733d;
+        border-color: #d4733d;
+      }
+      &.is-disabled {
+        color: #fff;
+        background-color: $--orange-400;
+        border-color: $--orange-400;
+      }
+      &.is-plain {
+        color: $--orange-900;
+        background-color: $--orange-100;
+        border-color: $--orange-400;
+        &:hover {
+          color: #fff;
+          background-color: $--orange-900;
+          border-color: $--orange-900;
+        }
+        &:focus {
+          color: #fff;
+          background-color: #d4733d;
+          border-color: #d4733d;
+        }
+        &.is-disabled {
+          color: $--orange-400;
+          background-color: $--orange-100;
+          border-color: $--orange-400;
+        }
+      }
+    }
+    &--danger {
+      color: #fff;
+      background-color: $--red-900;
+      border-color: $--red-900;
+      &:hover {
+        color: #fff;
+        background-color: $--red-700;
+        border-color: $--red-700;
+      }
+      &:focus {
+        color: #fff;
+        background-color: #d2383a;
+        border-color: #d2383a;
+      }
+      &.is-disabled {
+        color: #fff;
+        background-color: $--red-400;
+        border-color: $--red-400;
+      }
+      &.is-plain {
+        color: $--red-900;
+        background-color: $--red-100;
+        border-color: $--red-400;
+        &:hover {
+          color: #fff;
+          background-color: $--red-900;
+          border-color: $--red-900;
+        }
+        &:focus {
+          color: #fff;
+          background-color: #d2383a;
+          border-color: #d2383a;
+        }
+        &.is-disabled {
+          color: $--red-400;
+          background-color: $--red-100;
+          border-color: $--red-400;
+        }
+      }
+    }
+    &--text {
+      color: $--themeColor;
+      &.is-disabled {
+        color: #bfbfbf;
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@import '../variable.scss';
+.lookui-dropdown-menu {
+  .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+    background-color: #f1f5fd;
+    color: #666;
+  }
+  .el-badge__content--primary {
+    background-color: $--themeColor;
+    margin-top: 9px;
+  }
+}
+
+.lookui-dropdown {
+  .el-button--primary {
+    color: #FFF;
+    background-color: $--themeColor;
+    border-color: $--themeColor;
+  }
+}

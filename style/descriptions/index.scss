@@ -1,0 +1,10 @@
+.lookui-descriptions {
+  .el-descriptions-item__label.is-bordered-label {
+    background: #f1f4fa !important;
+    text-align: center !important;
+    color: #000;
+  }
+  .is-bordered .el-descriptions-item__cell {
+    border: 1px solid #d9d9d9;
+  }
+}

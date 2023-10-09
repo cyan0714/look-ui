@@ -1,0 +1,10 @@
+@import '../variable.scss';
+.lookui-switch {
+  &.is-checked .el-switch__core {
+    border-color: $--themeColor;
+    background-color: $--themeColor;
+  }
+  .el-switch__label.is-active {
+    color: $--themeColor;
+  }
+}
