@@ -130,10 +130,11 @@
         <span class="txt">查重结果: </span>
         <span class="count"> 3</span>
       </header>
-      <section class="right-container-section">
+      <section class="right-container-section" v-loading="resultListLoading">
         <checking-result-item
           v-for="(item, index) in checkingResultList"
           :item="item"
+          :recommandTags="checkedTags"
           :key="index"
           @handleSubscribe="handleSubscribe"
           @handleMerge="handleMerge"
@@ -360,7 +361,12 @@ export default {
       this.checkAllNoDealOfDissimilar = this.noDealDissimilarList.every(item => item.checked);
     },
   },
-  props: {},
+  props: {
+    resultListLoading: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     hadCheckNoDealCount() {
       return (
