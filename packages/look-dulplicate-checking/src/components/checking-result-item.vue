@@ -54,9 +54,9 @@
         </div>
       </div>
       <div class="right">
-        <el-button type="primary" @click="handleInsert">插入任务</el-button>
-        <el-button @click="handleSubscribe">关注</el-button>
-        <el-button @click="handleMerge">归并</el-button>
+        <el-button size="small" class="lookui-btn" type="primary" @click="handleInsert">插入任务</el-button>
+        <el-button size="small" @click="handleSubscribe">关注</el-button>
+        <el-button size="small" @click="handleMerge">归并</el-button>
       </div>
     </div>
     <img :src="mapStatus(item.status)" alt="" class="status" />
@@ -66,7 +66,7 @@
 <script>
 export default {
   components: {
-    missionResolve,
+    // missionResolve,
   },
   data() {
     return {

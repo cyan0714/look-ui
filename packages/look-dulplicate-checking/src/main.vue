@@ -3,14 +3,19 @@
     <div class="left-container">
       <header class="left-container-header">
         <div class="intro">
-          本次共导入<span class="all-count">{{ importCount.allCount }}</span>条任务,
-          其中存在相似任务共<span class="similar-count">{{ importCount.similarCount }}</span>条,
-          无相似任务共<span class="dissimilar-count">{{ importCount.disSimilarCount }}</span>条。
+          本次共导入<span class="all-count">{{ importCount.allCount }}</span
+          >条任务, 其中存在相似任务共<span class="similar-count">{{
+            importCount.similarCount
+          }}</span
+          >条, 无相似任务共<span class="dissimilar-count">{{ importCount.disSimilarCount }}</span
+          >条。
         </div>
         <div class="checkboxs">
           <span>来源及要求:</span>
           <el-checkbox-group v-model="checkedTags" @change="handleCheckedTagsChange">
-            <el-checkbox class="lookui-checkbox" v-for="tag in tags" :label="tag" :key="tag">{{ tag }}</el-checkbox>
+            <el-checkbox class="lookui-checkbox" v-for="tag in tags" :label="tag" :key="tag">{{
+              tag
+            }}</el-checkbox>
           </el-checkbox-group>
         </div>
       </header>
@@ -39,17 +44,20 @@
                   :type="SIMILAR"
                   :count="3"
                   :checkAll="checkAllNoDealOfSimilar"
-                  @toggleCheckAll="handleCheckAllNoDealOfSimilar"/>
+                  @toggleCheckAll="handleCheckAllNoDealOfSimilar" />
               </template>
               <section class="collapse-content">
                 <mission-item
                   v-for="(item, index) in noDealSimilarList"
                   :item="item"
                   :key="index"
-                  :class="['mission-item', currentNoDealSimilarIndex === index ? 'mission-item-actived' : '']"
+                  :class="[
+                    'mission-item',
+                    currentNoDealSimilarIndex === index ? 'mission-item-actived' : '',
+                  ]"
                   @click.native="handleNoDealSimilarClick(index)"
                   @onViewDetailsClick="goDetail"
-                  @checkChange="handleNoDealSimilarCheckedChange"/>
+                  @checkChange="handleNoDealSimilarCheckedChange" />
               </section>
             </el-collapse-item>
             <!-- 未处理任务-不存在相似任务 -->
@@ -59,17 +67,20 @@
                   :type="DISSIMILAR"
                   :count="4"
                   :checkAll="checkAllNoDealOfDissimilar"
-                  @toggleCheckAll="handleCheckAllNoDealOfDissimilar"/>
+                  @toggleCheckAll="handleCheckAllNoDealOfDissimilar" />
               </template>
               <section class="collapse-content">
                 <mission-item
                   v-for="(item, index) in noDealDissimilarList"
                   :item="item"
                   :key="index"
-                  :class="['mission-item', currentNoDealDissimilarIndex === index ? 'mission-item-actived' : '']"
+                  :class="[
+                    'mission-item',
+                    currentNoDealDissimilarIndex === index ? 'mission-item-actived' : '',
+                  ]"
                   @click.native="handleNoDealDissimilarClick(index)"
                   @onViewDetailsClick="goDetail"
-                  @checkChange="handleNoDealDissimilarCheckedChange"/>
+                  @checkChange="handleNoDealDissimilarCheckedChange" />
               </section>
             </el-collapse-item>
           </el-collapse>
@@ -80,7 +91,8 @@
               class="lookui-checkbox"
               v-model="checkedAllNoDeal"
               @change="handleCheckAllNoDeal"
-              >全选未处理任务</el-checkbox>
+              >全选未处理任务</el-checkbox
+            >
             <span>已选 {{ hadCheckNoDealCount }} 条任务</span>
           </div>
           <div class="bb-right" @click="createTasks">批量创建任务</div>
@@ -91,33 +103,39 @@
             <!-- 已处理任务-存在相似任务 -->
             <el-collapse-item name="dealSimilar">
               <template slot="title">
-                <mission-header isDealMission :type="SIMILAR" :count="4"/>
+                <mission-header isDealMission :type="SIMILAR" :count="4" />
               </template>
               <section class="collapse-content">
                 <mission-item
                   v-for="(item, index) in hadDealSimilarList"
                   :item="item"
                   :key="index"
-                  :class="['mission-item', currentDealSimilarIndex === index ? 'mission-item-actived' : '']"
+                  :class="[
+                    'mission-item',
+                    currentDealSimilarIndex === index ? 'mission-item-actived' : '',
+                  ]"
                   @onViewDetailsClick="goDetail"
                   @click.native="handleDealSimilarClick(index)"
-                  isDealMission/>
+                  isDealMission />
               </section>
             </el-collapse-item>
             <!-- 已处理任务-不存在相似任务 -->
             <el-collapse-item name="dealDissimilar">
               <template slot="title">
-                <mission-header isDealMission :type="DISSIMILAR" :count="5"/>
+                <mission-header isDealMission :type="DISSIMILAR" :count="5" />
               </template>
               <section class="collapse-content">
                 <mission-item
                   v-for="(item, index) in hadDealDissimilarList"
                   :item="item"
                   :key="index"
-                  :class="['mission-item', currentDealDissimilarIndex === index ? 'mission-item-actived' : '']"
+                  :class="[
+                    'mission-item',
+                    currentDealDissimilarIndex === index ? 'mission-item-actived' : '',
+                  ]"
                   @onViewDetailsClick="goDetail"
                   @click.native="handleDealDissimilarClick(index)"
-                  isDealMission/>
+                  isDealMission />
               </section>
             </el-collapse-item>
           </el-collapse>
@@ -130,7 +148,7 @@
         <span class="txt">查重结果: </span>
         <span class="count"> 3</span>
       </header>
-      <section class="right-container-section" v-loading="resultListLoading">
+      <section class="right-container-section" v-loading="loadingCheckResultList">
         <checking-result-item
           v-for="(item, index) in checkingResultList"
           :item="item"
@@ -138,23 +156,23 @@
           :key="index"
           @handleSubscribe="handleSubscribe"
           @handleMerge="handleMerge"
-          @handleInsert="handleInsert"/>
+          @handleInsert="handleInsert" />
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import MissionHeader from './components/mission-header'
-import MissionItem from './components/mission-item'
-import CheckingResultItem from './components/checking-result-item'
+import MissionHeader from './components/mission-header';
+import MissionItem from './components/mission-item';
+import CheckingResultItem from './components/checking-result-item';
 import { SIMILAR, DISSIMILAR } from './constants';
 export default {
-  name: 'dulplicateChecking',
+  name: 'look-dulplicate-checking',
   components: {
     MissionHeader,
     MissionItem,
-    CheckingResultItem
+    CheckingResultItem,
   },
   data() {
     return {
@@ -168,167 +186,9 @@ export default {
       currentNoDealDissimilarIndex: -1, //未处理任务-不存在相似任务-当前选中任务下标
       checkAllNoDealOfDissimilar: false, //未处理任务-不存在相似任务-是否全选
       checkAllNoDealOfSimilar: false, //未处理任务-存在相似任务-是否全选
-      // 未处理任务-存在相似任务列表
-      noDealSimilarList: [
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          matchingResultCount: 8,
-          checkResultList: [
-            {
-              name: '省政府督查',
-              count: 3,
-            },
-            {
-              name: '省委督查',
-              count: 3,
-            },
-            {
-              name: '深改办(自贸办)',
-              count: 2,
-            },
-          ],
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          matchingResultCount: 8,
-          checkResultList: [
-            {
-              name: '省政府督查',
-              count: 3,
-            },
-            {
-              name: '省委督查',
-              count: 3,
-            },
-            {
-              name: '深改办(自贸办)',
-              count: 2,
-            },
-          ],
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          matchingResultCount: 8,
-          checkResultList: [
-            {
-              name: '省政府督查',
-              count: 3,
-            },
-            {
-              name: '省委督查',
-              count: 3,
-            },
-            {
-              name: '深改办(自贸办)',
-              count: 2,
-            },
-          ],
-        },
-      ],
-      // 未处理任务-不存在相似任务列表
-      noDealDissimilarList: [
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-        },
-      ],
 
       currentDealSimilarIndex: 0, //已处理任务-存在相似任务-当前选中任务下标
       currentDealDissimilarIndex: -1, //已处理任务-不存在相似任务-当前选中任务下标
-      // 已处理任务-存在相似任务列表
-      hadDealSimilarList: [
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          matchingResultCount: 8,
-          checkResultList: [
-            {
-              name: '省政府督查',
-              count: 3,
-            },
-            {
-              name: '省委督查',
-              count: 3,
-            },
-            {
-              name: '深改办(自贸办)',
-              count: 2,
-            },
-          ],
-          status: 3,
-          relation:
-            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          matchingResultCount: 8,
-          checkResultList: [
-            {
-              name: '省政府督查',
-              count: 3,
-            },
-            {
-              name: '省委督查',
-              count: 3,
-            },
-            {
-              name: '深改办(自贸办)',
-              count: 2,
-            },
-          ],
-          status: 3,
-          relation:
-            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
-        },
-      ],
-      // 已处理任务-不存在相似任务列表
-      hadDealDissimilarList: [
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          status: 3,
-          relation:
-            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          status: 3,
-          relation:
-            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
-        },
-        {
-          title:
-            '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-          checked: false,
-          status: 3,
-          relation:
-            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
-        },
-      ],
-
       currentMissionType: 0, //当前选中任务类型(已处理1, 未处理0)
       missionCount: {
         noDealCount: 5,
@@ -341,7 +201,6 @@ export default {
       },
       checkedTags: ['任务标题'],
       tags: ['任务标题', '任务标签', '事项来源及依据'],
-      checkingResultList: [],
     };
   },
   watch: {
@@ -362,9 +221,33 @@ export default {
     },
   },
   props: {
-    resultListLoading: {
+    // 未处理任务-存在相似任务列表
+    noDealSimilarList: {
+      type: Array,
+      default: () => [],
+    },
+    // 未处理任务-不存在相似任务列表
+    noDealDissimilarList: {
+      type: Array,
+      default: () => [],
+    },
+    // 已处理任务-存在相似任务列表
+    hadDealSimilarList: {
+      type: Array,
+      default: () => [],
+    },
+    // 已处理任务-不存在相似任务列表
+    hadDealDissimilarList: {
+      type: Array,
+      default: () => [],
+    },
+    loadingCheckResultList: {
       type: Boolean,
       default: false,
+    },
+    checkingResultList: {
+      type: Array,
+      default: () => [],
     },
   },
   computed: {
@@ -375,38 +258,14 @@ export default {
       );
     },
   },
-  activated() {
-    console.log('this.$store.state', this.$store.state)
-  },
+  activated() {},
   created() {
-    console.log('this.$store.state', this.$store.state)
-    for (let i = 0; i < 3; i++) {
-      this.checkingResultList.push({
-        title:
-          '春风验荡。历经百年沧桑的南非比勒陀利亚总统府，习近平主席同拉马福萨总统并肩而立，俯瞰欣欣向荣的城。',
-        tags: [
-          '坚持生态立省',
-          '放眼非洲和世界',
-          '习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问',
-          '其他发展中国家加强团结合作',
-          '南非进行国事访问',
-          '共同维护联合国宪章宗旨和原则维护广大发展中国家共同利益',
-        ],
-        sourceTxt:
-          '总书记进话:要认真学习领会、深入贯彻落实习近平总书记重要进话精神，牢记嘱托、不负厚望，奋力追赶、敢于超越封关运作“三张清单”:要认真学习领会、深入贯彻落实习近平总书记重要讲话精神，牢记嘱托、不负厚望，奋力追赶、敢于金砖国家一带一路超越敢于超越敢于超越超深入贯彻落实习近平总书记重要讲话精神，牢记嘱托、不深入贯彻落实习近平总书记重要讲话精神，牢记嘱托。',
-        leaderUnits: ['省发展改革委员会', '海口市政府', '三亚市政府'],
-        superviseUnits: ['省政府督查'],
-        arriveTime: '2023-02-30 12:12',
-        recommandTags: ['任务标题相似', '任务标签相同', '来源及要求相似'],
-        status: 0,
-      });
-    }
   },
   mounted() {},
   methods: {
     // 查看详情
     goDetail() {
-      this.$emit('onViewDetailsClick')
+      this.$emit('onViewDetailsClick');
     },
     // 批量创建任务
     createTasks() {
@@ -426,7 +285,16 @@ export default {
     },
     // 切换来源
     handleCheckedTagsChange(val) {
-      this.$emit('toggleSource', val);
+      const field = {
+        '任务标题': 'name',
+        '任务标签': 'feature',
+        '事项来源及依据': 'sourceName'
+      }
+      const sources = []
+      val.forEach(item => {
+        sources.push(field[item])
+      })
+      this.$emit('toggle-source', sources, this.currentNoDealSimilarIndex);
     },
     // 全选未处理任务
     handleCheckAllNoDeal(val) {
@@ -435,7 +303,7 @@ export default {
     },
     // 全选(未处理任务-不存在相似任务)
     handleCheckAllNoDealOfDissimilar(val) {
-      this.checkAllNoDealOfDissimilar = val
+      this.checkAllNoDealOfDissimilar = val;
       this.noDealDissimilarList.forEach(item => (item.checked = val));
     },
     // 全选(未处理任务-存在相似任务)
@@ -466,11 +334,11 @@ export default {
     handleNoDealSimilarClick(index) {
       this.currentNoDealSimilarIndex = index;
       this.currentNoDealDissimilarIndex = -1;
+      this.$emit('onClickNoDealSimilar', index);
     },
 
     // 点击 item (已处理任务-不存在相似任务)
     handleDealDissimilarClick(index) {
-      console.log('index', index)
       this.currentDealDissimilarIndex = index;
       this.currentDealSimilarIndex = -1;
     },
@@ -483,7 +351,6 @@ export default {
     toggleTag(index) {
       this.currentMissionType = index;
     },
-
   },
 };
 </script>
