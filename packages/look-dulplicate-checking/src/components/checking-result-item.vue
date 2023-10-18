@@ -3,7 +3,7 @@
     <div class="content">
       <div class="title">{{ item.name }}</div>
       <div class="tags-wrap">
-        <div v-for="(tag, tagIndex) in item.feature && item.feature.split(',')"" :key="tagIndex" class="tag-item">
+        <div v-for="(tag, tagIndex) in item.feature && item.feature.split(',')" :key="tagIndex" class="tag-item">
           {{ tag }}
         </div>
       </div>
