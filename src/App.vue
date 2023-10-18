@@ -1,19 +1,14 @@
 <template>
   <div class="app">
     <look-dulplicate-checking
-      :loadingCheckResultList="loadingCheckResultList"
       :noDealSimilarList="noDealSimilarList"
       :noDealDissimilarList="noDealDissimilarList"
       :hadDealSimilarList="hadDealSimilarList"
       :hadDealDissimilarList="hadDealDissimilarList"
-      :checkingResultList="checkingResultList"
-      @mission-click="handleMissionClick"
-      @toggle-source="toggleSource"
       @detail-click="handleDetailClick"
       @subscription-click="handleSubscribe"
       @merging-click="handleMerge"
-      @insertion-click="handleInsert"
-      @onClickNoDealSimilar="onClickNoDealSimilar" />
+      @insertion-click="handleInsert"/>
   </div>
 </template>
 
@@ -116,61 +111,15 @@ export default {
             '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
         },
       ],
-      checkingResultList: [],
     };
   },
   created() {
-    searchRepeated(this.paramsData).then(res => {
-      this.allCheckingResultList = res.data.data;
-      this.allCheckingResultList.forEach(item => {
-        this.noDealSimilarList.forEach(iten => {
-          if (item.keyId == iten.taskId) {
-            iten.checkResultListLength = item.size;
-          }
-        });
-      });
-      this.getCurrMissionCheckingResultList(0);
-    });
   },
   computed: {
-    paramsData() {
-      return {
-        from: 0,
-        jsonStr: JSON.stringify(this.noDealSimilarList),
-        keyId: 'taskId',
-        modelIndex: 'common_task',
-        modelType: 'task',
-        names: 'name',
-        size: 10000,
-      }
-    }
   },
   methods: {
-    fetchCheckingResultList(index) {
-      this.loadingCheckResultList = true
-      searchRepeated(this.paramsData).then(res => {
-        this.allCheckingResultList = res.data.data;
-        this.getCurrMissionCheckingResultList(index)
-      })
-    },
     handleDetailClick() {
 
-    },
-    onClickNoDealSimilar(index) {
-      this.fetchCheckingResultList(index)
-    },
-    getCurrMissionCheckingResultList(index) {
-      const currentMissionKeyId = this.noDealSimilarList[index].taskId;
-      const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
-      this.checkingResultList = resObj.hitRes || [];
-      this.loadingCheckResultList = false;
-    },
-    handleMissionClick(row) {
-      console.log('row', row);
-    },
-    toggleSource(val, index) {
-      this.paramsData.names = val.toString()
-      this.fetchCheckingResultList(index)
     },
     // 关注
     handleSubscribe(row) {

@@ -163,6 +163,7 @@
 </template>
 
 <script>
+import { searchRepeated } from '../../../utils/api.js';
 import MissionHeader from './components/mission-header';
 import MissionItem from './components/mission-item';
 import CheckingResultItem from './components/checking-result-item';
@@ -176,6 +177,7 @@ export default {
   },
   data() {
     return {
+      loadingCheckResultList: false,
       SIMILAR,
       DISSIMILAR,
       activeDealNames: ['dealSimilar', 'dealDissimilar'],
@@ -201,6 +203,8 @@ export default {
       },
       checkedTags: ['任务标题'],
       tags: ['任务标题', '任务标签', '事项来源及依据'],
+      allCheckingResultList: [],
+      checkingResultList: []
     };
   },
   watch: {
@@ -224,7 +228,7 @@ export default {
     // 未处理任务-存在相似任务列表
     noDealSimilarList: {
       type: Array,
-      default: () => [],
+      default: () => ([]),
     },
     // 未处理任务-不存在相似任务列表
     noDealDissimilarList: {
@@ -241,13 +245,19 @@ export default {
       type: Array,
       default: () => [],
     },
-    loadingCheckResultList: {
-      type: Boolean,
-      default: false,
-    },
-    checkingResultList: {
-      type: Array,
-      default: () => [],
+    paramsData: {
+      type: Object,
+      default: () => {
+        return {
+          from: 0,
+          jsonStr: [],
+          keyId: 'taskId',
+          modelIndex: 'common_task',
+          modelType: 'task',
+          names: 'name',
+          size: 10000,
+        }
+      },
     },
   },
   computed: {
@@ -260,9 +270,27 @@ export default {
   },
   activated() {},
   created() {
+    this.paramsData.jsonStr = JSON.stringify(this.noDealSimilarList)
+    searchRepeated(this.paramsData).then(res => {
+      this.allCheckingResultList = res.data.data;
+      this.allCheckingResultList.forEach(item => {
+        this.noDealSimilarList.forEach(iten => {
+          if (item.keyId == iten.taskId) {
+            iten.checkResultListLength = item.size;
+          }
+        });
+      });
+      this.getCurrMissionCheckingResultList(0);
+    });
   },
   mounted() {},
   methods: {
+    getCurrMissionCheckingResultList(index) {
+      const currentMissionKeyId = this.noDealSimilarList[index].taskId;
+      const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
+      this.checkingResultList = resObj.hitRes || [];
+      this.loadingCheckResultList = false;
+    },
     // 查看详情
     goDetail() {
       this.$emit('onViewDetailsClick');
@@ -294,7 +322,12 @@ export default {
       val.forEach(item => {
         sources.push(field[item])
       })
-      this.$emit('toggle-source', sources, this.currentNoDealSimilarIndex);
+      this.paramsData.names = sources.toString()
+      this.checkingResultList = []
+      // 使用 setTimeout 防止 checkbox 渲染缓慢
+      setTimeout(() => {
+        this.fetchCheckingResultList(this.currentNoDealSimilarIndex)
+      }, 0)
     },
     // 全选未处理任务
     handleCheckAllNoDeal(val) {
@@ -334,7 +367,15 @@ export default {
     handleNoDealSimilarClick(index) {
       this.currentNoDealSimilarIndex = index;
       this.currentNoDealDissimilarIndex = -1;
-      this.$emit('onClickNoDealSimilar', index);
+      this.fetchCheckingResultList(index)
+      // this.$emit('onClickNoDealSimilar', index);
+    },
+    fetchCheckingResultList(index) {
+      this.loadingCheckResultList = true
+      searchRepeated(this.paramsData).then(res => {
+        this.allCheckingResultList = res.data.data;
+        this.getCurrMissionCheckingResultList(index)
+      })
     },
 
     // 点击 item (已处理任务-不存在相似任务)
