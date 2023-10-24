@@ -267,11 +267,11 @@ export default {
   },
   activated() {},
   created() {
-    this.paramsData.jsonStr = JSON.stringify(this.noDealSimilarList)
+    this.paramsData.jsonStr = JSON.stringify(this.noDealMission.similar)
     searchRepeated(this.paramsData).then(res => {
       this.allCheckingResultList = res.data.data;
       this.allCheckingResultList.forEach(item => {
-        this.noDealSimilarList.forEach(iten => {
+        this.noDealMission.similar.forEach(iten => {
           if (item.keyId == iten.taskId) {
             iten.checkResultListLength = item.size;
           }
@@ -283,10 +283,13 @@ export default {
   mounted() {},
   methods: {
     getCurrMissionCheckingResultList(index) {
-      const currentMissionKeyId = this.noDealSimilarList[index].taskId;
-      const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
-      this.checkingResultList = resObj.hitRes || [];
-      this.loadingCheckResultList = false;
+      this.loadingCheckResultList = true
+      setTimeout(() => {
+        const currentMissionKeyId = this.noDealMission.similar[index].taskId;
+        const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
+        this.checkingResultList = resObj.hitRes || [];
+        this.loadingCheckResultList = false;
+      }, 500);
     },
     // 查看详情
     goDetail() {
@@ -365,8 +368,8 @@ export default {
     handleNoDealSimilarClick(index) {
       this.currentNoDealSimilarIndex = index;
       this.currentNoDealDissimilarIndex = -1;
-      this.fetchCheckingResultList(index)
-      // this.$emit('onClickNoDealSimilar', index);
+      this.getCurrMissionCheckingResultList(index)
+      this.$emit('onClickNoDealSimilar', index);
     },
     fetchCheckingResultList(index) {
       this.loadingCheckResultList = true

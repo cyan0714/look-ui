@@ -1,16 +1,9 @@
 <template>
   <div class="app">
     <look-dulplicate-checking
-      :loadingCheckResultList="loadingCheckResultList"
       :noDealMission="noDealMission"
       :hadDealMission="hadDealMission"
-      :checkingResultList="checkingResultList"
-      @mission-click="handleMissionClick"
-      @toggle-source="toggleSource"
-      @detail-click="handleDetailClick"
-      @subscription-click="handleSubscribe"
-      @merging-click="handleMerge"
-      @insertion-click="handleInsert"/>
+      :checkingResultList="checkingResultList"/>
   </div>
 </template>
 
@@ -19,7 +12,6 @@ import { searchRepeated } from '../utils/api.js';
 export default {
   data() {
     return {
-      loadingCheckResultList: false,
       allCheckingResultList: [],
       // 未处理任务
       noDealMission: {
@@ -121,47 +113,10 @@ export default {
     };
   },
   created() {
-    searchRepeated(this.paramsData).then(res => {
-      this.allCheckingResultList = res.data.data;
-      this.allCheckingResultList.forEach(item => {
-        this.noDealMission.similar.forEach(iten => {
-          if (item.keyId == iten.taskId) {
-            iten.checkResultListLength = item.size;
-          }
-        });
-      });
-      this.getCurrMissionCheckingResultList(0);
-    });
   },
   computed: {
-    paramsData() {
-      return {
-        from: 0,
-        jsonStr: JSON.stringify(this.noDealMission.similar),
-        keyId: 'taskId',
-        modelIndex: 'common_task',
-        modelType: 'task',
-        names: 'name',
-        size: 10000,
-      }
-    }
   },
   methods: {
-    handleDetailClick() {
-
-    },
-    // 关注
-    handleSubscribe(row) {
-      console.log('row', row);
-    },
-    // 归并
-    handleMerge(row) {
-      console.log('row', row);
-    },
-    // 插入
-    handleInsert(row) {
-      console.log('row', row);
-    },
   },
 };
 </script>
