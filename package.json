@@ -1,6 +1,6 @@
 {
   "name": "look-ui",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "a ui library which is based on element-ui",
   "main": "./dist/look-ui.common.js",
   "scripts": {

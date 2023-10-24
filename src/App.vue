@@ -3,7 +3,10 @@
     <look-dulplicate-checking
       :noDealMission="noDealMission"
       :hadDealMission="hadDealMission"
-      :checkingResultList="checkingResultList"/>
+      :checkingResultList="checkingResultList"
+      @merging-click="mergingClick"
+      @subscription-click="subscriptionClick"
+      @insertion-click="insertionClick"/>
   </div>
 </template>
 
@@ -117,6 +120,16 @@ export default {
   computed: {
   },
   methods: {
+    insertionClick(row) {
+      console.log('插入', row)
+    },
+    subscriptionClick(row) {
+      console.log('关注', row)
+    },
+    mergingClick(row) {
+      console.log(row,'hh')
+    },
+
   },
 };
 </script>

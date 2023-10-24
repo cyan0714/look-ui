@@ -95,13 +95,13 @@ export default {
     closeMissionResolve(val) {
     },
     handleSubscribe() {
-      this.$emit('handleSubscribe');
+      this.$emit('subscription-click', this.item);
     },
     handleMerge() {
-      this.$emit('handleMerge');
+      this.$emit('merging-click', this.item);
     },
     handleInsert() {
-      this.$emit('handleInsert');
+      this.$emit('insertion-click', this.item);
     },
     mapStatus(status) {
       switch (status) {

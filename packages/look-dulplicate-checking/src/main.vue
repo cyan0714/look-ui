@@ -152,9 +152,9 @@
           :item="item"
           :recommandTags="checkedTags"
           :key="index"
-          @handleSubscribe="handleSubscribe"
-          @handleMerge="handleMerge"
-          @handleInsert="handleInsert" />
+          @subscription-click="handleSubscribe"
+          @merging-click="handleMerge"
+          @insertion-click="handleInsert" />
       </section>
     </div>
   </div>
@@ -300,16 +300,16 @@ export default {
       this.$emit('createTasks');
     },
     // 关注
-    handleSubscribe() {
-      this.$emit('handleSubscribe');
+    handleSubscribe(row) {
+      this.$emit('subscription-click', row);
     },
     // 归并
-    handleMerge() {
-      this.$emit('handleMerge');
+    handleMerge(row) {
+      this.$emit('merging-click', row);
     },
     // 插入
-    handleInsert() {
-      this.$emit('handleInsert');
+    handleInsert(row) {
+      this.$emit('insertion-click', row);
     },
     // 切换来源
     handleCheckedTagsChange(val) {
