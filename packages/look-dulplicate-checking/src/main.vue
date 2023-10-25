@@ -270,6 +270,7 @@ export default {
   methods: {
     fetchCheckingResultList(index) {
       this.paramsData.jsonStr = JSON.stringify(this.data)
+
       searchRepeated(this.paramsData).then(({data}) => {
         // 所有查重结果列表数据
         this.allCheckingResultList = data.data.similarity
@@ -411,7 +412,7 @@ export default {
   background-color: #f6f6f6;
   height: 100%;
   .left-container {
-    flex: 4;
+    width: 40%;
     border-right: 1px solid #e4e4f3;
     .left-container-header {
       background-color: #fff;
@@ -568,7 +569,7 @@ export default {
     }
   }
   .right-container {
-    flex: 6;
+    width: 60%;
     padding: 14px;
     header.right-contiainer-header {
       display: flex;

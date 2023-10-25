@@ -20,7 +20,7 @@
                 v-for="(leaderUnit, leaderUnitIndex) in item.qtOrgs && item.qtOrgs.split(',')"
                 :key="leaderUnitIndex"
                 class="leader-unit-item"
-                >{{ leaderUnit }}</span>
+                >{{ leaderUnit }}{{ leaderUnitIndex === (item.qtOrgs && item.qtOrgs.split(',').length) - 1 ? '' : '，' }}</span>
             </div>
           </div>
           <div class="supervise-unit">
@@ -30,7 +30,7 @@
                 v-for="(superviseUnit, superviseUnitIndex) in item.createdOrg && item.createdOrg.split(',')"
                 :key="superviseUnitIndex"
                 class="supervise-unit-item"
-                >{{ superviseUnit }}</span
+                >{{ superviseUnit }}{{ superviseUnitIndex === (item.createdOrg && item.createdOrg.split(',').length) - 1 ? '' : '，' }}</span
               >
             </div>
           </div>
@@ -136,6 +136,14 @@ export default {
     padding: 20px 20px 0;
     background-color: #fff;
     border-radius: 8px 8px 0 0;
+    .title {
+      display: -webkit-box;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   div.title {
     font-size: 18px;
@@ -194,11 +202,31 @@ export default {
       div.leader-unit {
         display: flex;
         align-items: center;
+        .key {
+          flex-shrink: 0;
+        }
+        .value {
+          display: inline-block;
+          max-width: 280px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
       div.supervise-unit {
         display: flex;
         align-items: center;
         margin-left: 50px;
+        .key {
+          flex-shrink: 0;
+        }
+        .value {
+          display: inline-block;
+          max-width: 280px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
     div.right {
