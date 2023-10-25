@@ -146,7 +146,7 @@
         <span class="txt">查重结果: </span>
         <span class="count"> {{ checkingResultList.length }}</span>
       </header>
-      <section class="right-container-section" v-loading="loadingCheckResultList">
+      <section class="right-container-section" v-if="checkingResultList.length > 0" v-loading="loadingCheckResultList">
         <checking-result-item
           v-for="(item, index) in checkingResultList"
           :item="item"
@@ -155,6 +155,9 @@
           @subscription-click="handleSubscribe"
           @merging-click="handleMerge"
           @insertion-click="handleInsert" />
+      </section>
+      <section class="right-container-empty" v-else>
+        <look-empty/>
       </section>
     </div>
   </div>
@@ -197,7 +200,15 @@ export default {
       checkedTags: ['任务标题'],
       tags: ['任务标题', '任务标签', '事项来源及依据'],
       allCheckingResultList: [],
-      checkingResultList: []
+      checkingResultList: [],
+      noDealMission: {
+        similar: [], // 存在相似任务列表
+        dissimilar: [], // 不存在相似任务列表
+      },
+      hadDealMission: {
+        similar: [], // 存在相似任务列表
+        dissimilar: [], // 不存在相似任务列表
+      }
     };
   },
   watch: {
@@ -218,29 +229,15 @@ export default {
     },
   },
   props: {
+    data: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
     isShowSource: {
       type: Boolean,
       default: true
-    },
-    // 未处理任务
-    noDealMission: {
-      type: Object,
-      default: () => {
-        return {
-          similar: [], // 存在相似任务列表
-          dissimilar: [], // 不存在相似任务列表
-        };
-      },
-    },
-    // 已处理任务
-    hadDealMission: {
-      type: Object,
-      default: () => {
-        return {
-          similar: [], // 存在相似任务列表
-          dissimilar: [], // 不存在相似任务列表
-        };
-      },
     },
     paramsData: {
       type: Object,
@@ -267,21 +264,35 @@ export default {
   },
   activated() {},
   created() {
-    this.paramsData.jsonStr = JSON.stringify(this.noDealMission.similar)
-    searchRepeated(this.paramsData).then(res => {
-      this.allCheckingResultList = res.data.data;
-      this.allCheckingResultList.forEach(item => {
-        this.noDealMission.similar.forEach(iten => {
-          if (item.keyId == iten.taskId) {
-            iten.checkResultListLength = item.size;
-          }
-        });
-      });
-      this.getCurrMissionCheckingResultList(0);
-    });
+    this.fetchCheckingResultList(0)
   },
   mounted() {},
   methods: {
+    fetchCheckingResultList(index) {
+      this.paramsData.jsonStr = JSON.stringify(this.data)
+      searchRepeated(this.paramsData).then(({data}) => {
+        // 所有查重结果列表数据
+        this.allCheckingResultList = data.data.similarity
+
+        this.noDealMission.similar = this.data.filter(item => {
+          for (let i = 0; i < data.data.notSimilarity.length; i++) {
+            return item.taskId != data.data.notSimilarity[i].taskId
+          }
+        })
+        console.log('this.noDealMission.similar', this.noDealMission.similar)
+        this.noDealMission.dissimilar = data.data.notSimilarity;
+
+        data.data.similarity.forEach(item => {
+          this.noDealMission.similar.forEach(iten => {
+            if (item.keyId == iten.taskId) {
+              iten.checkResultListLength = item.size;
+            }
+          });
+        });
+        this.getCurrMissionCheckingResultList(index);
+      });
+    },
+    // 获取当前任务的查重结果列表
     getCurrMissionCheckingResultList(index) {
       this.loadingCheckResultList = true
       setTimeout(() => {
@@ -362,6 +373,7 @@ export default {
     handleNoDealDissimilarClick(index) {
       this.currentNoDealDissimilarIndex = index;
       this.currentNoDealSimilarIndex = -1;
+      this.checkingResultList = []
       this.$emit('onClickNoDealDissimilar', index);
     },
     // 点击 item (未处理任务-存在相似任务)
@@ -371,13 +383,7 @@ export default {
       this.getCurrMissionCheckingResultList(index)
       this.$emit('onClickNoDealSimilar', index);
     },
-    fetchCheckingResultList(index) {
-      this.loadingCheckResultList = true
-      searchRepeated(this.paramsData).then(res => {
-        this.allCheckingResultList = res.data.data;
-        this.getCurrMissionCheckingResultList(index)
-      })
-    },
+
 
     // 点击 item (已处理任务-不存在相似任务)
     handleDealDissimilarClick(index) {
@@ -595,6 +601,10 @@ export default {
         border-radius: 5px;
         background-color: #cfcbcb;
       }
+    }
+    section.right-container-empty {
+      display: flex;
+      justify-content: center;
     }
   }
 }

@@ -64,15 +64,15 @@ export default {
     },
     mapStatus(status) {
       switch (status) {
-        case 0:
+        case '督办中':
           return require(`../imgs/icon_5.png`);
-        case 1:
+        case '未办理':
           return require(`../imgs/icon_6.png`);
-        case 2:
+        case '已办结':
           return require(`../imgs/icon_7.png`);
-        case 3:
+        case '已关注':
           return require(`../imgs/icon_8.png`);
-        case 4:
+        case '已归并':
           return require(`../imgs/icon_9.png`);
       }
     },

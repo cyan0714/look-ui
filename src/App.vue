@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <look-dulplicate-checking
+      :data="data"
       :noDealMission="noDealMission"
       :hadDealMission="hadDealMission"
       :checkingResultList="checkingResultList"
@@ -16,6 +17,29 @@ export default {
   data() {
     return {
       allCheckingResultList: [],
+      data: [
+        {
+          taskId: '1',
+          name: '三亚市第一艘海洋休闲渔船',
+          checked: false,
+          tenantId: '4602000038',
+          checkResultListLength: 0,
+        },
+        {
+          taskId: '2',
+          name: '事项工作内容',
+          checked: false,
+          tenantId: '4602000038',
+          checkResultListLength: 0,
+        },
+        {
+          taskId: '3',
+          name: '琼海',
+          checked: false,
+          tenantId: '4602000038',
+          checkResultListLength: 0,
+        },
+      ],
       // 未处理任务
       noDealMission: {
         // 存在相似任务列表
