@@ -276,12 +276,12 @@ export default {
         this.allCheckingResultList = data.data.similarity
 
         this.noDealMission.similar = this.data.filter(item => {
-          for (let i = 0; i < data.data.notSimilarity.length; i++) {
-            return item.taskId != data.data.notSimilarity[i].taskId
+          for (let i = 0; i < this.data.length; i++) {
+            return item.taskId != data.data.notSimilarity[i]?.taskId
           }
         })
-        console.log('this.noDealMission.similar', this.noDealMission.similar)
         this.noDealMission.dissimilar = data.data.notSimilarity;
+        this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status != undefined)
 
         data.data.similarity.forEach(item => {
           this.noDealMission.similar.forEach(iten => {
@@ -297,7 +297,7 @@ export default {
     getCurrMissionCheckingResultList(index) {
       this.loadingCheckResultList = true
       setTimeout(() => {
-        const currentMissionKeyId = this.noDealMission.similar[index].taskId;
+        const currentMissionKeyId = this.noDealMission.similar[index]?.taskId;
         const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
         this.checkingResultList = resObj.hitRes || [];
         this.loadingCheckResultList = false;
@@ -384,7 +384,6 @@ export default {
       this.getCurrMissionCheckingResultList(index)
       this.$emit('onClickNoDealSimilar', index);
     },
-
 
     // 点击 item (已处理任务-不存在相似任务)
     handleDealDissimilarClick(index) {
