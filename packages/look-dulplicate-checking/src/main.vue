@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div class="collapse-container" v-show="currentMissionType === 0">
+        <div class="collapse-container no-deal-mission" v-show="currentMissionType === 0">
           <el-collapse v-model="activeNoDealName">
             <!-- 未处理任务-存在相似任务 -->
             <el-collapse-item name="noDealSimilar">
@@ -96,7 +96,7 @@
           <div class="bb-right" @click="createTasks">批量创建任务</div>
         </div>
 
-        <div class="collapse-container" v-show="currentMissionType === 1">
+        <div class="collapse-container had-deal-mission" v-show="currentMissionType === 1">
           <el-collapse v-model="activeDealNames">
             <!-- 已处理任务-存在相似任务 -->
             <el-collapse-item name="dealSimilar">
@@ -151,6 +151,7 @@
           v-for="(item, index) in checkingResultList"
           :item="item"
           :recommandTags="checkedTags"
+          :isShowBtns="currentMissionType == 0"
           :key="index"
           @subscription-click="handleSubscribe"
           @merging-click="handleMerge"
@@ -481,6 +482,16 @@ export default {
         height: 650px;
         overflow: auto;
         margin-top: 10px;
+        &.no-deal-mission {
+          ::v-deep .txt-wrap {
+            padding-right: 0;
+          }
+        }
+        &.had-deal-mission {
+          ::v-deep .txt-wrap {
+            padding-right: 50px;
+          }
+        }
         ::v-deep .el-collapse-item__header {
           border-radius: 12px;
         }

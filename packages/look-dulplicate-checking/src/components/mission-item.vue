@@ -1,8 +1,10 @@
 <template>
   <div class="mission-item">
     <div class="left">
-      <div class="title">{{ item.name }}</div>
-      <div class="txt-btn" @click="goDetail">查看详情<i class="el-icon-arrow-right"></i></div>
+      <div class="txt-wrap">
+        <div class="title">{{ item.name }}</div>
+        <div class="txt-btn" @click="goDetail">查看详情<i class="el-icon-arrow-right"></i></div>
+      </div>
       <div class="result">
         <div class="result-left">
           <div :class="['rl-txt', hasList ? '' : 'dissimilar']">查重结果</div>
@@ -89,21 +91,34 @@ export default {
     flex: 1;
     margin-right: 10px;
     .title {
+      flex: 1;
       font-size: 16px;
-      padding-right: 50px;
+      display: -webkit-box;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .status {
       position: absolute;
       right: 0;
       top: 0;
     }
+    .txt-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 8px;
+      .txt-btn {
+        width: 6em;
+        text-align: right;
+        color: #999;
+        font-size: 14px;
+      }
+    }
   }
-  .txt-btn {
-    text-align: right;
-    color: #999;
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
+
   .result {
     display: flex;
     font-size: 14px;

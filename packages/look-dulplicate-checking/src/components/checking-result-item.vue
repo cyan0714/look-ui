@@ -17,20 +17,20 @@
             <span class="key">牵头单位:</span>
             <div class="value">
               <span
-                v-for="(leaderUnit, leaderUnitIndex) in item.qtOrgs && item.qtOrgs.split(',')"
+                v-for="(leaderUnit, leaderUnitIndex) in qtOrgs"
                 :key="leaderUnitIndex"
                 class="leader-unit-item"
-                >{{ leaderUnit }}{{ leaderUnitIndex === (item.qtOrgs && item.qtOrgs.split(',').length) - 1 ? '' : '，' }}</span>
+                >{{ leaderUnit }}{{ leaderUnitIndex === qtOrgs.length - 1 ? '' : '，' }}</span>
             </div>
           </div>
           <div class="supervise-unit">
             <span class="key">督办单位:</span>
             <div class="value">
               <span
-                v-for="(superviseUnit, superviseUnitIndex) in item.createdOrg && item.createdOrg.split(',')"
+                v-for="(superviseUnit, superviseUnitIndex) in createdOrg"
                 :key="superviseUnitIndex"
                 class="supervise-unit-item"
-                >{{ superviseUnit }}{{ superviseUnitIndex === (item.createdOrg && item.createdOrg.split(',').length) - 1 ? '' : '，' }}</span
+                >{{ superviseUnit }}{{ superviseUnitIndex === createdOrg.length - 1 ? '' : '，' }}</span
               >
             </div>
           </div>
@@ -53,7 +53,7 @@
           >
         </div>
       </div>
-      <div class="right">
+      <div class="right" v-if="isShowBtns">
         <el-button size="small" class="lookui-btn" type="primary" @click="handleInsert">插入任务</el-button>
         <el-button size="small" @click="handleSubscribe">关注</el-button>
         <el-button size="small" @click="handleMerge">归并</el-button>
@@ -75,6 +75,10 @@ export default {
     };
   },
   props: {
+    isShowBtns: {
+      type: Boolean,
+      default: true
+    },
     isShowSource: {
       type: Boolean,
       default: true
@@ -88,7 +92,14 @@ export default {
       default: () => ([]),
     }
   },
-  computed: {},
+  computed: {
+    qtOrgs() {
+      return this.item.qtOrgs?.split(",");
+    },
+    createdOrg() {
+      return this.item.createdOrg?.split(",");
+    },
+  },
   created() {},
   mounted() {},
   methods: {
