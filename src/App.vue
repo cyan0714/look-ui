@@ -17,7 +17,7 @@ export default {
       data: [
         {
           taskId: '1',
-          name: '三亚市第一艘海洋休闲渔三亚市第一艘海洋休闲渔船三一艘海洋休闲渔船三亚市第一一艘海洋休闲渔船三亚市第一亚市第一艘海洋休闲渔船三亚市第一艘海洋休闲渔船三亚市第一艘海洋休闲渔船船',
+          name: '三亚市第一艘海洋休闲渔船',
           checked: false,
           tenantId: '4602000038',
           checkResultListLength: 0,

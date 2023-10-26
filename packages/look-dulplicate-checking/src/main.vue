@@ -278,14 +278,21 @@ export default {
 
         this.noDealMission.similar = this.data.filter(item => {
           for (let i = 0; i < this.data.length; i++) {
-            return item.taskId != data.data.notSimilarity[i]?.taskId
+            return (item.taskId != data.data.notSimilarity[i]?.taskId) && (item.status === undefined)
           }
         })
         this.noDealMission.dissimilar = data.data.notSimilarity;
-        this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status != undefined)
+        this.hadDealMission.similar = this.data.filter(item => item.status != undefined)
 
         data.data.similarity.forEach(item => {
+          // 未处理任务(存在相似任务)中每个任务的查重结果数
           this.noDealMission.similar.forEach(iten => {
+            if (item.keyId == iten.taskId) {
+              iten.checkResultListLength = item.size;
+            }
+          });
+          // 已处理任务(存在相似任务)中每个任务的查重结果数
+          this.hadDealMission.similar.forEach(iten => {
             if (item.keyId == iten.taskId) {
               iten.checkResultListLength = item.size;
             }
@@ -298,7 +305,7 @@ export default {
     getCurrMissionCheckingResultList(index) {
       this.loadingCheckResultList = true
       setTimeout(() => {
-        const currentMissionKeyId = this.noDealMission.similar[index]?.taskId;
+        const currentMissionKeyId = this.currentMissionType === 0 ? this.noDealMission.similar[index]?.taskId : this.hadDealMission.similar[index]?.taskId;
         const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
         this.checkingResultList = resObj.hitRes || [];
         this.loadingCheckResultList = false;
@@ -401,6 +408,13 @@ export default {
 
     toggleTag(index) {
       this.currentMissionType = index;
+      if (index === 0) {
+        // 获取某个未处理任务的查重列表
+        this.getCurrMissionCheckingResultList(this.currentNoDealSimilarIndex === -1 ? this.currentNoDealDissimilarIndex : this.currentNoDealSimilarIndex)
+      } else if (index === 1) {
+        // 获取某个已处理任务的查重列表
+        this.getCurrMissionCheckingResultList(this.currentDealSimilarIndex === -1 ? this.currentDealDissimilarIndex : this.currentDealSimilarIndex)
+      }
     },
   },
 };
