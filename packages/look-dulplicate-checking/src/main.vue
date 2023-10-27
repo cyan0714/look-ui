@@ -271,21 +271,22 @@ export default {
   methods: {
     fetchCheckingResultList(index) {
       this.paramsData.jsonStr = JSON.stringify(this.data)
+      console.log('npm link')
 
-      searchRepeated(this.paramsData).then(({data}) => {
+      searchRepeated(this.paramsData).then(({data: {data: {similarity, notSimilarity}}}) => {
         // 所有查重结果列表数据
-        this.allCheckingResultList = data.data.similarity
+        this.allCheckingResultList = similarity
 
         this.noDealMission.similar = this.data.filter(item => {
           for (let i = 0; i < this.data.length; i++) {
-            return (item.taskId != data.data.notSimilarity[i]?.taskId)
+            return item.taskId != notSimilarity[i]?.taskId
           }
         })
-        this.noDealMission.dissimilar = data.data.notSimilarity;
+        this.noDealMission.dissimilar = notSimilarity;
         this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status != undefined)
         this.noDealMission.similar = this.noDealMission.similar.filter(item => item.status == undefined)
 
-        data.data.similarity.forEach(item => {
+        similarity.forEach(item => {
           // 未处理任务(存在相似任务)中每个任务的查重结果数
           this.noDealMission.similar.forEach(iten => {
             if (item.keyId == iten.taskId) {
