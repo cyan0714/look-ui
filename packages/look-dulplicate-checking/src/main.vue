@@ -114,6 +114,7 @@
                   ]"
                   @onViewDetailsClick="goDetail"
                   @click.native="handleDealSimilarClick(index)"
+                  @onCancelBtnClick="handleCancelBtnClick"
                   isDealMission />
               </section>
             </el-collapse-item>
@@ -275,6 +276,9 @@ export default {
   },
   mounted() {},
   methods: {
+    handleCancelBtnClick(task) {
+      this.$emit('onCancelBtnClick', task);
+    },
     fetchCheckingResultList(index) {
       this.paramsData.jsonStr = JSON.stringify(this.data)
       console.log('npm link')
