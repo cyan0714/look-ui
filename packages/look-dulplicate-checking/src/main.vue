@@ -213,6 +213,12 @@ export default {
     };
   },
   watch: {
+    data: {
+      handler: function(val) {
+        this.fetchCheckingResultList(0)
+      },
+      deep: true,
+    },
     //未处理任务-存在相似任务-是否全选
     checkAllNoDealOfSimilar(val) {
       //未处理任务是否全选
