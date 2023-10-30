@@ -289,8 +289,8 @@ export default {
           }
         })
         this.noDealMission.dissimilar = notSimilarity;
-        this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status != undefined)
-        this.noDealMission.similar = this.noDealMission.similar.filter(item => item.status == undefined)
+        this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status)
+        this.noDealMission.similar = this.noDealMission.similar.filter(item => !item.status)
 
         similarity.forEach(item => {
           // 未处理任务(存在相似任务)中每个任务的查重结果数
