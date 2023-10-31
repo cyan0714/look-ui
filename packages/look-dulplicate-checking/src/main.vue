@@ -54,7 +54,6 @@
                     currentNoDealSimilarIndex === index ? 'mission-item-actived' : '',
                   ]"
                   @click.native="handleNoDealSimilarClick(index)"
-                  @onViewDetailsClick="goDetail"
                   @checkChange="handleNoDealSimilarCheckedChange" />
               </section>
             </el-collapse-item>
@@ -77,7 +76,6 @@
                     currentNoDealDissimilarIndex === index ? 'mission-item-actived' : '',
                   ]"
                   @click.native="handleNoDealDissimilarClick(index)"
-                  @onViewDetailsClick="goDetail"
                   @checkChange="handleNoDealDissimilarCheckedChange" />
               </section>
             </el-collapse-item>
@@ -112,9 +110,7 @@
                     'mission-item',
                     currentDealSimilarIndex === index ? 'mission-item-actived' : '',
                   ]"
-                  @onViewDetailsClick="goDetail"
                   @click.native="handleDealSimilarClick(index)"
-                  @onCancelBtnClick="handleCancelBtnClick"
                   isDealMission />
               </section>
             </el-collapse-item>
@@ -132,7 +128,6 @@
                     'mission-item',
                     currentDealDissimilarIndex === index ? 'mission-item-actived' : '',
                   ]"
-                  @onViewDetailsClick="goDetail"
                   @click.native="handleDealDissimilarClick(index)"
                   isDealMission />
               </section>
@@ -177,6 +172,12 @@ export default {
     MissionHeader,
     MissionItem,
     CheckingResultItem,
+  },
+  provide(){
+    return {
+      onCancelBtnClick: this.handleCancelBtnClick,
+      onViewDetailsClick: this.goDetail,
+    }
   },
   data() {
     return {
@@ -325,7 +326,7 @@ export default {
     },
     // 查看详情
     goDetail() {
-      this.$emit('onViewDetailsClick');
+      this.$emit('detail-click');
     },
     // 批量创建任务
     createTasks() {
@@ -409,12 +410,14 @@ export default {
     handleDealDissimilarClick(index) {
       this.currentDealDissimilarIndex = index;
       this.currentDealSimilarIndex = -1;
+      this.checkingResultList = []
       this.$emit('onClickDealDissimilar', index);
     },
     // 点击 item (已处理任务-存在相似任务)
     handleDealSimilarClick(index) {
       this.currentDealSimilarIndex = index;
       this.currentDealDissimilarIndex = -1;
+      this.getCurrMissionCheckingResultList(index)
       this.$emit('onClickDealSimilar', index);
     },
 

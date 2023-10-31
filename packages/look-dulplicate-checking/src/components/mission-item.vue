@@ -3,7 +3,7 @@
     <div class="left">
       <div class="txt-wrap">
         <div class="title">{{ item.name }}</div>
-        <div class="txt-btn" @click="goDetail">查看详情<i class="el-icon-arrow-right"></i></div>
+        <div class="txt-btn" @click="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
       </div>
       <div class="result">
         <div class="result-left">
@@ -53,6 +53,7 @@ export default {
       default: () => {},
     },
   },
+  inject: ['onCancelBtnClick', 'onViewDetailsClick'],
   computed: {
     hasList() {
       return this.item.checkResultListLength > 0;
@@ -63,10 +64,11 @@ export default {
   methods: {
     handleCancel(e, item) {
       e.stopPropagation();
-      this.$emit('onCancelBtnClick', item)
+      this.onCancelBtnClick(item)
     },
-    goDetail() {
-      this.$emit('onViewDetailsClick')
+    handleViewDetail(e) {
+      e.stopPropagation();
+      this.onViewDetailsClick()
     },
     mapStatus(status) {
       switch (status) {
