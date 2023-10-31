@@ -257,7 +257,7 @@ export default {
           keyId: 'taskId',
           modelIndex: 'common_task',
           modelType: 'task',
-          names: 'name',
+          names: 'name,tenantId',
           size: 10000,
         }
       },
@@ -355,7 +355,8 @@ export default {
       val.forEach(item => {
         sources.push(field[item])
       })
-      this.paramsData.names = sources.toString() + ',tenantId'
+      sources.push('tenantId') // 固定
+      this.paramsData.names = sources.toString()
       this.checkingResultList = []
       // 使用 setTimeout 防止 checkbox 渲染缓慢
       setTimeout(() => {
