@@ -1,5 +1,18 @@
 
 
+## [1.1.24](http://192.168.0.66/font-end/look-ui/compare/1.1.23...1.1.24) (2023-10-31)
+
+
+### Bug Fixes
+
+* 修复任务列表变化时数据没更新 ([bf226fc](http://192.168.0.66/font-end/look-ui/commits/bf226fc4bd25a20cacfa0eb08c0bb84cbf5f8965))
+* 修复任务状态为空时显示不正确的问题 ([8f6cfb1](http://192.168.0.66/font-end/look-ui/commits/8f6cfb1a284404fc7888272eb20ebcf1239e90c6))
+
+
+### Features
+
+* 添加取消关注、归并等按钮的回调 ([0049cea](http://192.168.0.66/font-end/look-ui/commits/0049cea09afda62d3229b30347ad91d65c0bfdae))
+
 ## 1.1.23 (2023-10-27)
 
 
