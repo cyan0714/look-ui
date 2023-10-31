@@ -355,7 +355,7 @@ export default {
       val.forEach(item => {
         sources.push(field[item])
       })
-      this.paramsData.names = sources.toString()
+      this.paramsData.names = sources.toString() + ',tenantId'
       this.checkingResultList = []
       // 使用 setTimeout 防止 checkbox 渲染缓慢
       setTimeout(() => {
