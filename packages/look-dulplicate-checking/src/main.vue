@@ -161,6 +161,8 @@
             :data-sources="checkingResultList"
             :data-component="CheckingResultItem"
             @subscription-click="handleSubscribe"
+            @merging-click="handleMerge"
+            @insertion-click="handleInsert"
           />
           <!-- <checking-result-item
             v-for="(item, index) in checkingResultList"

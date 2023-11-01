@@ -97,7 +97,6 @@ export default {
     closeMissionResolve(val) {
     },
     handleSubscribe() {
-      console.log('关注');
       // 使用 vue-virtual-scroll-list 时, 需要通过以下方式才能将事件 emit 出去
       this.$parent.$parent.$emit('subscription-click', this.source);
     },
