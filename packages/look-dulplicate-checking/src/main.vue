@@ -156,7 +156,7 @@
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-show="checkingResultList.length > 0">
-          <virtual-list style="height: 780px; overflow-y: auto;"
+          <virtual-list style="height: 100%; overflow-y: auto;"
             :data-key="'dataId'"
             :data-sources="checkingResultList"
             :data-component="CheckingResultItem"
@@ -495,6 +495,7 @@ export default {
   height: 100%;
   .left-container {
     width: 40%;
+    height: 100%;
     border-right: 1px solid #e4e4f3;
     .left-container-header {
       background-color: #fff;
@@ -529,6 +530,8 @@ export default {
       position: relative;
       border-top: 1px solid #eee;
       padding: 10px 12px;
+      height: calc(100% - 98px);
+      box-sizing: border-box;
       .mission-tag-wrap {
         display: flex;
         .mission-tag {
@@ -561,7 +564,7 @@ export default {
         box-shadow: 0 3px 6px rgba(140, 149, 159, 0.15);
         background-color: #fff;
         border-radius: 8px;
-        height: 650px;
+        height: calc(100% - 67px);
         overflow: auto;
         margin-top: 10px;
         &.no-deal-mission {
@@ -626,7 +629,7 @@ export default {
       }
       .bottom-bar {
         position: absolute;
-        bottom: -10px;
+        bottom: 10px;
         left: 12px;
         width: calc(100% - 24px);
         display: flex;
@@ -678,7 +681,7 @@ export default {
       }
     }
     section.right-container-block {
-      height: 780px;
+      height: calc(100% - 52px);
       section.right-container-section {
         height: 100%;
         overflow-y: auto;

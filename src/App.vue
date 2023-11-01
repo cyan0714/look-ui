@@ -1,5 +1,26 @@
 <template>
   <div class="app">
+    <!-- 弹窗模式需要给高度 -->
+    <!-- <el-dialog
+      class="dulplicate-checking-popup"
+      title="批量导入结果"
+      width="80%"
+      top="5vh"
+      :visible="true"
+      append-to-body
+      :close-on-click-modal="false"
+      :close-on-press-escape="false">
+      <div class="dulplicate-checking-content">
+        <look-dulplicate-checking
+          :data="data"
+          @merging-click="mergingClick"
+          @subscription-click="subscriptionClick"
+          @insertion-click="insertionClick" />
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary"> 创建任务 </el-button>
+      </div>
+    </el-dialog> -->
     <look-dulplicate-checking
       :data="data"
       @merging-click="mergingClick"
@@ -9,7 +30,6 @@
 </template>
 
 <script>
-import { searchRepeated } from '../utils/api.js';
 export default {
   data() {
     return {
@@ -67,8 +87,39 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss" scope>
 .app {
   height: 100%;
+}
+.dulplicate-checking-popup {
+  ::v-deep .el-dialog__header {
+    padding: 10px !important;
+    background-color: #506eda;
+
+    .el-dialog__title {
+      color: #fff;
+    }
+  }
+
+  .el-dialog__headerbtn {
+    top: 15px;
+    .el-dialog__close {
+      color: #fff;
+    }
+  }
+}
+::v-deep .el-dialog__body {
+  padding: 0;
+}
+
+::v-deep .el-dialog__footer {
+  padding: 10px 20px;
+  border-top: 1px solid #ddd;
+}
+
+.dulplicate-checking-content {
+  height: 700px;
+  overflow: auto;
+  padding: 20px;
 }
 </style>
