@@ -156,14 +156,15 @@
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-show="checkingResultList.length > 0">
-          <virtual-list style="height: 100%; overflow-y: auto;"
+          <virtual-list
+            style="height: 100%; overflow-y: auto"
+            class="rcs-list"
             :data-key="'dataId'"
             :data-sources="checkingResultList"
             :data-component="CheckingResultItem"
             @subscription-click="handleSubscribe"
             @merging-click="handleMerge"
-            @insertion-click="handleInsert"
-          />
+            @insertion-click="handleInsert" />
           <!-- <checking-result-item
             v-for="(item, index) in checkingResultList"
             :item="item"
@@ -188,14 +189,14 @@ import MissionHeader from './components/mission-header';
 import MissionItem from './components/mission-item';
 import CheckingResultItem from './components/checking-result-item';
 import { SIMILAR, DISSIMILAR } from './constants';
-import VirtualList from 'vue-virtual-scroll-list'
+import VirtualList from 'vue-virtual-scroll-list';
 export default {
   name: 'look-dulplicate-checking',
   components: {
     MissionHeader,
     MissionItem,
     // CheckingResultItem,
-    VirtualList
+    VirtualList,
   },
   provide() {
     return {
@@ -203,8 +204,8 @@ export default {
       onViewDetailsClick: this.goDetail,
       isShowSource: () => this.isShowSource,
       isShowBtnsFn: () => this.currentMissionType == 0,
-      recommandTags: () => this.checkedTags
-    }
+      recommandTags: () => this.checkedTags,
+    };
   },
   data() {
     return {
@@ -686,17 +687,19 @@ export default {
         height: 100%;
         overflow-y: auto;
         margin-top: 10px;
-        &::-webkit-scrollbar-track-piece {
-          background-color: transparent;
-        }
-        &::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-          background-color: transparent;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 5px;
-          background-color: #cfcbcb;
+        .rcs-list {
+          &::-webkit-scrollbar-track-piece {
+            background-color: transparent;
+          }
+          &::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            background-color: transparent;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: #cfcbcb;
+          }
         }
       }
       section.right-container-empty {
