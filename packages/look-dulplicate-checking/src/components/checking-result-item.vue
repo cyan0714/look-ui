@@ -1,15 +1,15 @@
 <template>
   <div class="checking-result-item">
     <div class="content">
-      <div class="title">{{ item.name }}</div>
+      <div class="title">{{ source.name }}</div>
       <div class="tags-wrap">
-        <div v-for="(tag, tagIndex) in item.feature && item.feature.split(',')" :key="tagIndex" class="tag-item">
+        <div v-for="(tag, tagIndex) in source.feature && source.feature.split(',')" :key="tagIndex" class="tag-item">
           {{ tag }}
         </div>
       </div>
       <div class="source-and-request">
         <div class="title">来源及要求:</div>
-        <div class="text-area">{{ item.requirement }}</div>
+        <div class="text-area">{{ source.requirement }}</div>
       </div>
       <div class="other-info">
         <div class="left">
@@ -37,7 +37,7 @@
         </div>
         <div class="right">
           <span class="key">下达时间:</span>
-          <div class="value">{{ item.beginTime }}</div>
+          <div class="value">{{ source.beginTime }}</div>
         </div>
       </div>
     </div>
@@ -46,20 +46,20 @@
         <span class="key">推荐依据:</span>
         <div class="value">
           <span
-            v-for="(recommandTag, recommandTagIndex) in recommandTags"
+            v-for="(recommandTag, recommandTagIndex) in recommandTags()"
             :key="recommandTagIndex"
             class="recommand-tag-item"
             >{{ recommandTag }}</span
           >
         </div>
       </div>
-      <div class="right" v-if="isShowBtns">
+      <div class="right" v-if="isShowBtnsFn()">
         <el-button size="small" class="lookui-btn" type="primary" @click="handleInsert">插入任务</el-button>
         <el-button size="small" @click="handleSubscribe">关注</el-button>
         <el-button size="small" @click="handleMerge">归并</el-button>
       </div>
     </div>
-    <img :src="mapStatus(item.status)" alt="" class="status" />
+    <img :src="mapStatus(source.status)" alt="" class="status" />
   </div>
 </template>
 
@@ -74,30 +74,21 @@ export default {
       curId: '',
     };
   },
+  inject: ['isShowBtnsFn', 'isShowSource', 'recommandTags'],
   props: {
-    isShowBtns: {
-      type: Boolean,
-      default: true
-    },
-    isShowSource: {
-      type: Boolean,
-      default: true
-    },
-    item: {
+    source: {
       type: Object,
-      default: () => {},
+      default () {
+        return {}
+      }
     },
-    recommandTags: {
-      type: Array,
-      default: () => ([]),
-    }
   },
   computed: {
     qtOrgs() {
-      return this.item.qtOrgs?.split(",");
+      return this.source.qtOrgs?.split(",");
     },
     createdOrg() {
-      return this.item.createdOrg?.split(",");
+      return this.source.createdOrg?.split(",");
     },
   },
   created() {},
@@ -106,13 +97,17 @@ export default {
     closeMissionResolve(val) {
     },
     handleSubscribe() {
-      this.$emit('subscription-click', this.item);
+      console.log('关注');
+      // 使用 vue-virtual-scroll-list 时, 需要通过以下方式才能将事件 emit 出去
+      this.$parent.$parent.$emit('subscription-click', this.source);
     },
     handleMerge() {
-      this.$emit('merging-click', this.item);
+      this.$parent.$parent.$emit('merging-click', this.source);
+      // this.$emit('merging-click', this.item);
     },
     handleInsert() {
-      this.$emit('insertion-click', this.item);
+      this.$parent.$parent.$emit('insertion-click', this.source);
+      // this.$emit('insertion-click', this.item);
     },
     mapStatus(status) {
       switch (status) {

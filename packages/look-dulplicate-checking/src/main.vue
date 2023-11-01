@@ -3,9 +3,15 @@
     <div class="left-container">
       <header class="left-container-header">
         <div class="intro">
-          本次共导入<span class="all-count">{{ noDealMission.similar.length + noDealMission.dissimilar.length }}</span
-          >条任务, 其中存在相似任务共<span class="similar-count">{{ noDealMission.similar.length }}</span
-          >条, 无相似任务共<span class="dissimilar-count">{{ noDealMission.dissimilar.length }}</span
+          本次共导入<span class="all-count">{{
+            noDealMission.similar.length + noDealMission.dissimilar.length
+          }}</span
+          >条任务, 其中存在相似任务共<span class="similar-count">{{
+            noDealMission.similar.length
+          }}</span
+          >条, 无相似任务共<span class="dissimilar-count">{{
+            noDealMission.dissimilar.length
+          }}</span
           >条。
         </div>
         <div class="checkboxs" v-if="isShowSource">
@@ -99,7 +105,10 @@
             <!-- 已处理任务-存在相似任务 -->
             <el-collapse-item name="dealSimilar">
               <template slot="title">
-                <mission-header isDealMission :type="SIMILAR" :count="hadDealMission.similar.length" />
+                <mission-header
+                  isDealMission
+                  :type="SIMILAR"
+                  :count="hadDealMission.similar.length" />
               </template>
               <section class="collapse-content">
                 <mission-item
@@ -117,7 +126,10 @@
             <!-- 已处理任务-不存在相似任务 -->
             <el-collapse-item name="dealDissimilar">
               <template slot="title">
-                <mission-header isDealMission :type="DISSIMILAR" :count="hadDealMission.dissimilar.length" />
+                <mission-header
+                  isDealMission
+                  :type="DISSIMILAR"
+                  :count="hadDealMission.dissimilar.length" />
               </template>
               <section class="collapse-content">
                 <mission-item
@@ -142,19 +154,27 @@
         <span class="txt">查重结果: </span>
         <span class="count"> {{ checkingResultList.length }}</span>
       </header>
-      <section class="right-container-section" v-if="checkingResultList.length > 0" v-loading="loadingCheckResultList">
-        <checking-result-item
-          v-for="(item, index) in checkingResultList"
-          :item="item"
-          :recommandTags="checkedTags"
-          :isShowBtns="currentMissionType == 0"
-          :key="index"
-          @subscription-click="handleSubscribe"
-          @merging-click="handleMerge"
-          @insertion-click="handleInsert" />
-      </section>
-      <section class="right-container-empty" v-else>
-        <look-empty/>
+      <section class="right-container-block" v-loading="loadingCheckResultList">
+        <section class="right-container-section" v-show="checkingResultList.length > 0">
+          <virtual-list style="height: 780px; overflow-y: auto;"
+            :data-key="'dataId'"
+            :data-sources="checkingResultList"
+            :data-component="CheckingResultItem"
+            @subscription-click="handleSubscribe"
+          />
+          <!-- <checking-result-item
+            v-for="(item, index) in checkingResultList"
+            :item="item"
+            :recommandTags="checkedTags"
+            :isShowBtns="currentMissionType == 0"
+            :key="index"
+            @subscription-click="handleSubscribe"
+            @merging-click="handleMerge"
+            @insertion-click="handleInsert" /> -->
+        </section>
+        <section class="right-container-empty" v-show="checkingResultList.length === 0">
+          <look-empty />
+        </section>
       </section>
     </div>
   </div>
@@ -166,22 +186,28 @@ import MissionHeader from './components/mission-header';
 import MissionItem from './components/mission-item';
 import CheckingResultItem from './components/checking-result-item';
 import { SIMILAR, DISSIMILAR } from './constants';
+import VirtualList from 'vue-virtual-scroll-list'
 export default {
   name: 'look-dulplicate-checking',
   components: {
     MissionHeader,
     MissionItem,
-    CheckingResultItem,
+    // CheckingResultItem,
+    VirtualList
   },
-  provide(){
+  provide() {
     return {
       onCancelBtnClick: this.handleCancelBtnClick,
       onViewDetailsClick: this.goDetail,
+      isShowSource: () => this.isShowSource,
+      isShowBtnsFn: () => this.currentMissionType == 0,
+      recommandTags: () => this.checkedTags
     }
   },
   data() {
     return {
       loadingCheckResultList: false,
+      CheckingResultItem,
       SIMILAR,
       DISSIMILAR,
       activeDealNames: ['dealSimilar', 'dealDissimilar'],
@@ -211,13 +237,13 @@ export default {
       hadDealMission: {
         similar: [], // 存在相似任务列表
         dissimilar: [], // 不存在相似任务列表
-      }
+      },
     };
   },
   watch: {
     data: {
-      handler: function(val) {
-        this.fetchCheckingResultList(0)
+      handler: function (val) {
+        this.fetchCheckingResultList(0);
       },
       deep: true,
     },
@@ -242,11 +268,11 @@ export default {
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
     isShowSource: {
       type: Boolean,
-      default: true
+      default: true,
     },
     paramsData: {
       type: Object,
@@ -259,7 +285,7 @@ export default {
           modelType: 'task',
           names: 'name,tenantId',
           size: 10000,
-        }
+        };
       },
     },
   },
@@ -273,7 +299,7 @@ export default {
   },
   activated() {},
   created() {
-    this.fetchCheckingResultList(0)
+    this.fetchCheckingResultList(0);
   },
   mounted() {},
   methods: {
@@ -281,48 +307,62 @@ export default {
       this.$emit('onCancelBtnClick', task);
     },
     fetchCheckingResultList(index) {
-      this.paramsData.jsonStr = JSON.stringify(this.data)
-      console.log('npm link')
+      this.paramsData.jsonStr = JSON.stringify(this.data);
 
-      searchRepeated(this.paramsData).then(({data: {data: {similarity, notSimilarity}}}) => {
-        // 所有查重结果列表数据
-        this.allCheckingResultList = similarity
+      searchRepeated(this.paramsData).then(
+        ({
+          data: {
+            data: { similarity, notSimilarity },
+          },
+        }) => {
+          // 所有查重结果列表数据
+          this.allCheckingResultList = similarity;
 
-        this.noDealMission.similar = this.data.filter(item => {
-          for (let i = 0; i < this.data.length; i++) {
-            return item.taskId != notSimilarity[i]?.taskId
-          }
-        })
-        this.noDealMission.dissimilar = notSimilarity;
-        this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status)
-        this.noDealMission.similar = this.noDealMission.similar.filter(item => !item.status)
-
-        similarity.forEach(item => {
-          // 未处理任务(存在相似任务)中每个任务的查重结果数
-          this.noDealMission.similar.forEach(iten => {
-            if (item.keyId == iten.taskId) {
-              iten.checkResultListLength = item.size;
+          this.noDealMission.similar = this.data.filter(item => {
+            for (let i = 0; i < this.data.length; i++) {
+              return item.taskId != notSimilarity[i]?.taskId;
             }
           });
-          // 已处理任务(存在相似任务)中每个任务的查重结果数
-          this.hadDealMission.similar.forEach(iten => {
-            if (item.keyId == iten.taskId) {
-              iten.checkResultListLength = item.size;
-            }
+          this.noDealMission.dissimilar = notSimilarity;
+          this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status);
+          this.noDealMission.similar = this.noDealMission.similar.filter(item => !item.status);
+
+          similarity.forEach(item => {
+            // 未处理任务(存在相似任务)中每个任务的查重结果数
+            this.noDealMission.similar.forEach(iten => {
+              if (item.keyId == iten.taskId) {
+                iten.checkResultListLength = item.size;
+              }
+            });
+            // 已处理任务(存在相似任务)中每个任务的查重结果数
+            this.hadDealMission.similar.forEach(iten => {
+              if (item.keyId == iten.taskId) {
+                iten.checkResultListLength = item.size;
+              }
+            });
           });
-        });
-        this.getCurrMissionCheckingResultList(index);
-      });
+          this.getCurrMissionCheckingResultList(index);
+        }
+      );
     },
     // 获取当前任务的查重结果列表
-    getCurrMissionCheckingResultList(index) {
-      this.loadingCheckResultList = true
+    getCurrMissionCheckingResultList(index, isSimilar = true) {
+      this.loadingCheckResultList = true;
       setTimeout(() => {
-        const currentMissionKeyId = this.currentMissionType === 0 ? this.noDealMission.similar[index]?.taskId : this.hadDealMission.similar[index]?.taskId;
-        const resObj = this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
-        this.checkingResultList = resObj.hitRes || [];
-        this.loadingCheckResultList = false;
-      }, 500);
+        if (isSimilar) {
+          const currentMissionKeyId =
+            this.currentMissionType === 0
+              ? this.noDealMission.similar[index]?.taskId
+              : this.hadDealMission.similar[index]?.taskId;
+          const resObj =
+            this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
+          this.checkingResultList = resObj.hitRes || [];
+          this.loadingCheckResultList = false;
+        } else {
+          this.checkingResultList = [];
+          this.loadingCheckResultList = false;
+        }
+      }, 600);
     },
     // 查看详情
     goDetail() {
@@ -347,21 +387,21 @@ export default {
     // 切换来源
     handleCheckedTagsChange(val) {
       const field = {
-        '任务标题': 'name',
-        '任务标签': 'feature',
-        '事项来源及依据': 'sourceName'
-      }
-      const sources = []
+        任务标题: 'name',
+        任务标签: 'feature',
+        事项来源及依据: 'sourceName',
+      };
+      const sources = [];
       val.forEach(item => {
-        sources.push(field[item])
-      })
-      sources.push('tenantId') // 固定
-      this.paramsData.names = sources.toString()
-      this.checkingResultList = []
+        sources.push(field[item]);
+      });
+      sources.push('tenantId'); // 固定
+      this.paramsData.names = sources.toString();
+      this.checkingResultList = [];
       // 使用 setTimeout 防止 checkbox 渲染缓慢
       setTimeout(() => {
-        this.fetchCheckingResultList(this.currentNoDealSimilarIndex)
-      }, 0)
+        this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
+      }, 0);
     },
     // 全选未处理任务
     handleCheckAllNoDeal(val) {
@@ -396,14 +436,14 @@ export default {
     handleNoDealDissimilarClick(index) {
       this.currentNoDealDissimilarIndex = index;
       this.currentNoDealSimilarIndex = -1;
-      this.checkingResultList = []
+      this.checkingResultList = [];
       this.$emit('onClickNoDealDissimilar', index);
     },
     // 点击 item (未处理任务-存在相似任务)
     handleNoDealSimilarClick(index) {
       this.currentNoDealSimilarIndex = index;
       this.currentNoDealDissimilarIndex = -1;
-      this.getCurrMissionCheckingResultList(index)
+      this.getCurrMissionCheckingResultList(index);
       this.$emit('onClickNoDealSimilar', index);
     },
 
@@ -411,14 +451,14 @@ export default {
     handleDealDissimilarClick(index) {
       this.currentDealDissimilarIndex = index;
       this.currentDealSimilarIndex = -1;
-      this.checkingResultList = []
+      this.checkingResultList = [];
       this.$emit('onClickDealDissimilar', index);
     },
     // 点击 item (已处理任务-存在相似任务)
     handleDealSimilarClick(index) {
       this.currentDealSimilarIndex = index;
       this.currentDealDissimilarIndex = -1;
-      this.getCurrMissionCheckingResultList(index)
+      this.getCurrMissionCheckingResultList(index);
       this.$emit('onClickDealSimilar', index);
     },
 
@@ -426,10 +466,20 @@ export default {
       this.currentMissionType = index;
       if (index === 0) {
         // 获取某个未处理任务的查重列表
-        this.getCurrMissionCheckingResultList(this.currentNoDealSimilarIndex === -1 ? this.currentNoDealDissimilarIndex : this.currentNoDealSimilarIndex)
+        this.getCurrMissionCheckingResultList(
+          this.currentNoDealSimilarIndex === -1
+            ? this.currentNoDealDissimilarIndex
+            : this.currentNoDealSimilarIndex,
+          this.currentNoDealSimilarIndex !== -1
+        );
       } else if (index === 1) {
         // 获取某个已处理任务的查重列表
-        this.getCurrMissionCheckingResultList(this.currentDealSimilarIndex === -1 ? this.currentDealDissimilarIndex : this.currentDealSimilarIndex)
+        this.getCurrMissionCheckingResultList(
+          this.currentDealSimilarIndex === -1
+            ? this.currentDealDissimilarIndex
+            : this.currentDealSimilarIndex,
+          this.currentDealSimilarIndex !== -1
+        );
       }
     },
   },
@@ -625,27 +675,31 @@ export default {
         color: #506eda;
       }
     }
-
-    section.right-container-section {
+    section.right-container-block {
       height: 780px;
-      overflow-y: auto;
-      margin-top: 10px;
-      &::-webkit-scrollbar-track-piece {
-        background-color: transparent;
+      section.right-container-section {
+        height: 100%;
+        overflow-y: auto;
+        margin-top: 10px;
+        &::-webkit-scrollbar-track-piece {
+          background-color: transparent;
+        }
+        &::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+          background-color: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 5px;
+          background-color: #cfcbcb;
+        }
       }
-      &::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        background-color: transparent;
+      section.right-container-empty {
+        display: flex;
+        justify-content: center;
+        height: calc(100% - 52px);
+        align-items: center;
       }
-      &::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-        background-color: #cfcbcb;
-      }
-    }
-    section.right-container-empty {
-      display: flex;
-      justify-content: center;
     }
   }
 }

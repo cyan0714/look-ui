@@ -4,7 +4,7 @@
       :data="data"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
-      @insertion-click="insertionClick"/>
+      @insertion-click="insertionClick" />
   </div>
 </template>
 
@@ -17,47 +17,53 @@ export default {
       data: [
         {
           taskId: '1',
-          name: '三亚市第一艘海洋休闲渔船海洋休闲渔船',
+          name: '三亚市第一艘海洋休闲渔船',
           checked: false,
           tenantId: '4602000038',
+          status: '',
           checkResultListLength: 0,
-          status: '已关注',
-          relation: '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', // 已处理任务的关联任务的名字
         },
         {
           taskId: '2',
           name: '事项工作内容',
           checked: false,
           tenantId: '4602000038',
+          status: '已归并',
           checkResultListLength: 0,
         },
+        // {
+        //   taskId: '3',
+        //   name: '琼海',
+        //   checked: false,
+        //   tenantId: '4602000038',
+        //   checkResultListLength: 0,
+        //   status: '', // 已处理任务的状态
+        //   relation:
+        //     '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', // 已处理任务的关联任务的名字
+        // },
         {
-          taskId: '3',
-          name: '琼海',
+          taskId: '4',
+          name: 'chenshiyan',
           checked: false,
-          tenantId: '4602000038',
+          tenantId: '4602000039',
+          status: '',
           checkResultListLength: 0,
-          status: '已关注', // 已处理任务的状态
-          relation: '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', // 已处理任务的关联任务的名字
         },
       ],
     };
   },
-  created() {
-  },
-  computed: {
-  },
+  created() {},
+  computed: {},
   methods: {
     insertionClick(row) {
-      console.log('插入', row)
+      console.log('插入', row);
     },
     subscriptionClick(row) {
-      console.log('关注', row)
+      console.log('关注', row);
     },
     mergingClick(row) {
-      console.log(row,'hh')
+      console.log(row, 'hh');
     },
-
   },
 };
 </script>
