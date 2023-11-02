@@ -1,5 +1,30 @@
 
 
+## [1.1.27](http://192.168.0.66/font-end/look-ui/compare/1.1.23...1.1.27) (2023-11-02)
+
+
+### Bug Fixes
+
+* 修复点击标题问题 ([fce11f8](http://192.168.0.66/font-end/look-ui/commits/fce11f8cfed110312f3349c144ac17d180e7927b))
+* 修复点击查看详情没有返回当前任务信息问题 ([c357609](http://192.168.0.66/font-end/look-ui/commits/c357609d801b35425f148806039b441a33df2ba8))
+* 修复任务列表变化时数据没更新 ([bf226fc](http://192.168.0.66/font-end/look-ui/commits/bf226fc4bd25a20cacfa0eb08c0bb84cbf5f8965))
+* 修复任务状态为空时显示不正确的问题 ([8f6cfb1](http://192.168.0.66/font-end/look-ui/commits/8f6cfb1a284404fc7888272eb20ebcf1239e90c6))
+* 修复webpack报错问题 ([4ad42a5](http://192.168.0.66/font-end/look-ui/commits/4ad42a5082e0d372dba375f740a3d8abae26e85a))
+* 页面首次加载添加tenantId参数 ([63a1250](http://192.168.0.66/font-end/look-ui/commits/63a1250e0c250a5b6d285c89a887e889dfc8849f))
+
+
+### Features
+
+* 添加查重结果操作按钮自定义插槽 ([35ce733](http://192.168.0.66/font-end/look-ui/commits/35ce733081d4c471d58e154d441aae8a13e9f9b6))
+* 添加查重结果详情回调 ([8214267](http://192.168.0.66/font-end/look-ui/commits/82142679185e4a35064c5871dabe3ac033bd8d15))
+* 添加点击任务标题回调 ([8697c36](http://192.168.0.66/font-end/look-ui/commits/8697c36d08ee1bfb44df3b6ec9c1f0cfde83ace2))
+* 添加取消关注、归并等按钮的回调 ([0049cea](http://192.168.0.66/font-end/look-ui/commits/0049cea09afda62d3229b30347ad91d65c0bfdae))
+
+
+### Performance Improvements
+
+* 优化数据太多时切换任务类型会造成卡顿效果 ([9d617dc](http://192.168.0.66/font-end/look-ui/commits/9d617dc5ff7a6a3a1d2b2e64e7f8283c90236579))
+
 ## [1.1.26](http://192.168.0.66/font-end/look-ui/compare/1.1.23...1.1.26) (2023-11-02)
 
 
