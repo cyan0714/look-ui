@@ -26,7 +26,13 @@
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
       @insertion-click="insertionClick"
-      @name-click="nameClick" />
+      @name-click="nameClick"
+      @detail-click="detailClick"
+      @onCancelBtnClick="handleCancelBtnClick">
+        <!-- <template v-slot:operating-btns="slotProps">
+          <el-button size="small" @click="handleDiyBtnClick(slotProps)">自定义按钮</el-button>
+        </template> -->
+    </look-dulplicate-checking>
   </div>
 </template>
 
@@ -76,6 +82,20 @@ export default {
   created() {},
   computed: {},
   methods: {
+    handleCancelBtnClick(item) {
+      this.data.forEach((task, index) => {
+        if (task.taskId === item.taskId) {
+          this.data[index].status = '';
+        }
+      })
+      console.log('取消', item)
+    },
+    handleDiyBtnClick(row) {
+      console.log('自定义按钮', row);
+    },
+    detailClick(row) {
+      console.log('详情', row);
+    },
     insertionClick(row) {
       console.log('插入', row);
     },

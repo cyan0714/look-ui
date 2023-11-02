@@ -46,17 +46,19 @@
         <span class="key">推荐依据:</span>
         <div class="value">
           <span
-            v-for="(recommandTag, recommandTagIndex) in recommandTags()"
+            v-for="(recommandTag, recommandTagIndex) in recommandTags"
             :key="recommandTagIndex"
             class="recommand-tag-item"
             >{{ recommandTag }}</span
           >
         </div>
       </div>
-      <div class="right" v-if="isShowBtnsFn()">
-        <el-button size="small" class="lookui-btn" type="primary" @click="handleInsert">插入任务</el-button>
-        <el-button size="small" @click="handleSubscribe">关注</el-button>
-        <el-button size="small" @click="handleMerge">归并</el-button>
+      <div class="right" v-if="isShowBtns">
+        <slot name="operation-btns" :source="source">
+          <el-button size="small" class="lookui-btn" type="primary" @click="handleInsert">插入任务</el-button>
+          <el-button size="small" @click="handleSubscribe">关注</el-button>
+          <el-button size="small" @click="handleMerge">归并</el-button>
+        </slot>
       </div>
     </div>
     <img :src="mapStatus(source.status)" alt="" class="status" />
@@ -74,7 +76,7 @@ export default {
       curId: '',
     };
   },
-  inject: ['isShowBtnsFn', 'isShowSource', 'recommandTags'],
+  // inject: ['isShowBtnsFn', 'isShowSource', 'recommandTags'],
   props: {
     source: {
       type: Object,
@@ -82,6 +84,22 @@ export default {
         return {}
       }
     },
+    isShowBtns: {
+      type: Boolean,
+      default: true
+    },
+    isShowSource: {
+      type: Boolean,
+      default: true
+    },
+    // item: {
+    //   type: Object,
+    //   default: () => {},
+    // },
+    recommandTags: {
+      type: Array,
+      default: () => ([]),
+    }
   },
   computed: {
     qtOrgs() {
@@ -98,15 +116,16 @@ export default {
     },
     handleSubscribe() {
       // 使用 vue-virtual-scroll-list 时, 需要通过以下方式才能将事件 emit 出去
-      this.$parent.$parent.$emit('subscription-click', this.source);
+      // this.$parent.$parent.$emit('subscription-click', this.source);
+      this.$emit('subscription-click', this.source);
     },
     handleMerge() {
-      this.$parent.$parent.$emit('merging-click', this.source);
-      // this.$emit('merging-click', this.item);
+      // this.$parent.$parent.$emit('merging-click', this.source);
+      this.$emit('merging-click', this.source);
     },
     handleInsert() {
-      this.$parent.$parent.$emit('insertion-click', this.source);
-      // this.$emit('insertion-click', this.item);
+      // this.$parent.$parent.$emit('insertion-click', this.source);
+      this.$emit('insertion-click', this.source);
     },
     mapStatus(status) {
       switch (status) {

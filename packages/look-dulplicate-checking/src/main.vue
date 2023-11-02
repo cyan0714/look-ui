@@ -70,7 +70,8 @@
                   :type="DISSIMILAR"
                   :count="noDealMission.dissimilar.length"
                   :checkAll="checkAllNoDealOfDissimilar"
-                  @toggleCheckAll="handleCheckAllNoDealOfDissimilar" />
+                  @toggleCheckAll="handleCheckAllNoDealOfDissimilar">
+                </mission-header>
               </template>
               <section class="collapse-content">
                 <mission-item
@@ -155,16 +156,28 @@
         <span class="count"> {{ checkingResultList.length }}</span>
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
-        <section class="right-container-section" v-show="checkingResultList.length > 0">
+        <section class="right-container-section" v-if="checkingResultList.length > 0">
           <virtual-list
             style="height: 100%; overflow-y: auto"
             class="rcs-list"
             :data-key="'dataId'"
             :data-sources="checkingResultList"
-            :data-component="CheckingResultItem"
-            @subscription-click="handleSubscribe"
-            @merging-click="handleMerge"
-            @insertion-click="handleInsert" />
+            :data-component="CheckingResultItem">
+            <template #item="{ indey, item }">
+              <checking-result-item
+                :source="item"
+                :recommandTags="checkedTags"
+                :isShowBtns="currentMissionType == 0"
+                :key="indey"
+                @subscription-click="handleSubscribe"
+                @merging-click="handleMerge"
+                @insertion-click="handleInsert">
+                <template v-slot:operation-btns="slotProps">
+                  <slot name="operating-btns" :source="slotProps.source"></slot>
+                </template>
+              </checking-result-item>
+            </template>
+          </virtual-list>
           <!-- <checking-result-item
             v-for="(item, index) in checkingResultList"
             :item="item"
@@ -175,7 +188,7 @@
             @merging-click="handleMerge"
             @insertion-click="handleInsert" /> -->
         </section>
-        <section class="right-container-empty" v-show="checkingResultList.length === 0">
+        <section class="right-container-empty" v-else>
           <look-empty />
         </section>
       </section>
@@ -195,7 +208,7 @@ export default {
   components: {
     MissionHeader,
     MissionItem,
-    // CheckingResultItem,
+    CheckingResultItem,
     VirtualList,
   },
   provide() {
@@ -216,6 +229,8 @@ export default {
       DISSIMILAR,
       activeDealNames: ['dealSimilar', 'dealDissimilar'],
       activeNoDealName: ['noDealSimilar', 'noDealDissimilar'],
+
+      shouldSendRequest: true,
 
       checkedAllNoDeal: false, //未处理任务是否全选
       currentNoDealSimilarIndex: 0, //未处理任务-存在相似任务-当前选中任务下标
@@ -247,7 +262,9 @@ export default {
   watch: {
     data: {
       handler: function (val) {
-        this.fetchCheckingResultList(0);
+        if (this.shouldSendRequest) {
+          this.fetchCheckingResultList(0);
+        }
       },
       deep: true,
     },
@@ -303,6 +320,7 @@ export default {
   },
   activated() {},
   created() {
+    this.shouldSendRequest = false
     this.fetchCheckingResultList(0);
   },
   mounted() {},
@@ -314,6 +332,7 @@ export default {
       this.$emit('onCancelBtnClick', task);
     },
     fetchCheckingResultList(index) {
+      this.loadingCheckResultList = true;
       this.paramsData.jsonStr = JSON.stringify(this.data);
 
       searchRepeated(this.paramsData).then(
@@ -369,6 +388,7 @@ export default {
           this.checkingResultList = [];
           this.loadingCheckResultList = false;
         }
+        this.shouldSendRequest = true
       }, 600);
     },
     // 查看详情
