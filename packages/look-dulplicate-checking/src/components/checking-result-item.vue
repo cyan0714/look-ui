@@ -7,7 +7,7 @@
           {{ tag }}
         </div>
       </div>
-      <div class="source-and-request">
+      <div class="source-and-request" v-if="source.requirement">
         <div class="title">来源及要求:</div>
         <div class="text-area">{{ source.requirement }}</div>
       </div>
