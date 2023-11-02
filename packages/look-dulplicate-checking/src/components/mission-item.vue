@@ -2,7 +2,11 @@
   <div class="mission-item">
     <div class="left">
       <div class="txt-wrap">
-        <div class="title" @click.stop="handleMissionDetail">{{ item.name }}</div>
+        <div class="title">
+          <span @click.stop="handleMissionDetail">
+            {{ item.name }}
+          </span>
+        </div>
         <div class="txt-btn" @click="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
       </div>
       <div class="result">
