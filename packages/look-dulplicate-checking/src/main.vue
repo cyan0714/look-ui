@@ -368,8 +368,8 @@ export default {
       }, 600);
     },
     // 查看详情
-    goDetail() {
-      this.$emit('detail-click');
+    goDetail(task) {
+      this.$emit('detail-click', task);
     },
     // 批量创建任务
     createTasks() {

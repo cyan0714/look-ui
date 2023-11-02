@@ -23,7 +23,7 @@
         <a>{{ item.relation }}</a>
       </div>
       <div class="btn-area" v-if="isDealMission">
-        <el-button class="lookui-btn" size="small" type="primary" @click.native="handleCancel($event, item)">取消{{item.status.slice(1)}}</el-button>
+        <el-button class="lookui-btn" size="small" type="primary" @click.native="handleCancel">取消{{item.status.slice(1)}}</el-button>
       </div>
       <img v-if="isDealMission" :src="mapStatus(item.status)" alt="" class="status" />
     </div>
@@ -62,13 +62,13 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    handleCancel(e, item) {
+    handleCancel(e) {
       e.stopPropagation();
-      this.onCancelBtnClick(item)
+      this.onCancelBtnClick(this.item)
     },
     handleViewDetail(e) {
       e.stopPropagation();
-      this.onViewDetailsClick()
+      this.onViewDetailsClick(this.item)
     },
     mapStatus(status) {
       switch (status) {
