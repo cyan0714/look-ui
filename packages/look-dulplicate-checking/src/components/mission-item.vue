@@ -2,7 +2,7 @@
   <div class="mission-item">
     <div class="left">
       <div class="txt-wrap">
-        <div class="title">{{ item.name }}</div>
+        <div class="title" @click.stop="handleMissionDetail">{{ item.name }}</div>
         <div class="txt-btn" @click="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
       </div>
       <div class="result">
@@ -53,7 +53,7 @@ export default {
       default: () => {},
     },
   },
-  inject: ['onCancelBtnClick', 'onViewDetailsClick'],
+  inject: ['onCancelBtnClick', 'onViewDetailsClick', 'onNameClick'],
   computed: {
     hasList() {
       return this.item.checkResultListLength > 0;
@@ -62,6 +62,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleMissionDetail() {
+      this.onNameClick(this.item)
+    },
     handleCancel(e) {
       e.stopPropagation();
       this.onCancelBtnClick(this.item)

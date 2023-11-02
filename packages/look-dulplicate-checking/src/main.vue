@@ -202,6 +202,7 @@ export default {
     return {
       onCancelBtnClick: this.handleCancelBtnClick,
       onViewDetailsClick: this.goDetail,
+      onNameClick: this.onNameClick,
       isShowSource: () => this.isShowSource,
       isShowBtnsFn: () => this.currentMissionType == 0,
       recommandTags: () => this.checkedTags,
@@ -306,6 +307,9 @@ export default {
   },
   mounted() {},
   methods: {
+    onNameClick(task) {
+      this.$emit('name-click', task)
+    },
     handleCancelBtnClick(task) {
       this.$emit('onCancelBtnClick', task);
     },

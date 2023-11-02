@@ -25,7 +25,8 @@
       :data="data"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
-      @insertion-click="insertionClick" />
+      @insertion-click="insertionClick"
+      @name-click="nameClick" />
   </div>
 </template>
 
@@ -51,16 +52,16 @@ export default {
           status: '已归并',
           checkResultListLength: 0,
         },
-        // {
-        //   taskId: '3',
-        //   name: '琼海',
-        //   checked: false,
-        //   tenantId: '4602000038',
-        //   checkResultListLength: 0,
-        //   status: '', // 已处理任务的状态
-        //   relation:
-        //     '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', // 已处理任务的关联任务的名字
-        // },
+        {
+          taskId: '3',
+          name: '琼海',
+          checked: false,
+          tenantId: '4602000038',
+          checkResultListLength: 0,
+          status: '', // 已处理任务的状态
+          relation:
+            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', // 已处理任务的关联任务的名字
+        },
         {
           taskId: '4',
           name: 'chenshiyan',
@@ -82,8 +83,11 @@ export default {
       console.log('关注', row);
     },
     mergingClick(row) {
-      console.log(row, 'hh');
+      console.log('归并', row);
     },
+    nameClick(row) {
+      console.log('标题', row);
+    }
   },
 };
 </script>
