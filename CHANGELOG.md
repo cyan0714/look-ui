@@ -1,5 +1,25 @@
 
 
+## [1.1.26](http://192.168.0.66/font-end/look-ui/compare/1.1.23...1.1.26) (2023-11-02)
+
+
+### Bug Fixes
+
+* 修复任务列表变化时数据没更新 ([bf226fc](http://192.168.0.66/font-end/look-ui/commits/bf226fc4bd25a20cacfa0eb08c0bb84cbf5f8965))
+* 修复任务状态为空时显示不正确的问题 ([8f6cfb1](http://192.168.0.66/font-end/look-ui/commits/8f6cfb1a284404fc7888272eb20ebcf1239e90c6))
+* 修复webpack报错问题 ([4ad42a5](http://192.168.0.66/font-end/look-ui/commits/4ad42a5082e0d372dba375f740a3d8abae26e85a))
+* 页面首次加载添加tenantId参数 ([63a1250](http://192.168.0.66/font-end/look-ui/commits/63a1250e0c250a5b6d285c89a887e889dfc8849f))
+
+
+### Features
+
+* 添加取消关注、归并等按钮的回调 ([0049cea](http://192.168.0.66/font-end/look-ui/commits/0049cea09afda62d3229b30347ad91d65c0bfdae))
+
+
+### Performance Improvements
+
+* 优化数据太多时切换任务类型会造成卡顿效果 ([9d617dc](http://192.168.0.66/font-end/look-ui/commits/9d617dc5ff7a6a3a1d2b2e64e7f8283c90236579))
+
 ## [1.1.25](http://192.168.0.66/font-end/look-ui/compare/1.1.23...1.1.25) (2023-11-01)
 
 
