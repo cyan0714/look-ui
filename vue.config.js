@@ -12,4 +12,9 @@ module.exports = defineConfig({
       },
     },
   },
+  configureWebpack: {
+    optimization: {
+      minimize: true,
+    },
+  },
 });
