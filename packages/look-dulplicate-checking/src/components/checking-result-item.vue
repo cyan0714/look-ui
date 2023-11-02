@@ -1,7 +1,7 @@
 <template>
   <div class="checking-result-item">
     <div class="content">
-      <div class="title">{{ source.name }}</div>
+      <div class="title" @click.stop="handleCheckingItemDetail">{{ source.name }}</div>
       <div class="tags-wrap">
         <div v-for="(tag, tagIndex) in source.feature && source.feature.split(',')" :key="tagIndex" class="tag-item">
           {{ tag }}
@@ -77,6 +77,7 @@ export default {
     };
   },
   // inject: ['isShowBtnsFn', 'isShowSource', 'recommandTags'],
+  inject: ['onCheckingNameClick'],
   props: {
     source: {
       type: Object,
@@ -112,6 +113,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleCheckingItemDetail() {
+      this.onCheckingNameClick(this.source)
+    },
     closeMissionResolve(val) {
     },
     handleSubscribe() {

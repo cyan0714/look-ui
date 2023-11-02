@@ -215,6 +215,7 @@ export default {
     return {
       onCancelBtnClick: this.handleCancelBtnClick,
       onViewDetailsClick: this.goDetail,
+      onCheckingNameClick: this.onCheckingNameClick,
       onNameClick: this.onNameClick,
       isShowSource: () => this.isShowSource,
       isShowBtnsFn: () => this.currentMissionType == 0,
@@ -325,6 +326,9 @@ export default {
   },
   mounted() {},
   methods: {
+    onCheckingNameClick(checkingTask) {
+      this.$emit('checking-name-click', checkingTask);
+    },
     onNameClick(task) {
       this.$emit('name-click', task)
     },

@@ -27,8 +27,10 @@
       @subscription-click="subscriptionClick"
       @insertion-click="insertionClick"
       @name-click="nameClick"
+      @checking-name-click="checkingNameClick"
       @detail-click="detailClick"
-      @onCancelBtnClick="handleCancelBtnClick">
+      @onCancelBtnClick="handleCancelBtnClick"
+      >
         <!-- <template v-slot:operating-btns="slotProps">
           <el-button size="small" @click="handleDiyBtnClick(slotProps)">自定义按钮</el-button>
         </template> -->
@@ -82,6 +84,9 @@ export default {
   created() {},
   computed: {},
   methods: {
+    checkingNameClick(row) {
+      console.log('查重结果详情', row);
+    },
     handleCancelBtnClick(item) {
       this.data.forEach((task, index) => {
         if (task.taskId === item.taskId) {
