@@ -3,7 +3,7 @@
     <div class="content">
       <div class="title" @click.stop="handleCheckingItemDetail">{{ source.name }}</div>
       <div class="tags-wrap">
-        <div v-for="(tag, tagIndex) in source.feature && source.feature.split(',')" :key="tagIndex" class="tag-item">
+        <div v-for="(tag, tagIndex) in source.featureName && source.featureName.split(',')" :key="tagIndex" class="tag-item">
           {{ tag }}
         </div>
       </div>
@@ -27,10 +27,10 @@
             <span class="key">督办单位:</span>
             <div class="value">
               <span
-                v-for="(superviseUnit, superviseUnitIndex) in createdOrg"
+                v-for="(superviseUnit, superviseUnitIndex) in dbOrgName"
                 :key="superviseUnitIndex"
                 class="supervise-unit-item"
-                >{{ superviseUnit }}{{ superviseUnitIndex === createdOrg.length - 1 ? '' : '，' }}</span
+                >{{ superviseUnit }}{{ superviseUnitIndex === dbOrgName.length - 1 ? '' : '，' }}</span
               >
             </div>
           </div>
@@ -106,8 +106,8 @@ export default {
     qtOrgs() {
       return this.source.qtOrgs?.split(",");
     },
-    createdOrg() {
-      return this.source.createdOrg?.split(",");
+    dbOrgName() {
+      return this.source.dbOrgName?.split(",");
     },
   },
   created() {},
