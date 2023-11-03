@@ -21,9 +21,11 @@
 2. 执行 `npm publish` 发布到 npm 官方源
 
 ### 自动发布
-1. 执行 `npm run release --release-as x.y.z`
+1. 执行 `npm run release --release-as x.y.z` 其中 x.y.z 为版本号, 例如这次你想发布的版本是 1.1.28, 那就将 1.1.28 填入 x.y.z 中
+2. 然后系统会自动修改 `CHANGELOG.md`, `package.json` 和 `package-lock.json` 文件
+3. 接着会出现4个问题, 一路 yes 就行, 如下图:
+![publish-flow](./src/imgs/publish-flow.png)
 
-其中 x.y.z 为版本号, 例如 1.1.27, 该命令会根据你的 git 提交信息自动生成 CHANGELOG.md 文件.
 > 注意: git 提交信息应以`feat、chore、fix、style、refactor、perf`等前缀作为开头(更多前缀可搜索 git-cz), 否则提交信息不会出现在 CHANGELOG.md 中
 
 ### 用哪个?
