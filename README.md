@@ -10,7 +10,29 @@
 1. 在终端执行 `npm run lib` 命令即可
 
 ## 如何发布到 npm ?
+
+### 准备
+1. 修改 npm 源为 npm 官方源, 否则在发布时会报错, 在终端执行 `npm config set registry https://registry.npmjs.org/`
+2. 执行 `npm login` , 登录 npm 账号
+3. 确保已经执行了 `npm run lib` 命令
+
+### 手动发布
 1. 修改 package.json 中的 version 版本号
-2. 修改 npm 源为 npm 官方源, 否则在第3步会报错, 在终端执行 `npm config set registry https://registry.npmjs.org/`
-3. 执行 `npm login` , 登录 npm 账号
-4. 执行 `npm publish` 发布到 npm 官方源
+2. 执行 `npm publish` 发布到 npm 官方源
+
+### 自动发布
+1. 执行 `npm run release --release-as x.y.z`
+
+其中 x.y.z 为版本号, 例如 1.1.27, 该命令会根据你的 git 提交信息自动生成 CHANGELOG.md 文件.
+> 注意: git 提交信息应以`feat、chore、fix、style、refactor、perf`等前缀作为开头(更多前缀可搜索 git-cz), 否则提交信息不会出现在 CHANGELOG.md 中
+
+### 用哪个?
+推荐使用自动发布, 它会自动生成 CHANGELOG.md 文件, 方便查看更新内容.
+
+### 修改版本号的规则
+
+- 在 npm 包的版本号 x.y.z 中，x 代表主版本号，y 代表次版本号，z 代表修订版本号；
+- 当进行重大更改且不兼容上一个版本时，增加主版本号；
+- 当添加新功能或进行向后兼容的修复时，增加次版本号；
+- 当修复 bug 或小的改动时，增加修订版本号。
+
