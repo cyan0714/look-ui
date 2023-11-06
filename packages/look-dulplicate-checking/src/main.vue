@@ -348,11 +348,12 @@ export default {
           // 所有查重结果列表数据
           this.allCheckingResultList = similarity;
 
+          const keyIds = similarity.map(item => item.keyId);
+          // 未处理的相似任务
           this.noDealMission.similar = this.data.filter(item => {
-            for (let i = 0; i < this.data.length; i++) {
-              return item.taskId != notSimilarity[i]?.taskId;
-            }
+            return keyIds.includes(item.taskId) 
           });
+
           this.noDealMission.dissimilar = notSimilarity;
           this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status);
           this.noDealMission.similar = this.noDealMission.similar.filter(item => !item.status);
@@ -401,6 +402,7 @@ export default {
     },
     // 批量创建任务
     createTasks() {
+      console.log('this.data', this.data);
       this.$emit('createTasks');
     },
     // 关注
