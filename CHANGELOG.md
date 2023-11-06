@@ -1,5 +1,12 @@
 
 
+## [1.1.29](http://192.168.0.66/font-end/look-ui/compare/1.1.28...1.1.29) (2023-11-06)
+
+
+### Bug Fixes
+
+* 修复任务重复出现在不同的列表中 ([c87959e](http://192.168.0.66/font-end/look-ui/commits/c87959efda64b14af9b68b4b7b49527f3b50daf3))
+
 ## [1.1.28](http://192.168.0.66/font-end/look-ui/compare/1.1.23...1.1.28) (2023-11-03)
 
 
