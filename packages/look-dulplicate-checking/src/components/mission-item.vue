@@ -7,7 +7,7 @@
             {{ item.name }}
           </span>
         </div>
-        <div class="txt-btn" @click="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
+        <div class="txt-btn" @click.stop="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
       </div>
       <div class="result">
         <div class="result-left">
@@ -24,7 +24,7 @@
       </div>
       <div class="result-detail" v-if="isDealMission">
         <div class="rd-title">处理结果</div>
-        <a>{{ item.relation }}</a>
+        <a @click.stop="handleRelationClick">{{ item.relation }}</a>
       </div>
       <div class="btn-area" v-if="isDealMission">
         <el-button class="lookui-btn" size="small" type="primary" @click.native="handleCancel">取消{{item.status.slice(1)}}</el-button>
@@ -57,7 +57,7 @@ export default {
       default: () => {},
     },
   },
-  inject: ['onCancelBtnClick', 'onViewDetailsClick', 'onNameClick'],
+  inject: ['onCancelBtnClick', 'onViewDetailsClick', 'onNameClick', 'onRelationClick'],
   computed: {
     hasList() {
       return this.item.checkResultListLength > 0;
@@ -66,6 +66,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleRelationClick() {
+      this.onRelationClick(this.item)
+    },
     handleMissionDetail() {
       this.onNameClick(this.item)
     },
@@ -73,8 +76,7 @@ export default {
       e.stopPropagation();
       this.onCancelBtnClick(this.item)
     },
-    handleViewDetail(e) {
-      e.stopPropagation();
+    handleViewDetail() {
       this.onViewDetailsClick(this.item)
     },
     mapStatus(status) {

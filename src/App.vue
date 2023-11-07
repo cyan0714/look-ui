@@ -30,6 +30,7 @@
       @name-click="nameClick"
       @checking-name-click="checkingNameClick"
       @detail-click="detailClick"
+      @relation-click="relationClick"
       @onCancelBtnClick="handleCancelBtnClick"
       >
         <!-- <template v-slot:operating-btns="slotProps">
@@ -60,6 +61,8 @@ export default {
           tenantId: '4602000038',
           status: '已归并',
           checkResultListLength: 0,
+          relation:
+            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', 
         },
         {
           taskId: '3',
@@ -85,6 +88,9 @@ export default {
   created() {},
   computed: {},
   methods: {
+    relationClick(task) {
+      console.log('relation', task);
+    },
     createTasks(task) {
       console.log('task', task);
     },

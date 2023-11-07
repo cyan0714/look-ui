@@ -216,6 +216,7 @@ export default {
       onCancelBtnClick: this.handleCancelBtnClick,
       onViewDetailsClick: this.goDetail,
       onCheckingNameClick: this.onCheckingNameClick,
+      onRelationClick: this.onRelationClick,
       onNameClick: this.onNameClick,
       isShowSource: () => this.isShowSource,
       isShowBtnsFn: () => this.currentMissionType == 0,
@@ -330,6 +331,9 @@ export default {
     });
   },
   methods: {
+    onRelationClick(task) {
+      this.$emit('relation-click', task);
+    },
     onCheckingNameClick(checkingTask) {
       this.$emit('checking-name-click', checkingTask);
     },
