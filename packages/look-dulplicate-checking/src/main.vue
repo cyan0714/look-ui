@@ -261,14 +261,6 @@ export default {
     };
   },
   watch: {
-    data: {
-      handler: function (val) {
-        if (this.shouldSendRequest) {
-          this.fetchCheckingResultList(0);
-        }
-      },
-      deep: true,
-    },
     //未处理任务-存在相似任务-是否全选
     checkAllNoDealOfSimilar(val) {
       //未处理任务是否全选
@@ -324,7 +316,19 @@ export default {
     this.shouldSendRequest = false
     this.fetchCheckingResultList(0);
   },
-  mounted() {},
+  mounted() {
+    this.data.forEach((item, index) => {
+      // 监听 data 中每个对象的 status 属性
+      this.$watch(
+        () => this.data[index].status,
+        (newStatus, oldStatus) => {
+          if (this.shouldSendRequest) {
+            this.fetchCheckingResultList(0);
+          }
+        }
+      );
+    });
+  },
   methods: {
     onCheckingNameClick(checkingTask) {
       this.$emit('checking-name-click', checkingTask);
