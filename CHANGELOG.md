@@ -1,5 +1,17 @@
 
 
+## [1.1.30](http://192.168.0.66/font-end/look-ui/compare/1.1.29...1.1.30) (2023-11-07)
+
+
+### Bug Fixes
+
+* 修复监听任务状态变化时点击全选无效问题 ([e464178](http://192.168.0.66/font-end/look-ui/commits/e4641782cd59356d14a2f2483d424f2fa07efafe))
+
+
+### Features
+
+* 批量创建任务回调返回选中任务数组 ([caddb29](http://192.168.0.66/font-end/look-ui/commits/caddb29e3a097c9985ca715554f7fad0a86c1a6a))
+
 ## [1.1.29](http://192.168.0.66/font-end/look-ui/compare/1.1.28...1.1.29) (2023-11-06)
 
 
