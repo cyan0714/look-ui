@@ -406,8 +406,9 @@ export default {
     },
     // 批量创建任务
     createTasks() {
-      console.log('this.data', this.data);
-      this.$emit('createTasks');
+      const checkedSimilarMissions = this.noDealMission.similar.filter(item => item.checked);
+      const checkedDissimilarMissions = this.noDealMission.dissimilar.filter(item => item.checked);
+      this.$emit('createTasks', [...checkedSimilarMissions, ...checkedDissimilarMissions]);
     },
     // 关注
     handleSubscribe(row) {

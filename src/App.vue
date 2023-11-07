@@ -23,6 +23,7 @@
     </el-dialog> -->
     <look-dulplicate-checking
       :data="data"
+      @createTasks="createTasks"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
       @insertion-click="insertionClick"
@@ -84,6 +85,9 @@ export default {
   created() {},
   computed: {},
   methods: {
+    createTasks(task) {
+      console.log('task', task);
+    },
     checkingNameClick(row) {
       console.log('查重结果详情', row);
     },
