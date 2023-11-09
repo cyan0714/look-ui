@@ -285,6 +285,12 @@ export default {
         return [];
       },
     },
+    searchRepeatedUrl: {
+      type: String,
+      default: () => {
+        return 'http://59.212.30.45:6068'
+      }
+    },
     isShowSource: {
       type: Boolean,
       default: true,
@@ -347,7 +353,7 @@ export default {
       this.loadingCheckResultList = true;
       this.paramsData.jsonStr = JSON.stringify(this.data);
 
-      searchRepeated(this.paramsData).then(
+      searchRepeated(this.searchRepeatedUrl, this.paramsData).then(
         ({
           data: {
             data: { similarity, notSimilarity },
