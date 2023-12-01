@@ -41,3 +41,15 @@
 @import './card/index.scss';
 @import './calendar/index.scss';
 @import './descriptions/index.scss';
+
+/**
+ * 文字超出 2 行省略号表示
+ */
+.double-row-ellip {
+  display: -webkit-box;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

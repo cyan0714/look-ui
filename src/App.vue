@@ -23,6 +23,7 @@
     </el-dialog> -->
     <look-dulplicate-checking
       :data="data"
+      searchRepeatedUrl="http://192.168.230.186:7076"
       @createTasks="createTasks"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
