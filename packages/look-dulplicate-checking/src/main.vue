@@ -63,7 +63,7 @@
                   @checkChange="handleNoDealSimilarCheckedChange" />
               </section>
             </el-collapse-item>
-            <!-- 未处理任务-不存在相似任务 -->
+            <!-- 未处理任务-无相似任务 -->
             <el-collapse-item name="noDealDissimilar">
               <template slot="title">
                 <mission-header
@@ -124,7 +124,7 @@
                   isDealMission />
               </section>
             </el-collapse-item>
-            <!-- 已处理任务-不存在相似任务 -->
+            <!-- 已处理任务-无相似任务 -->
             <el-collapse-item name="dealDissimilar">
               <template slot="title">
                 <mission-header
@@ -236,12 +236,12 @@ export default {
 
       checkedAllNoDeal: false, //未处理任务是否全选
       currentNoDealSimilarIndex: 0, //未处理任务-存在相似任务-当前选中任务下标
-      currentNoDealDissimilarIndex: -1, //未处理任务-不存在相似任务-当前选中任务下标
-      checkAllNoDealOfDissimilar: false, //未处理任务-不存在相似任务-是否全选
+      currentNoDealDissimilarIndex: -1, //未处理任务-无相似任务-当前选中任务下标
+      checkAllNoDealOfDissimilar: false, //未处理任务-无相似任务-是否全选
       checkAllNoDealOfSimilar: false, //未处理任务-存在相似任务-是否全选
 
       currentDealSimilarIndex: 0, //已处理任务-存在相似任务-当前选中任务下标
-      currentDealDissimilarIndex: -1, //已处理任务-不存在相似任务-当前选中任务下标
+      currentDealDissimilarIndex: -1, //已处理任务-无相似任务-当前选中任务下标
       currentMissionType: 0, //当前选中任务类型(已处理1, 未处理0)
       missionCount: {
         noDealCount: 5,
@@ -253,11 +253,11 @@ export default {
       checkingResultList: [],
       noDealMission: {
         similar: [], // 存在相似任务列表
-        dissimilar: [], // 不存在相似任务列表
+        dissimilar: [], // 无相似任务列表
       },
       hadDealMission: {
         similar: [], // 存在相似任务列表
-        dissimilar: [], // 不存在相似任务列表
+        dissimilar: [], // 无相似任务列表
       },
     };
   },
@@ -267,7 +267,7 @@ export default {
       //未处理任务是否全选
       this.checkedAllNoDeal = val && this.checkAllNoDealOfDissimilar;
     },
-    //未处理任务-不存在相似任务-是否全选
+    //未处理任务-无相似任务-是否全选
     checkAllNoDealOfDissimilar(val) {
       //未处理任务是否全选
       this.checkedAllNoDeal = val && this.checkAllNoDealOfSimilar;
@@ -396,11 +396,11 @@ export default {
       setTimeout(() => {
         if (isSimilar) {
           const currentMissionKeyId =
-            this.currentMissionType === 0
-              ? this.noDealMission.similar[index]?.taskId
-              : this.hadDealMission.similar[index]?.taskId;
+          this.currentMissionType === 0
+          ? this.noDealMission.similar[index]?.taskId
+          : this.hadDealMission.similar[index]?.taskId;
           const resObj =
-            this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
+          this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
           this.checkingResultList = resObj.hitRes || [];
           this.loadingCheckResultList = false;
         } else {
@@ -456,7 +456,7 @@ export default {
       this.noDealMission.similar.forEach(item => (item.checked = val));
       this.noDealMission.dissimilar.forEach(item => (item.checked = val));
     },
-    // 全选(未处理任务-不存在相似任务)
+    // 全选(未处理任务-无相似任务)
     handleCheckAllNoDealOfDissimilar(val) {
       this.checkAllNoDealOfDissimilar = val;
       this.noDealMission.dissimilar.forEach(item => (item.checked = val));
@@ -466,7 +466,7 @@ export default {
       this.checkAllNoDealOfSimilar = val;
       this.noDealMission.similar.forEach(item => (item.checked = val));
     },
-    // 点击 checkbox (未处理任务-不存在相似任务)
+    // 点击 checkbox (未处理任务-无相似任务)
     handleNoDealDissimilarCheckedChange(val) {
       this.checkAllNoDealOfDissimilar = this.noDealMission.dissimilar.every(item => item.checked);
       if (!val) {
@@ -480,7 +480,7 @@ export default {
         this.checkedAllNoDeal = false;
       }
     },
-    // 点击 item (未处理任务-不存在相似任务)
+    // 点击 item (未处理任务-无相似任务)
     handleNoDealDissimilarClick(index) {
       this.currentNoDealDissimilarIndex = index;
       this.currentNoDealSimilarIndex = -1;
@@ -495,7 +495,7 @@ export default {
       this.$emit('onClickNoDealSimilar', index);
     },
 
-    // 点击 item (已处理任务-不存在相似任务)
+    // 点击 item (已处理任务-无相似任务)
     handleDealDissimilarClick(index) {
       this.currentDealDissimilarIndex = index;
       this.currentDealSimilarIndex = -1;

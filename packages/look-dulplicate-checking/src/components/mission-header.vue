@@ -26,7 +26,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    // 存在相似任务(SIMILAR) | 不存在相似任务(DISSIMILAR)
+    // 存在相似任务(SIMILAR) | 无相似任务(DISSIMILAR)
     type: {
       type: String,
       default: SIMILAR,
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     title() {
-      return this.type === SIMILAR ? '存在相似任务' : '不存在相似任务';
+      return this.type === SIMILAR ? '存在相似任务' : '无相似任务';
     },
   },
   created() {},
