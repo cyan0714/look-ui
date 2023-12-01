@@ -160,7 +160,7 @@
           <virtual-list
             style="height: 100%; overflow-y: auto"
             class="rcs-list"
-            :data-key="'dataId'"
+            data-key="taskId"
             :data-sources="checkingResultList"
             :data-component="CheckingResultItem">
             <template #item="{ indey, item }">
