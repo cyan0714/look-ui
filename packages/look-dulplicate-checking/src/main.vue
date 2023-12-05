@@ -225,6 +225,7 @@ export default {
   },
   data() {
     return {
+      currentInstance: {},
       loadingCheckResultList: false,
       CheckingResultItem,
       SIMILAR,
@@ -420,17 +421,27 @@ export default {
       const checkedDissimilarMissions = this.noDealMission.dissimilar.filter(item => item.checked);
       this.$emit('createTasks', [...checkedSimilarMissions, ...checkedDissimilarMissions]);
     },
+    getCurrentInstance() {
+      if (this.currentMissionType == 0) {
+        this.currentInstance = this.noDealMission.similar[this.currentNoDealSimilarIndex]
+      } else if(this.currentMissionType == 1) {
+        this.currentInstance = this.hadDealMission.similar[this.currentDealSimilarIndex]
+      }
+    },
     // 关注
     handleSubscribe(row) {
-      this.$emit('subscription-click', row);
+      this.getCurrentInstance()
+      this.$emit('subscription-click', row, this.currentInstance);
     },
     // 归并
     handleMerge(row) {
-      this.$emit('merging-click', row);
+      this.getCurrentInstance()
+      this.$emit('merging-click', row, this.currentInstance);
     },
     // 插入
     handleInsert(row) {
-      this.$emit('insertion-click', row);
+      this.getCurrentInstance()
+      this.$emit('insertion-click', row, this.currentInstance);
     },
     // 切换来源
     handleCheckedTagsChange(val) {

@@ -115,8 +115,8 @@ export default {
     insertionClick(row) {
       console.log('插入', row);
     },
-    subscriptionClick(row) {
-      console.log('关注', row);
+    subscriptionClick(row, instance) {
+      console.log('关注', row, instance);
     },
     mergingClick(row) {
       console.log('归并', row);
