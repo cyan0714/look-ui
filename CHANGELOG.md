@@ -1,5 +1,21 @@
 
 
+# [1.2.0](http://192.168.0.66/font-end/look-ui/compare/1.1.30...1.2.0) (2023-12-07)
+
+
+### Bug Fixes
+
+* 修复查重结果加载不出来的问题 ([c606024](http://192.168.0.66/font-end/look-ui/commits/c6060240611588601372e7e2c66230b68178c050))
+
+
+### Features
+
+* 操作当前查重结果时回调参数添加当前选中的任务 ([29095e1](http://192.168.0.66/font-end/look-ui/commits/29095e1f2b77dad0c3353972619f3d3376f8c7f6))
+* 功能优化 ([f72a7be](http://192.168.0.66/font-end/look-ui/commits/f72a7be9f05dd7cc3eadc3eacbd8695741549ed1))
+* 添加查重接口入参 ([c778252](http://192.168.0.66/font-end/look-ui/commits/c778252e07e7edae18e3d3ee232cf88dd6e46401))
+* 添加点击处理结果回调 ([ec0f8c5](http://192.168.0.66/font-end/look-ui/commits/ec0f8c575773ffc4e467527b32973d7ce88dfb5b))
+* 添加已创建任务图片 ([4c8a3c7](http://192.168.0.66/font-end/look-ui/commits/4c8a3c7c4fe025d549609772b8b5c13ef265c515))
+
 ## [1.1.30](http://192.168.0.66/font-end/look-ui/compare/1.1.29...1.1.30) (2023-11-07)
 
 
