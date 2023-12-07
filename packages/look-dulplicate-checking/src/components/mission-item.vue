@@ -91,6 +91,8 @@ export default {
           return require(`../imgs/icon_8.png`);
         case '已归并':
           return require(`../imgs/icon_9.png`);
+        case '已创建':
+          return require(`../imgs/icon_10.png`);
       }
     },
     handleCheckedChange(val) {
