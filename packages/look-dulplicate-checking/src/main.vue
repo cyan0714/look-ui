@@ -448,7 +448,7 @@ export default {
       const field = {
         任务标题: 'name',
         任务标签: 'feature',
-        事项来源及依据: 'sourceName',
+        事项来源及依据: 'requirement',
       };
       const sources = [];
       val.forEach(item => {
