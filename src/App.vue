@@ -60,7 +60,7 @@ export default {
           name: '事项工作内容',
           checked: false,
           tenantId: '4602000038',
-          status: '已归并',
+          status: '已插入',
           checkResultListLength: 0,
           relation:
             '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', 

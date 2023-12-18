@@ -29,7 +29,7 @@
       <div class="btn-area" v-if="isDealMission">
         <el-button class="lookui-btn" size="small" type="primary" @click.native="handleCancel">取消{{item.status.slice(1)}}</el-button>
       </div>
-      <img v-if="isDealMission" :src="mapStatus(item.status)" alt="" class="status" />
+      <img v-if="isDealMission" :src="mapStatus(item.status)" alt="" class="status" width="56"/>
     </div>
     <el-checkbox
       v-if="!isDealMission"
@@ -93,6 +93,8 @@ export default {
           return require(`../imgs/icon_9.png`);
         case '已创建':
           return require(`../imgs/icon_10.png`);
+        case '已插入':
+          return require(`../imgs/icon_11.png`);
       }
     },
     handleCheckedChange(val) {
