@@ -1,5 +1,13 @@
 
 
+## [1.2.2](http://192.168.0.66/font-end/look-ui/compare/1.2.1...1.2.2) (2023-12-19)
+
+
+### Bug Fixes
+
+*  ZDRWFJ-1845 对任务进行关注等操作后, 默认选中第一条任务 ([82bb811](http://192.168.0.66/font-end/look-ui/commits/82bb811ee9c0f05b5ae09f620f9e757e3b00affd))
+* ZDRWFJ-1832 修复数据变化但视图未更新问题 ([0c52bfb](http://192.168.0.66/font-end/look-ui/commits/0c52bfb00169903965534ce27b0d0bb10d9b1653))
+
 ## [1.2.1](http://192.168.0.66/font-end/look-ui/compare/1.2.0...1.2.1) (2023-12-19)
 
 
