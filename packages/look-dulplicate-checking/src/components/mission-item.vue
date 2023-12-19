@@ -24,7 +24,7 @@
       </div>
       <div class="result-detail" v-if="isDealMission">
         <div class="rd-title">处理结果</div>
-        <a @click.stop="handleRelationClick">{{ item.relation }}</a>
+        <a class="double-row-ellip" @click.stop="handleRelationClick">{{ item.relation }}</a>
       </div>
       <div class="btn-area" v-if="isDealMission">
         <el-button class="lookui-btn" size="small" type="primary" @click.native="handleCancel">取消{{item.status.slice(1)}}</el-button>
