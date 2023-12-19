@@ -331,6 +331,13 @@ export default {
         () => this.data[index].status,
         (newStatus, oldStatus) => {
           if (this.shouldSendRequest) {
+            // 防止对当前任务进行关注等操作后, 当前选中的任务和查重结果列表不对应的问题(默认选中第一个任务)
+            console.log('this.cc', this.currentNoDealSimilarIndex);
+            this.currentNoDealSimilarIndex = 0;
+            this.currentNoDealDissimilarIndex = -1;
+            this.currentDealSimilarIndex = 0;
+            this.currentDealDissimilarIndex = -1;
+
             this.fetchCheckingResultList(0);
           }
         }
@@ -510,14 +517,14 @@ export default {
         this.checkedAllNoDeal = false;
       }
     },
-    // 点击 item (未处理任务-无相似任务)
+    // 点击任务 (未处理任务-无相似任务)
     handleNoDealDissimilarClick(index) {
       this.currentNoDealDissimilarIndex = index;
       this.currentNoDealSimilarIndex = -1;
       this.checkingResultList = [];
       this.$emit('onClickNoDealDissimilar', index);
     },
-    // 点击 item (未处理任务-存在相似任务)
+    // 点击任务 (未处理任务-存在相似任务)
     handleNoDealSimilarClick(index) {
       this.currentNoDealSimilarIndex = index;
       this.currentNoDealDissimilarIndex = -1;
