@@ -364,7 +364,6 @@ export default {
           this.allCheckingResultList = similarity;
 
           const keyIds = similarity.map(item => item.keyId);
-          console.log("🚀 ~ file: main.vue:367 ~ fetchCheckingResultList ~ keyIds:", keyIds)
           // 未处理的相似任务
           this.noDealMission.similar = this.data.filter(item => {
             return keyIds.includes(item.taskId) 
@@ -379,7 +378,6 @@ export default {
             this.noDealMission.similar.forEach(iten => {
               if (item.keyId == iten.taskId) {
                 iten.checkResultListLength = item.size;
-                console.log('length', iten.checkResultListLength);
               }
             });
             // 已处理任务(存在相似任务)中每个任务的查重结果数
@@ -389,8 +387,20 @@ export default {
               }
             });
           });
-          console.log('noDealMission.similar', this.noDealMission.similar);
-          console.log('hadDealMission.similar', this.hadDealMission.similar);
+          // 防止数据改变视图不更新
+          this.noDealMission.similar = this.noDealMission.similar.map(item => {
+            return {
+              ...item,
+              checked: false,
+            };
+          });
+          // 防止数据改变视图不更新
+          this.hadDealMission.similar = this.hadDealMission.similar.map(item => {
+            return {
+              ...item,
+              checked: false,
+            };
+          });
           this.getCurrMissionCheckingResultList(index);
         }
       );
@@ -453,10 +463,6 @@ export default {
       this.checkAllNoDealOfSimilar = false;
       this.checkAllNoDealOfDissimilar = false;
       this.checkedAllNoDeal = false;
-
-      // 将this.noDealMission.similar中的每个对象的checked属性设置为false
-      this.noDealMission.similar.forEach(item => (item.checked = false));
-      this.noDealMission.dissimilar.forEach(item => (item.checked = false));
 
       const field = {
         任务标题: 'name',
