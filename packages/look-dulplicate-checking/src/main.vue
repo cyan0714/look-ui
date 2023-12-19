@@ -15,7 +15,7 @@
           >条。
         </div>
         <div class="checkboxs" v-if="isShowSource">
-          <span>来源及要求:</span>
+          <span>查重点:</span>
           <el-checkbox-group v-model="checkedTags" @change="handleCheckedTagsChange">
             <el-checkbox class="lookui-checkbox" v-for="tag in tags" :label="tag" :key="tag">{{
               tag

@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="source-and-request" v-if="source.requirement">
-        <div class="title">来源及要求:</div>
+        <div class="title">查重点:</div>
         <div class="text-area double-row-ellip">{{ source.requirement }}</div>
       </div>
       <div class="other-info">
