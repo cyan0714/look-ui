@@ -445,6 +445,15 @@ export default {
     },
     // 切换来源
     handleCheckedTagsChange(val) {
+      // 将存在相似任务和无相似任务的全选状态设置为false
+      this.checkAllNoDealOfSimilar = false;
+      this.checkAllNoDealOfDissimilar = false;
+      this.checkedAllNoDeal = false;
+
+      // 将this.noDealMission.similar中的每个对象的checked属性设置为false
+      this.noDealMission.similar.forEach(item => (item.checked = false));
+      this.noDealMission.dissimilar.forEach(item => (item.checked = false));
+
       const field = {
         任务标题: 'name',
         任务标签: 'feature',
