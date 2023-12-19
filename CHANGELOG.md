@@ -1,5 +1,12 @@
 
 
+## [1.2.1](http://192.168.0.66/font-end/look-ui/compare/1.2.0...1.2.1) (2023-12-19)
+
+
+### Bug Fixes
+
+* ZDRWFJ-1809 切换查重点时, 将各个checkbox设置为false ([8d72b11](http://192.168.0.66/font-end/look-ui/commits/8d72b111bbc4cb029c77b3d290fe901821feccdb))
+
 # [1.2.0](http://192.168.0.66/font-end/look-ui/compare/1.1.30...1.2.0) (2023-12-07)
 
 
