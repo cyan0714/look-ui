@@ -376,8 +376,11 @@ export default {
             return keyIds.includes(item.taskId) 
           });
 
-          this.noDealMission.dissimilar = notSimilarity;
+          this.noDealMission.dissimilar = notSimilarity.filter(item => !item.status);
+
           this.hadDealMission.similar = this.noDealMission.similar.filter(item => item.status);
+          this.hadDealMission.dissimilar = notSimilarity.filter(item => item.status);
+
           this.noDealMission.similar = this.noDealMission.similar.filter(item => !item.status);
 
           similarity.forEach(item => {
