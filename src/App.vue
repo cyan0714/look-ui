@@ -25,6 +25,7 @@
       :data="data"
       searchRepeatedUrl="http://192.168.230.186:7076"
       isShowCustomSource
+      :customSource="customSource"
       @createTasks="createTasks"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
@@ -47,6 +48,21 @@ export default {
   data() {
     return {
       allCheckingResultList: [],
+      customSource: {
+        label: '自定义来源',
+        checkboxs: [
+          {
+            key: '自定义工作落实',
+            value: 'gzls',
+            checked: false,
+          },
+          {
+            key: '重点项目',
+            value: 'zdxm',
+            checked: false,
+          },
+        ]
+      },
       data: [
         {
           taskId: '1',

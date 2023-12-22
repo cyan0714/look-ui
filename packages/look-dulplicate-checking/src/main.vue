@@ -25,7 +25,7 @@
         <div class="checkboxs" v-if="isShowCustomSource">
           <span>{{ customSource.label }}:</span>
           <el-checkbox-group v-model="checkedCustomTags" @change="handleCheckedCustomTagsChange">
-            <el-checkbox class="lookui-checkbox" v-for="tag in customSource.checkboxs" :checked="tag.checked" :label="tag.key" :key="tag.value">{{
+            <el-checkbox class="lookui-checkbox" v-for="tag in customSource.checkboxs" :checked="tag.checked" :label="tag.key" :key="tag.value" @change="customCheckboxChange($event, tag)">{{
               tag.key
             }}</el-checkbox>
           </el-checkbox-group>
@@ -229,6 +229,8 @@ export default {
       isShowSource: () => this.isShowSource,
       isShowBtnsFn: () => this.currentMissionType == 0,
       recommandTags: () => this.checkedTags,
+      isShowCustomSource: () => this.isShowCustomSource,
+      customSource: () => this.customSource,
     };
   },
   data() {
@@ -389,6 +391,9 @@ export default {
     });
   },
   methods: {
+    customCheckboxChange(flag, tag) {
+      tag.checked = flag;
+    },
     onRelationClick(task) {
       this.$emit('relation-click', task);
     },
