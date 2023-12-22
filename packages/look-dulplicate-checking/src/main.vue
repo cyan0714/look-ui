@@ -22,6 +22,14 @@
             }}</el-checkbox>
           </el-checkbox-group>
         </div>
+        <div class="checkboxs" v-if="isShowCustomSource">
+          <span>{{ customSource.label }}:</span>
+          <el-checkbox-group v-model="checkedCustomTags" @change="handleCheckedCustomTagsChange">
+            <el-checkbox class="lookui-checkbox" v-for="tag in customSource.checkboxs" :checked="tag.checked" :label="tag.key" :key="tag.value">{{
+              tag.key
+            }}</el-checkbox>
+          </el-checkbox-group>
+        </div>
       </header>
       <section class="left-container-section">
         <div class="mission-tag-wrap">
@@ -225,6 +233,7 @@ export default {
   },
   data() {
     return {
+      sources: ['name', 'tenantId'],
       currentInstance: {},
       loadingCheckResultList: false,
       CheckingResultItem,
@@ -249,6 +258,7 @@ export default {
         hadDealCount: 2,
       },
       checkedTags: ['任务标题'],
+      checkedCustomTags: [],
       tags: ['任务标题', '任务标签', '事项来源及依据'],
       allCheckingResultList: [],
       checkingResultList: [],
@@ -292,20 +302,44 @@ export default {
         return 'http://59.212.30.45:6068'
       }
     },
+    isShowCustomSource: {
+      type: Boolean,
+      default: false,
+    },
+    customSource: {
+      type: Object,
+      default: () => {
+        return {
+          label: '数据来源',
+          checkboxs: [
+            {
+              key: "'大督查'任务",
+              value: 'DDCRW',
+              checked: false,
+            },
+            {
+              key: '重点项目',
+              value: 'ZDXM',
+              checked: false,
+            },
+          ],
+        };
+      },
+    },
     isShowSource: {
       type: Boolean,
       default: true,
     },
     paramsData: {
       type: Object,
-      default: () => {
+      default: function() {
         return {
           from: 0,
           jsonStr: [],
           keyId: 'taskId',
           modelIndex: 'common_task',
           modelType: 'task',
-          names: 'name,tenantId',
+          names: '',
           size: 10000,
         };
       },
@@ -322,6 +356,16 @@ export default {
   activated() {},
   created() {
     this.shouldSendRequest = false
+
+    // 判断是否添加 source 字段
+    if (this.isShowCustomSource) {
+      const source = this.customSource.checkboxs.filter(item => item.checked)
+      if (source.length > 0) {
+        this.sources.push('source')
+      }
+    }
+    this.paramsData.names = this.sources.join(',')
+
     this.fetchCheckingResultList(0);
   },
   mounted() {
@@ -359,6 +403,17 @@ export default {
     },
     fetchCheckingResultList(index) {
       this.loadingCheckResultList = true;
+
+      // 将 source 字段添加到 data 每个对象中
+      this.data.forEach(item => {
+        if (this.isShowCustomSource) {
+          const source = this.customSource.checkboxs
+            .filter(item => item.checked)
+            .map(item => item.value)
+            .join(',');
+          item.source = source;
+        }
+      });
       this.paramsData.jsonStr = JSON.stringify(this.data);
 
       searchRepeated(this.searchRepeatedUrl, this.paramsData).then(
@@ -479,17 +534,36 @@ export default {
         任务标签: 'feature',
         事项来源及依据: 'requirement',
       };
-      const sources = [];
-      val.forEach(item => {
-        sources.push(field[item]);
-      });
-      sources.push('tenantId'); // 固定
-      this.paramsData.names = sources.toString();
+      this.sources = []
+      if (val.length > 0) {
+        val.forEach(item => {
+          this.sources.push(field[item]);
+        });
+      }
+      this.sources.push('tenantId'); // 固定
+      this.paramsData.names = this.sources.toString();
       this.checkingResultList = [];
-      // 使用 setTimeout 防止 checkbox 渲染缓慢
-      setTimeout(() => {
-        this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
-      }, 0);
+      this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
+    },
+    handleCheckedCustomTagsChange(val) {
+      // 将存在相似任务和无相似任务的全选状态设置为false
+      this.checkAllNoDealOfSimilar = false;
+      this.checkAllNoDealOfDissimilar = false;
+      this.checkedAllNoDeal = false;
+
+      // 判断是否添加 source 字段
+      if (val.length > 0) {
+        if (!this.sources.includes('source')) {
+          this.sources.push('source');
+        }
+      } else {
+        if (this.sources.includes('source')) {
+          this.sources.splice(this.sources.indexOf('source'), 1);
+        }
+      }
+      this.paramsData.names = this.sources.toString();
+      this.checkingResultList = [];
+      this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
     },
     // 全选未处理任务
     handleCheckAllNoDeal(val) {
@@ -586,9 +660,7 @@ export default {
     .left-container-header {
       background-color: #fff;
       padding: 12px;
-      padding-bottom: 24px;
       .intro {
-        margin-bottom: 20px;
         span {
           font-weight: bold;
           margin: 0 4px;
@@ -606,6 +678,7 @@ export default {
       .checkboxs {
         display: flex;
         align-items: center;
+        margin-top: 10px;
         > span {
           color: #999;
           margin-right: 10px;

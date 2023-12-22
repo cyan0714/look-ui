@@ -24,6 +24,7 @@
     <look-dulplicate-checking
       :data="data"
       searchRepeatedUrl="http://192.168.230.186:7076"
+      isShowCustomSource
       @createTasks="createTasks"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
