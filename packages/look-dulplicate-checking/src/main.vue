@@ -693,7 +693,7 @@ export default {
       position: relative;
       border-top: 1px solid #eee;
       padding: 10px 12px;
-      height: calc(100% - 98px);
+      height: calc(100% - 107px);
       box-sizing: border-box;
       .mission-tag-wrap {
         display: flex;
@@ -727,7 +727,7 @@ export default {
         box-shadow: 0 3px 6px rgba(140, 149, 159, 0.15);
         background-color: #fff;
         border-radius: 8px;
-        height: calc(100% - 67px);
+        height: calc(100% - 80px);
         overflow: auto;
         margin-top: 10px;
         &.no-deal-mission {
@@ -792,7 +792,7 @@ export default {
       }
       .bottom-bar {
         position: absolute;
-        bottom: 10px;
+        bottom: 23px;
         left: 12px;
         width: calc(100% - 24px);
         display: flex;

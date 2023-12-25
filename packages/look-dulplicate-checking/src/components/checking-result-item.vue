@@ -2,7 +2,7 @@
   <div class="checking-result-item">
     <div class="content">
       <div class="title" @click.stop="handleCheckingItemDetail">
-        <div class="source-title" :style="getCustomTitle(source).style" >{{ getCustomTitle(source).key }}</div>
+        <div class="source-title" v-if="isShowCustomSource()" :style="getCustomTitle(source).style" >{{ getCustomTitle(source).key }}</div>
         <span>{{ source.name }}</span>
       </div>
       <div class="tags-wrap">
