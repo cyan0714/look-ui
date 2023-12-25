@@ -24,6 +24,7 @@
     "@release-it/conventional-changelog": "^7.0.2",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "markdown-it": "^14.0.0",
     "release-it": "^16.2.1",
     "vue-template-compiler": "^2.6.14"
   },
