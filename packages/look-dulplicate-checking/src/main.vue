@@ -181,7 +181,7 @@
                 @merging-click="handleMerge"
                 @insertion-click="handleInsert">
                 <template v-slot:operation-btns="slotProps">
-                  <slot name="operating-btns" :source="slotProps.source"></slot>
+                  <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
                 </template>
               </checking-result-item>
             </template>
@@ -236,7 +236,6 @@ export default {
   data() {
     return {
       sources: ['name', 'tenantId'],
-      currentInstance: {},
       loadingCheckResultList: false,
       CheckingResultItem,
       SIMILAR,
@@ -348,6 +347,13 @@ export default {
     },
   },
   computed: {
+    currentInstance() {
+      if (this.currentMissionType == 0) {
+        return this.noDealMission.similar[this.currentNoDealSimilarIndex];
+      } else if (this.currentMissionType == 1) {
+        return this.hadDealMission.similar[this.currentDealSimilarIndex];
+      }
+    },
     hadCheckNoDealCount() {
       return (
         this.noDealMission.similar.filter(item => item.checked).length +
@@ -504,26 +510,16 @@ export default {
       const checkedDissimilarMissions = this.noDealMission.dissimilar.filter(item => item.checked);
       this.$emit('createTasks', [...checkedSimilarMissions, ...checkedDissimilarMissions]);
     },
-    getCurrentInstance() {
-      if (this.currentMissionType == 0) {
-        this.currentInstance = this.noDealMission.similar[this.currentNoDealSimilarIndex]
-      } else if(this.currentMissionType == 1) {
-        this.currentInstance = this.hadDealMission.similar[this.currentDealSimilarIndex]
-      }
-    },
     // 关注
     handleSubscribe(row) {
-      this.getCurrentInstance()
       this.$emit('subscription-click', row, this.currentInstance);
     },
     // 归并
     handleMerge(row) {
-      this.getCurrentInstance()
       this.$emit('merging-click', row, this.currentInstance);
     },
     // 插入
     handleInsert(row) {
-      this.getCurrentInstance()
       this.$emit('insertion-click', row, this.currentInstance);
     },
     // 切换来源

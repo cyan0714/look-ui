@@ -144,8 +144,9 @@ export default {
     subscriptionClick(row, instance) {
       console.log('关注', row, instance);
     },
-    mergingClick(row) {
+    mergingClick(row,row2) {
       console.log('归并', row);
+      console.log('归并2', row2);
     },
     nameClick(row) {
       console.log('标题', row);
