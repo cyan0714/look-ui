@@ -34,9 +34,8 @@
       @checking-name-click="checkingNameClick"
       @detail-click="detailClick"
       @relation-click="relationClick"
-      @onCancelBtnClick="handleCancelBtnClick"
-      >
-        <!-- <template v-slot:operating-btns="slotProps">
+      @onCancelBtnClick="handleCancelBtnClick">
+      <!-- <template v-slot:operating-btns="slotProps">
           <el-button size="small" @click="handleDiyBtnClick(slotProps)">自定义按钮</el-button>
         </template> -->
     </look-dulplicate-checking>
@@ -52,18 +51,28 @@ export default {
         label: '自定义来源',
         checkboxs: [
           {
-            key: '自定义工作落实',
+            key: '工作落实',
             value: 'gzls',
-            checked: false,
+            checked: true,
+            style: {
+              color: '#f00',
+              backgroundColor: '#fee5e5',
+            },
           },
           {
             key: '重点项目',
             value: 'zdxm',
             checked: false,
+            style: {
+              color: '#fe8432',
+              backgroundColor: '#fff5e6',
+            },
           },
-        ]
+        ],
       },
       data: [
+        // 重点项目测试数据
+        // { taskId: '1', name: '三亚市西水中调项目一期', tenantId: '4602000038', checked: false, },
         {
           taskId: '1',
           name: '三亚市第一艘海洋休闲渔船',
@@ -80,7 +89,7 @@ export default {
           status: '已插入',
           checkResultListLength: 0,
           relation:
-            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', 
+            '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》',
         },
         {
           taskId: '3',
@@ -120,8 +129,8 @@ export default {
         if (task.taskId === item.taskId) {
           this.data[index].status = '';
         }
-      })
-      console.log('取消', item)
+      });
+      console.log('取消', item);
     },
     handleDiyBtnClick(row) {
       console.log('自定义按钮', row);
@@ -140,7 +149,7 @@ export default {
     },
     nameClick(row) {
       console.log('标题', row);
-    }
+    },
   },
 };
 </script>

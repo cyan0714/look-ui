@@ -378,7 +378,6 @@ export default {
         (newStatus, oldStatus) => {
           if (this.shouldSendRequest) {
             // 防止对当前任务进行关注等操作后, 当前选中的任务和查重结果列表不对应的问题(默认选中第一个任务)
-            console.log('this.cc', this.currentNoDealSimilarIndex);
             this.currentNoDealSimilarIndex = 0;
             this.currentNoDealDissimilarIndex = -1;
             this.currentDealSimilarIndex = 0;

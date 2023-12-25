@@ -2,8 +2,8 @@
   <div class="checking-result-item">
     <div class="content">
       <div class="title" @click.stop="handleCheckingItemDetail">
-        <div>{{ getCustomTitle(source) }}</div>
-        <div class="sub-title">{{ source.name }}</div>
+        <div class="source-title" :style="getCustomTitle(source).style" >{{ getCustomTitle(source).key }}</div>
+        <span>{{ source.name }}</span>
       </div>
       <div class="tags-wrap">
         <div v-for="(tag, tagIndex) in source.featureName && source.featureName.split(',')" :key="tagIndex" class="tag-item">
@@ -116,21 +116,18 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    // TODO
     getCustomTitle(item) {
-      return item.source
-      // const { checkboxs } = this.customSource()
-      // if (checkboxs.filter(checkbox => checkbox.checked).length === 0) {
-      //   return ''
-      // }
+      const { checkboxs } = this.customSource()
+      if (checkboxs.filter(checkbox => checkbox.checked).length === 0) {
+        return ''
+      }
 
-      // // 遍历checkboxs, 如果每一项中的value和item.source相等，则返回这一项的key
-      // for (let i = 0; i < checkboxs.length; i++) {
-      //   if (checkboxs[i].value === item.source) {
-      //     console.log('checkboxs[i].key', checkboxs[i].key);
-      //     return checkboxs[i].key
-      //   }
-      // }
+      // 遍历checkboxs, 如果每一项中的value和item.source相等，则返回这一项的key
+      for (let i = 0; i < checkboxs.length; i++) {
+        if (checkboxs[i].value === item.source) {
+          return checkboxs[i]
+        }
+      }
     },
     handleCheckingItemDetail() {
       this.onCheckingNameClick(this.source)
@@ -184,21 +181,29 @@ export default {
     background-color: #fff;
     border-radius: 8px 8px 0 0;
     .title {
-      display: flex;
-      .sub-title {
-        display: -webkit-box;
-        word-break: break-all;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      display: -webkit-box;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .source-title {
+        display: inline;
+        font-size: 13px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        line-height: 24px;
+      }
+      span {
+        text-decoration: underline;
       }
     }
   }
   div.title {
     font-size: 18px;
     font-weight: bold;
-    text-decoration: underline;
     cursor: pointer;
     padding-right: 50px;
   }
