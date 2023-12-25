@@ -1,5 +1,12 @@
 
 
+## [1.2.4](http://192.168.0.66/font-end/look-ui/compare/1.2.3...1.2.4) (2023-12-25)
+
+
+### Features
+
+* 操作自定义按钮时，返回当前任务对象 ([50cde79](http://192.168.0.66/font-end/look-ui/commits/50cde797b9d86b743051883519abdb652d2de390))
+
 ## [1.2.3](http://192.168.0.66/font-end/look-ui/compare/1.2.2...1.2.3) (2023-12-25)
 
 
