@@ -1,5 +1,19 @@
 
 
+## [1.2.3](http://192.168.0.66/font-end/look-ui/compare/1.2.2...1.2.3) (2023-12-25)
+
+
+### Bug Fixes
+
+* ZDRWFJ-1819 任务下达导入查重没有匹配到相似任务，批量创建任务下达后返回，已下达的任务仍显示在未处理任务列表 ([22d4676](http://192.168.0.66/font-end/look-ui/commits/22d4676fc70babe0ad145239f576e375a98b0970))
+
+
+### Features
+
+* 查重结果显示自定义查重点作为标题 ([e36fb0a](http://192.168.0.66/font-end/look-ui/commits/e36fb0a49cd62490ac3961eb15bae3af3e5a5f66))
+* 新增自定义查重点入参 ([4ba6048](http://192.168.0.66/font-end/look-ui/commits/4ba6048b763cd156cc4e8497dd1e302798c4ae21))
+* 自定义查重点 ([3dadf01](http://192.168.0.66/font-end/look-ui/commits/3dadf01883e20de46e197ca39e4bad4c52f966fb))
+
 ## [1.2.2](http://192.168.0.66/font-end/look-ui/compare/1.2.1...1.2.2) (2023-12-19)
 
 
