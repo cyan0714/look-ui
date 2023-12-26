@@ -1,5 +1,12 @@
 
 
+## [1.2.5](http://192.168.0.66/font-end/look-ui/compare/1.2.4...1.2.5) (2023-12-26)
+
+
+### Features
+
+* 添加脚本-自动将日志合并到README ([dec855a](http://192.168.0.66/font-end/look-ui/commits/dec855a414e223173ba8bbbaf4e0a41e08252d27))
+
 ## [1.2.4](http://192.168.0.66/font-end/look-ui/compare/1.2.3...1.2.4) (2023-12-25)
 
 
