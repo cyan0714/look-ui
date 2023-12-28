@@ -1,0 +1,45 @@
+.app-lookui-title {
+	background: #fff;
+	padding: 14px 12px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 9px;
+	&.no-bg {
+		background: transparent;
+		padding: 0 12px;
+	}
+	h3 {
+		display: flex;
+		align-items: center;
+		font-family: Source Han Sans CN !important;
+		font-weight: 700;
+		color: #303133;
+		font-size: 16px;
+		line-height: 24px;
+		img {
+			margin-right: 6px;
+		}
+	}
+	span {
+		font-family: Source Han Sans CN !important;
+		color: #b0b5bb;
+		font-size: 12px;
+		line-height: 24px;
+	}
+	i {
+		color: #b0b5bb;
+		margin-left: 4px;
+	}
+	.num {
+		display: inline-block;
+		padding: 0 6px;
+		height: 16px;
+		line-height: 16px;
+		font-family: Source Han Sans CN !important;
+		color: #ffffff;
+		font-size: 12px;
+		background: #ff4d4f;
+		border-radius: 8px;
+	}
+}

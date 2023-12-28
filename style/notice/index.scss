@@ -1,0 +1,53 @@
+.app-lookui-notice {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: #fff;
+	padding: 6px 12px;
+	margin-bottom: 12px;
+	img {
+		width: 42px;
+	}
+	.block {
+		width: calc(100% - 52px);
+		padding-left: 10px;
+		box-sizing: border-box;
+	}
+	.name {
+		width: 100%;
+		font-family: Source Han Sans CN !important;
+		color:#303133;
+		font-size: 14px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.desc {
+		font-family: Source Han Sans CN !important;
+		color:#b0b5bb;
+		font-size:12px;
+	}
+	i {
+		color: #b0b5bb;
+	}
+	&.notice {
+		img {
+			width: 32px;
+		}
+		.block {
+			width: calc(100% - 32px);
+			padding-left: 10px;
+		}
+	}
+	&.message {
+		height: 28px;
+		line-height: 28px;
+		background: #ffbe68;
+		justify-content: center;
+		p {
+			font-family: Source Han Sans CN !important;
+			color: #ffffff;
+			font-size: 12px;
+		}
+	}
+}

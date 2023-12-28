@@ -1,0 +1,16 @@
+.app-lookui-swipe {
+	height: 180px;
+	img {
+		width: 100%;
+	}
+	::v-deep .van-swipe__indicator {
+		background: #fff;
+		opacity: 1;
+	}
+	::v-deep .van-swipe__indicator--active {
+		width: 16px;
+		height: 6px;
+		background: #ffffff;
+		border-radius: 4px;
+	}
+}

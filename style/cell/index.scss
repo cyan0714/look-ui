@@ -1,0 +1,52 @@
+.app-lookui-cell {
+	// padding: 14px 16px;
+	// font-size: 14px;
+	// font-family: Source Han Sans CN !important;
+	// &:after {
+	// 	background: #eee;
+	// }
+	// .van-cell__title {
+	// 	color: #111111;
+	// 	line-height: 24px;
+	// }
+	// .van-cell__value {
+	// 	color: #999999;
+	// }
+	// .van-cell__label {
+	// 	color: #999;
+	// 	font-size: 12px;
+	// 	margin-top: 0;
+	// }
+	background: #fff;
+	padding: 14px 12px;
+	margin-bottom: 12px;
+	border-radius: 9px;
+	.name {
+		font-family: Source Han Sans CN !important;
+		color: #303133;
+		font-size: 14px;
+		line-height: 24px;
+	}
+	.desc {
+		font-family: Source Han Sans CN !important;
+		color: #b0b5bb;
+		font-size: 12px;
+		line-height: 24px;
+	}
+	&.flex {
+		display: flex;
+		align-items: center;
+		.left {
+			width: 40px;
+			img {
+				width: 40px;
+				height: 40px;
+			}
+		}
+		.right {
+			width: calc(100% - 40px);
+			padding-left: 18px;
+			box-sizing: border-box;
+		}
+	}
+}

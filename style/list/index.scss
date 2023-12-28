@@ -1,0 +1,146 @@
+.app-lookui-list {
+	background: #fff;
+	padding: 14px 12px;
+	margin-bottom: 12px;
+	border-radius: 9px;
+	.name {
+		font-family: Source Han Sans CN !important;
+		color: #303133;
+		font-size:16px;
+		line-height: 24px;
+	}
+	.desc {
+		font-family: Source Han Sans CN !important;
+		color: #909399;
+		font-size: 14px;
+		line-height: 24px;
+	}
+	&.flex {
+		display: flex;
+		align-items: center;
+		.left {
+			width: 40px;
+			img {
+				width: 40px;
+				height: 40px;
+			}
+		}
+		.right {
+			width: calc(100% - 40px);
+			padding-left: 18px;
+			box-sizing: border-box;
+		}
+	}
+	.bot {
+		margin-top: 12px;
+		padding-top: 12px;
+		display: flex;
+		align-items: center;
+		border-top: 1px solid #eee;
+		p {
+			display: flex;
+			align-items: center;
+			padding-right: 24px;
+		}
+		img {
+			margin-right: 4px;
+		}
+	}
+	&.label {
+		padding: 0;
+		.top {
+			padding-right: 12px;
+			display: flex;
+			justify-content: space-between;
+			.unit {
+				display: inline-block;
+				background: linear-gradient(259.11deg,#57b6ff 0%,#4772ff 100%);
+				border-radius:9px 0px 9px 0px;
+				font-family:Source Han Sans CN;
+				color:#ffffff;
+				font-size:12px;
+				line-height:24px;
+				padding: 2px 10px;
+			}
+			p {
+				display: flex;
+				align-items: center;
+				i {
+					display: inline-block;
+					width: 6px;
+					height: 6px;
+					border-radius: 25px;
+					margin-right: 4px;
+				}
+				&.red {
+					color: #ff4d4f;
+					i {
+						background:#ff4d4f;
+					}
+				}
+			}
+		}
+		.cont {
+			padding: 12px 12px 0 12px;
+		}
+		.bot {
+			justify-content: flex-end;
+			padding-bottom: 10px;
+			span {
+				color:#b0b5bb;
+				font-size:14px;
+			}
+		}
+	}
+	&.msg {
+		.btn {
+			display: flex;
+			span {
+				padding: 4px 8px;
+				font-family: Source Han Sans CN !important;
+				color: #4778ff;
+				font-size: 12px;
+				background: #e8f3ff;
+				border-radius: 3px;
+				margin: 8px 12px 0 0;
+			}
+		}
+		.bot {
+			justify-content: space-between;
+			.left {
+				display: flex;
+				p {
+					align-items: flex-start !important;
+				}
+			}
+			.num {
+				font-family: Source Han Sans CN !important;
+				font-weight: 700;
+				color: #ff2c2c !important;
+				font-size: 16px;
+			}
+			.time {
+				font-family: Source Han Sans CN !important;
+				color: #b0b5bb;
+				font-size: 12px;
+			}
+			.text {
+				padding-top: 6px;
+				font-family: Source Han Sans CN !important;
+				color: #b0b5bb;
+				font-size: 12px;
+			}
+			.van-button {
+				height: 28px;
+				line-height: 28px;
+				background: #5281fa;
+				border-radius: 6px;
+				font-family: Source Han Sans CN !important;
+				color: #ffffff;
+				font-size: 12px;
+				padding: 0 10px;
+				box-sizing: border-box;
+			}
+		}
+	}
+}

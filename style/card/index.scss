@@ -32,3 +32,18 @@
     }
   }
 }
+// 移动端卡片
+.app-lookui-card {
+	display: flex;
+	flex-wrap: wrap;
+	.card {
+		width: calc(50% - 5px);
+		margin-bottom: 6px;
+		img {
+			width: 100%;
+		}
+		&:nth-child(2n) {
+			margin-left: 10px;
+		}
+	}
+}

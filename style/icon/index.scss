@@ -1,0 +1,53 @@
+.app-lookui-icons {
+	.icon-name {
+		padding: 9px;
+		font-weight: 700;
+		color: #000000;
+		font-size: 16px;
+		line-height: 20px;
+		letter-spacing: 1px;
+		font-family: Noto Sans CJK SC !important;
+	}
+	.icon-list {
+		display: flex;
+		flex-wrap: wrap;
+		background: #ffffff;
+		border-radius: 16px;
+	}
+	.icon-item {
+		width: 25%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin: 12px 0;
+		img {
+			width: 32px;
+		}
+		span {
+			font-family:Source Han Sans CN;
+			color:#303133;
+			font-size:12px;
+			line-height: 24px;
+		}
+	}
+	&.nums-2 {
+		.icon-item {
+			width: 50%;
+		}
+	}
+	&.nums-3 {
+		.icon-item {
+			width: 33%;
+			img {
+				width: 52px;
+				margin-bottom: 2px;
+			}
+		}
+	}
+	&.nums-5 {
+		.icon-item {
+			width: 20%;
+		}
+	}
+}

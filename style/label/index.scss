@@ -1,0 +1,39 @@
+.app-lookui-label {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	background: #fff;
+	box-sizing: border-box;
+	p {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	img {
+		width: 30px;
+	}
+	span {
+		font-family: Source Han Sans CN !important;
+		color: #606266;
+		font-size: 12px;
+		line-height: 14px;
+	}
+	p.active {
+		span {
+			color:#506eda;
+		}
+	}
+	&.height-54 {
+		padding: 2px 0 8px;
+	}
+	&.height-48 {
+		padding: 2px 0 6px;
+		img {
+			width: 24px;
+		}
+		span {
+			line-height: 16px;
+		}
+	}
+}

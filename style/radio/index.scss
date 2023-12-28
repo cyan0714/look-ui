@@ -1,23 +1,39 @@
 @import '../variable.scss';
 .lookui-radio {
-  .el-radio__inner {
-    width: 16px;
-    height: 16px;
-  }
-  .el-radio__input.is-checked .el-radio__inner {
-    border-color: $--themeColor;
-    background-color: #fff;
-  }
-  .el-radio__input.is-disabled.is-checked .el-radio__inner {
-    background-color: #f5f7fa;
-    border-color: #e4e7ed;
-  }
-  .el-radio__inner::after {
-    width: 8px;
-    height: 8px;
-    background-color: $--themeColor;
-  }
-  .el-radio__input.is-checked + .el-radio__label {
-    color: #666;
-  }
+    .el-radio__inner {
+	  width: 16px;
+	  height: 16px;
+    }
+    .el-radio__input.is-checked .el-radio__inner {
+      border-color: $--themeColor;
+      background-color: #fff;
+    }
+    .el-radio__input.is-disabled.is-checked .el-radio__inner {
+      background-color: #f5f7fa;
+      border-color: #e4e7ed;
+    }
+    .el-radio__inner::after {
+      width: 8px;
+      height: 8px;
+      background-color: $--themeColor;
+    }
+    .el-radio__input.is-checked + .el-radio__label {
+      color: #666;
+    }
+}
+.lookui-radio-button {
+	margin-right: 26px;
+	::v-deep .el-radio-button__inner {
+		border: 0 none !important;
+		font-family: Helvetica CE !important;
+		color: #666666 !important;
+		font-size: 14px;
+		padding: 6px 9px !important;
+		border-radius: 2px;
+	}
+	&.is-active  {
+		::v-deep .el-radio-button__inner {
+			color: #fff !important;
+		}
+	}
 }

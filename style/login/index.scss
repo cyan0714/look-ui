@@ -1,0 +1,113 @@
+.app-lookui-login {
+	background: #fff;
+	height: 100%;
+	.app-login-top {
+		height: 284px;
+		background: url('http://192.168.0.149/xjj-look-ui-imgs/img_login_bg.png') no-repeat;
+		background-size: 100% 100%;
+		position: relative;
+		z-index: 0;
+		h2 {
+			display: block;
+			font-family: Source Han Sans CN !important;
+			color: #ffffff;
+			font-size: 16px;
+			line-height: 30px;
+			font-weight: normal;
+			text-align: center;
+			padding-top: 16px;
+		}
+		.name {
+			position: absolute;
+			left: 16px;
+			bottom: 56px;
+			span {
+				display: block;
+				font-family: Source Han Sans CN !important;
+				font-weight: 500;
+				color: #ffffff;
+				font-size: 20px;
+				line-height: 30px;
+			}
+		}
+	}
+	.app-login-content {
+		position: relative;
+		z-index: 1;
+		background: #fff;
+		margin-top: -42px;
+		border-radius:24px 24px 0px 0px;
+		padding: 30px 44px;
+		box-sizing: border-box;
+		.input-block {
+			margin-bottom: 30px;
+		}
+		.input-name {
+			font-family: Source Han Sans CN !important;
+			font-weight: 700;
+			color: #303133;
+			font-size: 20px;
+			line-height: 30px;
+			padding-bottom: 10px;
+		}
+		.password {
+			position: relative;
+			img {
+				position: absolute;
+				top: 50%;
+				right: 0;
+				transform: translateY(-50%);
+			}
+		}
+		.van-cell {
+			padding: 8px 30px 8px 0;
+			border-bottom: 1px solid #eee;
+		}
+		::v-deep input:-webkit-autofill,
+		::v-deep textarea:-webkit-autofill,
+		::v-deep select:-webkit-autofill {
+		  -webkit-text-fill-color: #111 !important; 
+		  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; 
+		  background-color: transparent; 
+		  background-image: none;
+		  transition: background-color 50000s ease-in-out 0s;
+		}
+		::v-deep input {
+			font-size: 16px;
+			background-color: transparent !important;
+			&::placeholder {
+				font-family: Source Han Sans CN !important;
+				color: #b0b5bb;
+				font-size: 14px;
+				line-height: 30px;
+			}
+		}
+		.forget {
+			padding-top: 12px;
+			display: block;
+			text-align: right;
+			font-family: Source Han Sans CN !important;
+			color: #606266;
+			font-size: 14px;
+			line-height: 30px;
+		}
+		.btn {
+			button {
+				background: #4482ff;
+				border-radius: 40px;
+				font-family: Source Han Sans CN !important;
+				color: #ffffff;
+				font-size: 16px;
+				line-height: 30px;
+				letter-spacing: 1px;
+				border: 0 none;
+				height: 48px;
+			}
+			.van-button--default {
+				background: #f7f8fa;
+				color: #606266;
+				margin-top: 24px;
+			}
+		}
+	}
+}

@@ -1,0 +1,32 @@
+.app-lookui-grid {
+	padding: 12px 0 12px 14px;
+	background: #fff;
+	border-radius: 9px;
+	.grid-list {
+	  display: flex;
+	  overflow-x: auto;
+	  overflow-y: hidden;
+	  white-space: nowrap;
+	  &::-webkit-scrollbar {
+		  display: none;
+	  }
+	}
+	.item {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		flex: 0 0 auto;
+		margin-right: 12px;
+		img {
+		  width: 92px;
+		  height: 62px;
+		}
+		.name {
+			padding-top: 6px;
+		}
+	}
+	.item:last-child {
+	  margin-right: 0;
+	}
+}

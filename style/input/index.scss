@@ -1,5 +1,9 @@
 @import '../variable.scss';
 .lookui-input {
+	max-width: 294px;
+	&.el-textarea {
+		max-width: 440px;
+	}
   &.el-input--medium {
     .el-input__inner {
       height: 36px;
@@ -52,8 +56,8 @@
   .el-input__prefix, .el-input__suffix {
     top: 1px;
   }
-  &.is-disabled .el-input__inner {
-    background-color: #d9d9d9;
+  ::v-deep &.is-disabled .el-input__inner {
+    background-color: #F5F5F5 !important;
   }
 
   .el-textarea__inner {
@@ -72,4 +76,5 @@
   input:-webkit-autofill:focus {
     transition: background-color 600000s 0s, color 600000s 0s;
   }
+  
 }

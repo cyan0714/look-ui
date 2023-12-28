@@ -1,0 +1,18 @@
+.app-lookui-ad {
+	height: 112px;
+	border-radius: 9px;
+	img {
+		width: 100%;
+		border-radius: 9px;
+	}
+	::v-deep .van-swipe__indicator {
+		background: #fff;
+		opacity: 1;
+	}
+	::v-deep .van-swipe__indicator--active {
+		width: 16px;
+		height: 6px;
+		background: #ffffff;
+		border-radius: 4px;
+	}
+}
