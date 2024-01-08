@@ -159,9 +159,16 @@
     </div>
     <div class="right-container">
       <header class="right-contiainer-header">
-        <img :src="require(`./imgs/icon_4.png`)" alt="" />
-        <span class="txt">查重结果: </span>
-        <span class="count"> {{ checkingResultList.length }}</span>
+        <div class="left">
+          <img :src="require(`./imgs/icon_4.png`)" alt="" />
+          <span class="txt">查重结果: </span>
+          <span class="count"> {{ checkingResultList.length }}</span>
+        </div>
+        <div class="right">
+          <span class="txt">关键字:</span>
+          <el-input class="lookui-input" v-model="keywords" placeholder="可输入关键字进行匹配" clearable></el-input>
+          <el-button class="lookui-btn" type="primary" @click="handleQuery">查询</el-button>
+        </div>
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-if="checkingResultList.length > 0">
@@ -235,6 +242,7 @@ export default {
   },
   data() {
     return {
+      keywords: '',
       sources: ['name', 'tenantId'],
       loadingCheckResultList: false,
       CheckingResultItem,
@@ -396,6 +404,13 @@ export default {
     });
   },
   methods: {
+    handleQuery() {
+      if (this.keywords.trim() === '') {
+        this.toggleTag(this.currentMissionType)
+        return
+      }
+      this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
+    },
     customCheckboxChange(flag, tag) {
       tag.checked = flag;
     },
@@ -827,16 +842,42 @@ export default {
     padding: 14px;
     header.right-contiainer-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       font-size: 18px;
       font-weight: bold;
-
-      span.txt {
-        margin: 0 8px;
+      .left {
+        display: flex;
+        align-items: center;
+        span.txt {
+          margin: 0 8px;
+        }
+        span.count {
+          color: #506eda;
+        }
       }
-
-      span.count {
-        color: #506eda;
+      .right {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        span.txt {
+          font-weight: normal;
+          font-size: 17px;
+          margin: 0 8px;
+        }
+        .lookui-input {
+          width: 250px;
+          ::v-deep .el-input__inner {
+            height: 34px;
+          }
+          ::v-deep .el-input__icon {
+            line-height: 34px;
+          }
+        } 
+        .lookui-btn {
+          padding: 9px 18px;
+          border-radius: 0;
+        }
       }
     }
     section.right-container-block {
