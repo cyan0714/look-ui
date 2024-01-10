@@ -373,13 +373,23 @@ export default {
   created() {
     this.shouldSendRequest = false
 
-    // 判断是否添加 source 字段
+    // 判断是否添加 source 字段(自定义来源)
     if (this.isShowCustomSource) {
       const source = this.customSource.checkboxs.filter(item => item.checked)
       if (source.length > 0) {
         this.sources.push('source')
       }
     }
+
+    // 判断是否添加 orgId 字段
+    for (let i = 0; i < this.data.length; i++) {
+      // 只要有一个对象传了 orgId，就给 sources 加上 orgId
+      if (this.data[i].orgId) {
+        this.sources.push('orgId')
+        break;
+      }
+    }
+
     this.paramsData.names = this.sources.join(',')
 
     this.fetchCheckingResultList(0);
@@ -556,6 +566,15 @@ export default {
         });
       }
       this.sources.push('tenantId'); // 固定
+
+      for (let i = 0; i < this.data.length; i++) {
+        // 只要有一个对象传了 orgId，就给 sources 加上 orgId
+        if (this.data[i].orgId) {
+          this.sources.push('orgId')
+          break;
+        }
+      }
+      
       this.paramsData.names = this.sources.toString();
       this.checkingResultList = [];
       this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
