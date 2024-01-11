@@ -1,5 +1,13 @@
 
 
+## [1.2.7](http://192.168.0.66/font-end/look-ui/compare/1.2.6...1.2.7) (2024-01-11)
+
+
+### Features
+
+* 查重接口入参调整 ([aa9397f](http://192.168.0.66/font-end/look-ui/commits/aa9397f316383080a3a12e5e0244796bf72d1ac5))
+* 查重结果添加关键词检索 ([4ac03d4](http://192.168.0.66/font-end/look-ui/commits/4ac03d4def3238b78ea0f5336fe903907a3a45b5))
+
 ## [1.2.6](http://192.168.0.66/font-end/look-ui/compare/1.2.5...1.2.6) (2023-12-26)
 
 ## [1.2.5](http://192.168.0.66/font-end/look-ui/compare/1.2.4...1.2.5) (2023-12-26)
