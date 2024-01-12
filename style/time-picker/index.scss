@@ -1,15 +1,16 @@
 @import '../variable.scss';
 .lookui-time-popper {
-  .time-select-item {
-    &:hover {
-      background-color: $--themeColor-100;
-      font-weight: normal;
-    }
-    &.selected:not(.disabled) {
-      color: #333;
-      font-weight: normal;
-    }
-  }
+	.time-select-item {
+		// padding: 10px 20px !important;
+		&:hover {
+		  background-color: $--themeColor-100;
+		  font-weight: normal;
+		}
+		&.selected:not(.disabled) {
+		  color: #333;
+		  font-weight: normal;
+		}
+	}
   /*修改选中日期的背景色*/
   .el-date-table td.current:not(.disabled) span {
     background-color: #4364bf;
@@ -43,16 +44,33 @@
   .el-input.is-active .el-input__inner, .el-input__inner:focus {
     border-color: #4364bf;
   }
-  .el-time-panel__btn.confirm {
-    color: $--themeColor;
-  }
-  button:hover {
-    background: none;
-  }
-  .el-time-spinner__item:hover:not(.disabled):not(.active) {
-    background-color: $--themeColor-100;
-  }
-  .el-button--text {
-    border-color: transparent;
-  }
+  
+	.el-time-panel__btn.confirm {
+		color: $--themeColor;
+	}
+	button:hover {
+		background: none;
+	}
+	.el-time-spinner__item:hover:not(.disabled):not(.active) {
+		background-color: $--themeColor-100;
+	}
+	.el-button--text {
+		border-color: transparent;
+	}
+	.el-time-spinner__item {
+		font-size: 14px !important;
+	}
+	.el-time-panel__btn {
+		font-size: 14px !important;
+	}
+	.el-time-spinner__item.active {
+		color: #666;
+		font-family: Helvetica CE !important;
+		font-size: 14px !important;
+	}
+	
+	&.el-popper {
+		padding-top: 8px !important;
+	}
 }
+
