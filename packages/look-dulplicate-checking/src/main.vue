@@ -96,7 +96,7 @@
             </el-collapse-item>
           </el-collapse>
         </div>
-        <div class="bottom-bar" v-show="currentMissionType === 0">
+        <div class="bottom-bar" v-show="isShowCheckAllNoDealBar && currentMissionType === 0">
           <div class="bb-left">
             <el-checkbox
               class="lookui-checkbox"
@@ -353,6 +353,11 @@ export default {
         };
       },
     },
+    // 是否显示底部全选未处理任务Bar
+    isShowCheckAllNoDealBar: {
+      type: Boolean,
+      default: true,
+    }
   },
   computed: {
     currentInstance() {
