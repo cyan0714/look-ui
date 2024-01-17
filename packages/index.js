@@ -1,8 +1,10 @@
-import LookEmpty from './look-empty'
-import LookDulplicateChecking from './look-dulplicate-checking'
+import LookEmpty from './look-empty';
+import LookDulplicateChecking from './look-dulplicate-checking';
+import LookAssociatedDocument from './look-associated-document';
+
 import '../style/index.scss';
 
-const components = [LookEmpty, LookDulplicateChecking];
+const components = [LookEmpty, LookDulplicateChecking, LookAssociatedDocument];
 
 export default {
   install(Vue) {

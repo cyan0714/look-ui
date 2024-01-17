@@ -1,0 +1,289 @@
+<template>
+  <div class="look-associated-document">
+    <div class="left-container">
+      <div class="search-area">
+        <span class="txt">关键字:</span>
+        <el-input
+          class="lookui-input"
+          v-model="keywords"
+          placeholder="可输入关键字进行匹配"
+          clearable></el-input>
+        <el-button class="lookui-btn" type="primary" @click="handleQuery">查询</el-button>
+      </div>
+      <div class="list-area">
+        <div class="la-item" v-for="(item, index) in list" :key="index">
+          <div class="li-top">
+            <div class="lt-left">
+              <div :class="['ll-type', item.type === 0 ? 'receive' : 'send']">
+                {{ item.type === 0 ? '收文' : '发文' }}
+              </div>
+              <div class="ll-title">{{ item.title }}</div>
+            </div>
+            <div class="lt-right">
+              <div class="lr-status" v-if="item.status === 0">
+                <i class="el-icon-check"></i>
+                <span>已关联</span>
+              </div>
+              <div class="lr-status-button" v-else>添加关联</div>
+            </div>
+          </div>
+          <div class="li-bottom">
+            <div class="lb-unit">来文单位：{{ item.unit }}</div>
+            <div class="lb-time">收文时间：{{ item.time }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination-area">
+        <el-pagination
+          class="lookui-pagination"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+          background>
+        </el-pagination>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="list-area">
+        <div class="list-area-item" v-for="(item, index) in selectedList" :key="index">
+          <p>{{ item.title }}</p>
+          <i class="el-icon-close close-btn"></i>
+        </div>
+      </div>
+      <div class="btn-area">
+        <el-button type="info" plain>清空</el-button>
+        <el-button class="lookui-btn" type="primary">下一步</el-button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'look-associated-document',
+  components: {},
+  data() {
+    return {
+      keywords: '',
+      selectedList: [
+        {
+          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
+        },
+        {
+          title:
+            '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
+        },
+      ],
+      list: [
+        {
+          type: 0, // 0收文，1发文
+          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
+          unit: '海南省人民政府办公厅',
+          time: '2021-01-01 12:14',
+          status: 0, // 0已关联 1未关联
+        },
+        {
+          type: 1, // 0收文，1发文
+          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
+          unit: '海南省人民政府办公厅',
+          time: '2021-01-01 12:14',
+          status: 1, // 0已关联 1未关联
+        },
+        {
+          type: 0, // 0收文，1发文
+          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
+          unit: '海南省人民政府办公厅',
+          time: '2021-01-01 12:14',
+          status: 0, // 0已关联 1未关联
+        },
+        {
+          type: 1, // 0收文，1发文
+          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
+          unit: '海南省人民政府办公厅',
+          time: '2021-01-01 12:14',
+          status: 1, // 0已关联 1未关联
+        },
+      ],
+    };
+  },
+  props: {},
+  computed: {},
+  created() {},
+  mounted() {},
+  methods: {
+    handleQuery() {
+      // if (this.keywords.trim() === '') {
+      //   this.toggleTag(this.currentMissionType)
+      //   return
+      // }
+      // this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+* {
+  box-sizing: border-box;
+}
+.look-associated-document {
+  display: flex;
+  height: 100%;
+  .left-container {
+    width: 70%;
+    height: 100%;
+    background-color: #fff;
+    padding: 12px;
+    .search-area {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      span.txt {
+        font-weight: normal;
+        font-size: 17px;
+        margin: 0 8px;
+      }
+      .lookui-input {
+        width: 250px;
+        ::v-deep .el-input__inner {
+          height: 34px;
+        }
+        ::v-deep .el-input__icon {
+          line-height: 34px;
+        }
+      }
+      .lookui-btn {
+        padding: 9px 18px;
+        border-radius: 0;
+      }
+    }
+    .list-area {
+      height: calc(100% - 86px);
+      overflow: auto;
+      margin-top: 20px;
+      .la-item {
+        padding: 14px 20px;
+        border: 1px solid #ebf4fd;
+        margin-bottom: 10px;
+        .li-top {
+          display: flex;
+          justify-content: space-between;
+          .lt-left {
+            display: flex;
+            align-items: center;
+            .ll-type {
+              font-size: 15px;
+              margin-right: 10px;
+              padding: 2px 8px 4px;
+              border-radius: 4px;
+              &.receive {
+                color: #1da595;
+                background-color: #b3f0b3;
+              }
+              &.send {
+                color: #506eda;
+                background-color: #c8d9fe;
+              }
+            }
+            .ll-title {
+              font-size: 16px;
+              color: #000;
+              font-weight: bold;
+            }
+          }
+          .lt-right {
+            display: flex;
+            align-items: center;
+            .lr-status {
+              display: flex;
+              align-items: center;
+              font-size: 15px;
+              color: #1da595;
+              i {
+                margin-right: 5px;
+              }
+            }
+            .lr-status-button {
+              padding: 2px 12px 4px;
+              border-radius: 6px;
+              background-color: #d9f0f0;
+              color: #1da595;
+              cursor: pointer;
+            }
+          }
+        }
+        .li-bottom {
+          display: flex;
+          margin-top: 14px;
+          font-size: 15px;
+          color: #666;
+          .lb-unit {
+          }
+          .lb-time {
+            margin-left: 50px;
+          }
+        }
+      }
+    }
+    .pagination-area {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .right-container {
+    width: 30%;
+    height: 100%;
+    padding: 20px 12px 0;
+    background-color: #eeeeee;
+    .list-area {
+      height: calc(100% - 76px);
+      .list-area-item {
+        position: relative;
+        padding: 10px 40px 10px 10px;
+        margin-bottom: 10px;
+        border: 2px solid #0399fe;
+        border-radius: 8px;
+        font-size: 15px;
+        color: #000;
+        background-color: #ebf3fe;
+        p {
+          margin: 0;
+          display: -webkit-box;
+          word-break: break-all;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        i.close-btn {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 24px;
+          line-height: 20px;
+          height: 24px;
+          text-align: center;
+          border-bottom-left-radius: 50%;
+          font-size: 14px;
+          background-color: #0399fe;
+          color: #fff;
+          cursor: pointer;
+        }
+      }
+    }
+    .btn-area {
+      padding: 20px 12px;
+      display: flex;
+      justify-content: center;
+      .el-button {
+        padding: 10px 20px;
+        border-radius: 0;
+      }
+    }
+  }
+}
+</style>
