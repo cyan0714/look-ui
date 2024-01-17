@@ -40,7 +40,7 @@
         </div>
         <div class="right">
           <span class="key">下达时间:</span>
-          <div class="value">{{ source.beginTime }}</div>
+          <div class="value">{{ source.beginTime.split(':').slice(0, 2).join(':') }}</div>
         </div>
       </div>
     </div>
@@ -254,9 +254,11 @@ export default {
     padding: 12px 0;
     div.left {
       display: flex;
+      flex: 1;
       div.leader-unit {
         display: flex;
         align-items: center;
+        width: calc(50% - 20px);
         .key {
           flex-shrink: 0;
         }
@@ -271,7 +273,8 @@ export default {
       div.supervise-unit {
         display: flex;
         align-items: center;
-        margin-left: 50px;
+        width: calc(50% - 20px);
+        margin-left: 40px;
         .key {
           flex-shrink: 0;
         }
@@ -287,6 +290,7 @@ export default {
     div.right {
       display: flex;
       align-items: center;
+      flex-shrink: 0;
     }
   }
 
