@@ -1,5 +1,12 @@
 
 
+## [1.2.9](http://192.168.0.66/font-end/look-ui/compare/1.2.8...1.2.9) (2024-01-17)
+
+
+### Features
+
+* GZLS-2780 添加是否显示底部全选未处理任务Bar属性 ([5fc8bc7](http://192.168.0.66/font-end/look-ui/commits/5fc8bc76f47a3d87b2c21d1eb92b371403fae555))
+
 ## [1.2.8](http://192.168.0.66/font-end/look-ui/compare/1.2.7...1.2.8) (2024-01-12)
 
 ## [1.2.7](http://192.168.0.66/font-end/look-ui/compare/1.2.6...1.2.7) (2024-01-11)
