@@ -1,5 +1,12 @@
 
 
+## [1.2.10](http://192.168.0.66/font-end/look-ui/compare/1.2.9...1.2.10) (2024-01-18)
+
+
+### Features
+
+* 关联公文 ([382331c](http://192.168.0.66/font-end/look-ui/commits/382331cd4fb9386dd869d54add98f725c9b68708))
+
 ## [1.2.9](http://192.168.0.66/font-end/look-ui/compare/1.2.8...1.2.9) (2024-01-17)
 
 
