@@ -379,12 +379,12 @@ export default {
     this.shouldSendRequest = false
 
     // 判断是否添加 source 字段(自定义来源)
-    if (this.isShowCustomSource) {
+    // if (this.isShowCustomSource) {
       const source = this.customSource.checkboxs.filter(item => item.checked)
       if (source.length > 0) {
         this.sources.push('source')
       }
-    }
+    // }
 
     // 判断是否添加 orgId 字段
     for (let i = 0; i < this.data.length; i++) {
@@ -446,13 +446,13 @@ export default {
 
       // 将 source 字段添加到 data 每个对象中
       this.data.forEach(item => {
-        if (this.isShowCustomSource) {
+        // if (this.isShowCustomSource) {
           const source = this.customSource.checkboxs
             .filter(item => item.checked)
             .map(item => item.value)
             .join(',');
           item.source = source;
-        }
+        // }
       });
       this.paramsData.jsonStr = JSON.stringify(this.data);
 

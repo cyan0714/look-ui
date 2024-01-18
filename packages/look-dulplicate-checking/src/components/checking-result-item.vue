@@ -2,7 +2,7 @@
   <div class="checking-result-item">
     <div class="content">
       <div class="title" @click.stop="handleCheckingItemDetail">
-        <div class="source-title" v-if="isShowCustomSource()" :style="getCustomTitle(source).style" >{{ getCustomTitle(source).key }}</div>
+        <div class="source-title" v-if="customSource().checkboxs.filter(item => item.checked).length > 0" :style="getCustomTitle(source).style" >{{ getCustomTitle(source).key }}</div>
         <span>{{ source.name }}</span>
       </div>
       <div class="tags-wrap">
@@ -40,7 +40,7 @@
         </div>
         <div class="right">
           <span class="key">下达时间:</span>
-          <div class="value">{{ source.beginTime.split(':').slice(0, 2).join(':') }}</div>
+          <div class="value">{{ source.beginTime?.split(':').slice(0, 2).join(':') }}</div>
         </div>
       </div>
     </div>
