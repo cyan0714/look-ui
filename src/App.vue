@@ -39,7 +39,8 @@
           <el-button size="small" @click="handleDiyBtnClick(slotProps)">自定义按钮</el-button>
         </template> ~~>
     </look-dulplicate-checking>-->
-    <look-associated-document />
+    <!-- <look-associated-document /> -->
+    <look-associated-attachment style="height: 300px;" />
   </div>
 </template>
 

@@ -27,6 +27,10 @@
         }
       }
     }
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+      background-color: #506eda;
+      border-color: #506eda;
+    }
   }
   .el-table__body-wrapper {
     .el-table__body {

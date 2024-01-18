@@ -1,10 +1,16 @@
 import LookEmpty from './look-empty';
 import LookDulplicateChecking from './look-dulplicate-checking';
 import LookAssociatedDocument from './look-associated-document';
+import LookAssociatedAttachment from './look-associated-attachment';
 
 import '../style/index.scss';
 
-const components = [LookEmpty, LookDulplicateChecking, LookAssociatedDocument];
+const components = [
+  LookEmpty,
+  LookDulplicateChecking,
+  LookAssociatedDocument,
+  LookAssociatedAttachment,
+];
 
 export default {
   install(Vue) {
