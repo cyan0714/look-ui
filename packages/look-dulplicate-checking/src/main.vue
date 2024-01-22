@@ -572,6 +572,13 @@ export default {
       }
       this.sources.push('tenantId'); // 固定
 
+      // 判断是否添加 source 字段
+      if (!this.sources.includes('source')) {
+        this.sources.push('source');
+      } else {
+        this.sources.splice(this.sources.indexOf('source'), 1);
+      }
+
       for (let i = 0; i < this.data.length; i++) {
         // 只要有一个对象传了 orgId，就给 sources 加上 orgId
         if (this.data[i].orgId) {
