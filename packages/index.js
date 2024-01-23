@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import LookEmpty from './look-empty';
 import LookDulplicateChecking from './look-dulplicate-checking';
 import LookAssociatedDocument from './look-associated-document';
