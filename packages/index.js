@@ -12,6 +12,10 @@ const components = [
   LookAssociatedAttachment,
 ];
 
+for (let i = 0; i < components.length; i++) {
+  Vue.component(components[i].name, components[i]);
+}
+
 export default {
   install(Vue) {
     for (let i = 0; i < components.length; i++) {
