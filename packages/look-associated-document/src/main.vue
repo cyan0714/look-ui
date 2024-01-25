@@ -10,7 +10,7 @@
               :class="['btn-item', currentIndex === index ? 'btn-item-actived' : '']"
               :key="index"
               @click="handleClick(index)">
-              {{ item.name }}
+              {{ item }}
             </div>
           </div>
         </div>
@@ -19,12 +19,17 @@
             class="lookui-input"
             v-model="keywords"
             placeholder="请输入公文标题或来文单位"
-            clearable></el-input>
+            clearable
+          />
           <el-button class="lookui-btn" type="primary" @click="handleQuery">查询</el-button>
         </div>
       </div>
       <div class="list-area">
-        <div class="la-item" v-for="(item, index) in list" :key="index">
+        <div 
+          v-for="(item, index) in list" 
+          :key="index"
+          class="la-item"
+        >
           <div class="li-top">
             <div class="lt-left">
               <div :class="['ll-type', item.type === 0 ? 'receive' : 'send']">
@@ -37,7 +42,13 @@
                 <i class="el-icon-check"></i>
                 <span>已关联</span>
               </div>
-              <div class="lr-status-button" v-else>添加关联</div>
+              <div 
+                v-else
+                class="lr-status-button"
+                @click="addAssociation(item)"
+              >
+              添加关联
+            </div>
             </div>
           </div>
           <div class="li-bottom">
@@ -53,9 +64,9 @@
           @current-change="handleCurrentChange"
           :current-page="currentPage"
           :page-sizes="[10, 20, 30, 40]"
-          :page-size="100"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="totalPage"
           background>
         </el-pagination>
       </div>
@@ -64,95 +75,143 @@
       <div class="list-area">
         <div class="list-area-item" v-for="(item, index) in selectedList" :key="index">
           <p>{{ item.title }}</p>
-          <i class="el-icon-close close-btn"></i>
+          <i 
+            class="el-icon-close close-btn"
+            @click="deleteAssociation(item)"
+          >
+          </i>
         </div>
       </div>
       <div class="btn-area">
-        <el-button type="info" plain>清空</el-button>
-        <el-button class="lookui-btn" type="primary">下一步</el-button>
+        <el-button 
+          type="info" 
+          plain
+          @click="clearAssociation"
+          >
+          清空
+        </el-button>
+        <el-button 
+        class="lookui-btn" 
+        type="primary"
+        @click="nextStep"
+        >
+        下一步
+      </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  searchUnit,
+  searchPersonal
+} from '../../../utils/api'
 export default {
   name: 'look-associated-document',
   components: {},
   data() {
     return {
+      currentPage: 1,
+      pageSize: 10,
+      totalPage: 0,
       currentIndex: 0,
-      range: [
-        {
-          name: '个人',
-          id: 1,
-        },
-        {
-          name: '部门',
-          id: 2,
-        },
-        {
-          name: '单位',
-          id: 3,
-        },
-      ],
+      range: ['个人', '部门', '单位'],
       keywords: '',
-      selectedList: [
-        {
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-        },
-        {
-          title:
-            '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-        },
-      ],
-      list: [
-        {
-          type: 0, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 0, // 0已关联 1未关联
-        },
-        {
-          type: 1, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 1, // 0已关联 1未关联
-        },
-        {
-          type: 0, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 0, // 0已关联 1未关联
-        },
-        {
-          type: 1, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 1, // 0已关联 1未关联
-        },
-      ],
+      list: [],
     };
   },
-  props: {},
-  computed: {},
-  created() {},
+  props: {
+    url: String
+  },
+  computed: {
+    selectedList() {
+      return this.list.filter(item => item.status === 0)
+    }
+  },
+  created() {
+    this.getData()
+  },
   mounted() {},
   methods: {
+    async getData() {
+        const {
+          url,
+          currentPage: page, 
+          pageSize,
+          keywords: title
+        } = this
+        let res = {}
+        const formData =  {
+          flowTypeSearch: 'fwOrsw',
+          page,
+          pageSize,
+          title,
+          typeSearch: this.currentIndex !== 0 ? 'chuShiZhaoWen' : void 0
+        }
+        if(this.currentIndex !== 2) {
+          res = await searchPersonal(url, formData)
+        }else {
+          res = await searchUnit(url, formData)
+        }
+        const {code, data} = res.data
+        if(code === 0) {
+          const {
+            total, 
+            data: list
+          } = data
+          this.totalPage = total
+          this.list = list.map(item => {
+            const {
+              title,
+              showTime: time,
+              sfwflag: type,
+              lwdw: unit,
+              status = 1,
+              ...others
+            } = item
+            return {
+              title,
+              time,
+              type,
+              unit,
+              status,
+              ...others
+            }
+          })
+        }
+    },
+    handleSizeChange(val) {
+      this.currentPage = 1
+      this.pageSize = val
+      this.getData()
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val
+      this.getData()
+    },
     handleClick(index) {
       this.currentIndex = index;
+      this.getData()
     },
     handleQuery() {
-      // if (this.keywords.trim() === '') {
-      //   this.toggleTag(this.currentMissionType)
-      //   return
-      // }
-      // this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
+      this.getData()
     },
+    addAssociation(item) {
+      item.status = 0
+      this.$emit('add', item, this.selectedList)
+    },
+    deleteAssociation(item) {
+      item.status = 1
+      this.$emit('delete', item, this.selectedList)
+    },
+    clearAssociation() {
+      this.selectedList.forEach(item => item.status = 1)
+      this.$emit('clear', [])
+    },
+    nextStep() {
+      this.$emit('next', this.selectedList)
+    }
   },
 };
 </script>

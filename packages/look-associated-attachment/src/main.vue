@@ -3,10 +3,11 @@
     <div class="top-container">
       <div class="left-container">
         <div
-          v-for="(item, index) in list"
+          v-for="(item, index) in data"
           :key="index"
           :class="['list-item', currentIndex === index ? 'list-item-actived' : '']"
-          @click="handleClick(index)">
+          @click="handleClick(index)"
+        >
           <div :class="['li-type', item.type === 0 ? 'receive' : 'send']">
             {{ item.type === 0 ? '收文' : '发文' }}
           </div>
@@ -22,148 +23,101 @@
           height="100%"
           @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column prop="name" label="文件名"> </el-table-column>
+          <el-table-column prop="srcfilename" label="文件名"> </el-table-column>
         </el-table>
       </div>
     </div>
     <div class="bottom-container">
       <div class="btn-area">
-        <el-button type="info" plain>上一步</el-button>
-        <el-button class="lookui-btn" type="primary">确定</el-button>
+        <el-button 
+          type="info" 
+          plain
+          @click="onPrevious"
+        >
+          上一步
+        </el-button>
+        <el-button 
+          class="lookui-btn" 
+          type="primary"
+          :disabled="isConfirm"
+          @click="onConfirm"
+        >
+        确定
+      </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {searchAttachment} from '../../../utils/api'
 export default {
   name: 'look-associated-attachment',
   components: {},
   data() {
     return {
       multipleSelection: [],
-      tableData: [
-        {
-          name: '呈批单.pdf',
-        },
-        {
-          name: '来文正文.doc',
-        },
-        {
-          name: '来文附件.pdf',
-        },
-        {
-          name: '呈批单.pdf',
-        },
-        {
-          name: '来文正文.doc',
-        },
-        {
-          name: '来文附件.pdf',
-        },
-      ],
-      currentIndex: 0,
-      range: [
-        {
-          name: '个人',
-          id: 1,
-        },
-        {
-          name: '部门',
-          id: 2,
-        },
-        {
-          name: '单位',
-          id: 3,
-        },
-      ],
-      keywords: '',
-      selectedList: [
-        {
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-        },
-        {
-          title:
-            '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-        },
-      ],
-      list: [
-        {
-          type: 0, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 0, // 0已关联 1未关联
-        },
-        {
-          type: 1, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 1, // 0已关联 1未关联
-        },
-        {
-          type: 0, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 0, // 0已关联 1未关联
-        },
-        {
-          type: 1, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 1, // 0已关联 1未关联
-        },
-        {
-          type: 0, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 0, // 0已关联 1未关联
-        },
-        {
-          type: 1, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 1, // 0已关联 1未关联
-        },
-        {
-          type: 0, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 0, // 0已关联 1未关联
-        },
-        {
-          type: 1, // 0收文，1发文
-          title: '关于印发《海南省人民政府办公厅关于印发海南省人民政府2021年立法计划的通知》的通知',
-          unit: '海南省人民政府办公厅',
-          time: '2021-01-01 12:14',
-          status: 1, // 0已关联 1未关联
-        },
-      ],
+      tableData: [],
+      currentIndex: 0
     };
   },
-  props: {},
-  computed: {},
-  created() {},
+  props: { 
+    data: {
+      type: Array,
+      default: () => [],
+    },
+    url: String
+  },
+  computed: {
+    isConfirm() {
+      return this.multipleSelection.length === 0
+    }
+  },
+  watch: {
+    data: {
+      handler(newVal, oldVal) {
+        if(Array.isArray(oldVal) && oldVal.length === 0 && newVal.length) {
+          this.searchAttachment();
+        }
+        if(Array.isArray(newVal) && newVal.length === 0) {
+          this.tableData = []
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  created() {
+
+  },
   mounted() {},
   methods: {
+    async searchAttachment() {
+      const {procInstId} = this.data[this.currentIndex]
+      const formData = {
+        cpdPdf: '1',
+        procInstId,
+        type: 'fwOrsw',
+        wjid: ''
+      }
+      const res = await searchAttachment(this.url, formData)
+      const {code, data} = res.data
+      if(code === 0) {
+        this.tableData = data.data
+      }
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleClick(index) {
       this.currentIndex = index;
+      this.searchAttachment();
     },
-    handleQuery() {
-      // if (this.keywords.trim() === '') {
-      //   this.toggleTag(this.currentMissionType)
-      //   return
-      // }
-      // this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
+    onPrevious() {
+      this.$emit('previous', this.multipleSelection)
+    },  
+    onConfirm() {
+      this.$emit('confirm', this.multipleSelection)
     },
   },
 };
