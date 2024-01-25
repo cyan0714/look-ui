@@ -122,7 +122,8 @@ export default {
     };
   },
   props: {
-    url: String
+    url: String,
+    ticket: String,
   },
   computed: {
     selectedList() {
@@ -150,9 +151,9 @@ export default {
           typeSearch: this.currentIndex !== 0 ? 'chuShiZhaoWen' : void 0
         }
         if(this.currentIndex !== 2) {
-          res = await searchPersonal(url, formData)
+          res = await searchPersonal(url, formData, this.ticket)
         }else {
-          res = await searchUnit(url, formData)
+          res = await searchUnit(url, formData, this.ticket)
         }
         const {code, data} = res.data
         if(code === 0) {

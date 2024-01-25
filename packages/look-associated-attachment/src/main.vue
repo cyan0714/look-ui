@@ -66,7 +66,8 @@ export default {
       type: Array,
       default: () => [],
     },
-    url: String
+    url: String,
+    ticket: String,
   },
   computed: {
     isConfirm() {
@@ -100,7 +101,7 @@ export default {
         type: 'fwOrsw',
         wjid: ''
       }
-      const res = await searchAttachment(this.url, formData)
+      const res = await searchAttachment(this.url, formData, this.ticket)
       const {code, data} = res.data
       if(code === 0) {
         this.tableData = data.data
