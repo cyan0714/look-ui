@@ -173,6 +173,7 @@
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-if="checkingResultList.length > 0">
           <virtual-list
+            v-if="hasResizeObserver"
             style="height: 100%; overflow-y: auto"
             class="rcs-list"
             data-key="taskId"
@@ -193,15 +194,25 @@
               </checking-result-item>
             </template>
           </virtual-list>
-          <!-- <checking-result-item
-            v-for="(item, index) in checkingResultList"
-            :item="item"
-            :recommandTags="checkedTags"
-            :isShowBtns="currentMissionType == 0"
-            :key="index"
-            @subscription-click="handleSubscribe"
-            @merging-click="handleMerge"
-            @insertion-click="handleInsert" /> -->
+          <div
+            v-else
+            style="height: 100%; overflow-y: auto"
+          >
+            <checking-result-item
+                v-for="(item, index) in checkingResultList"
+    
+                :source="item"
+                :recommandTags="checkedTags"
+                :isShowBtns="currentMissionType == 0"
+                :key="index"
+                @subscription-click="handleSubscribe"
+                @merging-click="handleMerge"
+                @insertion-click="handleInsert">
+                <template v-slot:operation-btns="slotProps">
+                  <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                </template>
+              </checking-result-item>
+          </div>
         </section>
         <section class="right-container-empty" v-else>
           <look-empty />
@@ -373,6 +384,9 @@ export default {
         this.noDealMission.dissimilar.filter(item => item.checked).length
       );
     },
+    hasResizeObserver() {
+      return window.ResizeObserver
+    }
   },
   activated() {},
   created() {
