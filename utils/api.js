@@ -28,9 +28,10 @@ export const searchPersonal = function (url, data, ticket) {
   });
 };
 
-export const searchUnit = function (url, data) {
+export const searchUnit = function (url, data, ticket) {
   return request({
     url: `${url}/api/archive/search/unit`,
+    headers: { 'Accesstoken': ticket },
     method: 'post',
     data
   });
