@@ -116,6 +116,7 @@ export default {
       pageSize: 10,
       totalPage: 0,
       currentIndex: 0,
+      selectedList: [],
       range: ['个人', '部门', '单位'],
       keywords: '',
       list: [],
@@ -126,9 +127,7 @@ export default {
     ticket: String,
   },
   computed: {
-    selectedList() {
-      return this.list.filter(item => item.status === 0)
-    }
+    
   },
   created() {
     this.getData()
@@ -182,33 +181,42 @@ export default {
           })
         }
     },
-    handleSizeChange(val) {
+    async handleSizeChange(val) {
       this.currentPage = 1
       this.pageSize = val
-      this.getData()
+      await this.getData()
+      this.$emit('sizeChange', val, this.list)
     },
-    handleCurrentChange(val) {
+    async handleCurrentChange(val) {
       this.currentPage = val
-      this.getData()
+      await this.getData()
+      this.$emit('currentChange', val, this.list)
     },
-    handleClick(index) {
+    async handleClick(index) {
       this.currentIndex = index;
-      this.getData()
+      await this.getData()
+      this.$emit('tab-click', {
+        value: index,
+        name: this.range[index]
+      }, this.list)
     },
-    handleQuery() {
-      this.getData()
+    async handleQuery() {
+      await this.getData()
+      this.$emit('search', this.keywords, this.list)
     },
     addAssociation(item) {
       item.status = 0
+      this.selectedList.push(item)
       this.$emit('add', item, this.selectedList)
     },
-    deleteAssociation(item) {
-      item.status = 1
-      this.$emit('delete', item, this.selectedList)
+    deleteAssociation(params) {
+      params.status = 1
+      this.selectedList = this.selectedList.filter(item => item.procInstId !== params.procInstId)
+      this.$emit('delete', params, this.selectedList)
     },
     clearAssociation() {
-      this.selectedList.forEach(item => item.status = 1)
-      this.$emit('clear', [])
+      this.selectedList = []
+      this.$emit('clear', this.selectedList)
     },
     nextStep() {
       this.$emit('next', this.selectedList)
