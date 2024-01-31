@@ -172,7 +172,7 @@ export default {
           font-size: 15px;
           margin-right: 10px;
           padding: 2px 8px 4px;
-          border-radius: 4px;
+          border-radius: 2px;
           flex-shrink: 0;
           &.receive {
             color: #1da595;
@@ -198,6 +198,7 @@ export default {
       padding: 14px 12px;
       background-color: #fff;
       border: 1px solid #d9d9d9;
+      border-left: none;
       ::v-deep .el-table {
         ::-webkit-scrollbar-track-piece {
           background-color: transparent;

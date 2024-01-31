@@ -250,19 +250,11 @@ export default {
           border: 1px solid #d9d9d9;
           border-left: none;
           margin-left: 10px;
-          border-radius: 4px;
+          border-radius: 2px;
           .btn-item {
             padding: 4px 16px 6px;
             cursor: pointer;
             border-left: 1px solid #d9d9d9;
-            &:first-child {
-              border-top-left-radius: 4px;
-              border-bottom-left-radius: 4px;
-            }
-            &:last-child {
-              border-top-right-radius: 4px;
-              border-bottom-right-radius: 4px;
-            }
             &.btn-item-actived {
               background-color: #506eda;
               color: #fff;
@@ -308,7 +300,7 @@ export default {
               font-size: 15px;
               margin-right: 10px;
               padding: 2px 8px 4px;
-              border-radius: 4px;
+              border-radius: 2px;
               &.receive {
                 color: #1da595;
                 background-color: #b3f0b3;
@@ -338,7 +330,7 @@ export default {
             }
             .lr-status-button {
               padding: 2px 12px 4px;
-              border-radius: 6px;
+              border-radius: 2px;
               background-color: #d9f0f0;
               color: #1da595;
               cursor: pointer;
@@ -374,8 +366,8 @@ export default {
         position: relative;
         padding: 10px 40px 10px 10px;
         margin-bottom: 10px;
-        border: 2px solid #0399fe;
-        border-radius: 8px;
+        border: 2px solid #09f;
+        border-radius: 4px;
         font-size: 15px;
         color: #000;
         background-color: #ebf3fe;
@@ -398,7 +390,7 @@ export default {
           text-align: center;
           border-bottom-left-radius: 50%;
           font-size: 14px;
-          background-color: #0399fe;
+          background-color: #09f;
           color: #fff;
           cursor: pointer;
         }
