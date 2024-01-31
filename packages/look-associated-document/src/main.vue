@@ -116,7 +116,7 @@ export default {
       pageSize: 10,
       totalPage: 0,
       currentIndex: 0,
-      selectedList: [],
+      selectedList: this.selectedData,
       range: ['个人', '部门', '单位'],
       keywords: '',
       list: [],
@@ -125,6 +125,10 @@ export default {
   props: {
     url: String,
     ticket: String,
+    selectedData: {
+      type: Array,
+      default: () => []
+    }
   },
   computed: {
     
