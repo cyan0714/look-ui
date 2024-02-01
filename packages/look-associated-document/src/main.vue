@@ -24,13 +24,20 @@
           <el-button class="lookui-btn" type="primary" @click="handleQuery">查询</el-button>
         </div>
       </div>
-      <div class="list-area">
+      <div 
+        v-loading="loading"
+        class="list-area"
+      >
         <div 
-          v-for="(item, index) in list" 
-          :key="index"
-          class="la-item"
+          class="list-area__content"
+          v-if="list.length"
         >
-          <div class="li-top">
+          <div 
+            v-for="(item, index) in list" 
+            :key="index"
+            class="la-item"
+          >
+            <div class="li-top">
             <div class="lt-left">
               <div :class="['ll-type', item.type === 0 ? 'receive' : 'send']">
                 {{ item.type === 0 ? '收文' : '发文' }}
@@ -50,12 +57,19 @@
               添加关联
             </div>
             </div>
-          </div>
-          <div class="li-bottom">
+            </div>
+            <div class="li-bottom">
             <div class="lb-unit">来文单位：{{ item.unit }}</div>
             <div class="lb-time">收文时间：{{ item.time }}</div>
+            </div>
           </div>
-        </div>
+        </div>  
+        <section 
+          v-else
+          class="list-area--empty"
+        >
+          <look-empty />
+        </section>
       </div>
       <div class="pagination-area">
         <el-pagination
@@ -120,6 +134,7 @@ export default {
       range: ['个人', '部门', '单位'],
       keywords: '',
       list: [],
+      loading: false,
     };
   },
   props: {
@@ -139,6 +154,8 @@ export default {
   mounted() {},
   methods: {
     async getData() {
+      try{
+        this.loading = true
         const {
           url,
           currentPage: page, 
@@ -184,6 +201,9 @@ export default {
             }
           })
         }
+      } finally {
+        this.loading = false
+      }
     },
     async handleSizeChange(val) {
       this.currentPage = 1
@@ -288,7 +308,6 @@ export default {
     }
     .list-area {
       height: calc(100% - 86px);
-      overflow: auto;
       margin-top: 20px;
       .la-item {
         padding: 14px 20px;
@@ -359,6 +378,18 @@ export default {
             margin-left: 50px;
           }
         }
+      }
+      &__content,
+      &--empty {
+        height: 100%;
+      }
+      &__content {
+        overflow: auto;
+      }
+      &--empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .pagination-area {
