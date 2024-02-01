@@ -83,13 +83,8 @@ export default {
   },
   watch: {
     data: {
-      handler(newVal, oldVal) {
-        if(Array.isArray(oldVal) && oldVal.length === 0 && newVal.length) {
-          this.searchAttachment();
-        }
-        if(Array.isArray(newVal) && newVal.length === 0) {
-          this.tableData = []
-        }
+      handler(val) {
+        this.searchAttachment();
       },
       deep: true,
       immediate: true
@@ -101,23 +96,25 @@ export default {
   methods: {
     async searchAttachment() {
       try{
-        this.loading = true
-        const {procInstId} = this.data[this.currentIndex]
-        const formData = {
-          cpdPdf: '1',
-          procInstId,
-          type: 'fwOrsw',
-          wjid: ''
-        }
-        const res = await searchAttachment(this.url, formData, this.ticket)
-        const {code, data} = res.data
-        if(code === 0) {
-          this.tableData = data.data
-          this.tableKey = Math.random().toString(36).substring(2)
-          await this.$nextTick()
-          this.tableData.forEach((item) => {
-            this.$refs.multipleTable.toggleRowSelection(item, this.selectedMap.has(item.id))
-          })
+        if(Array.isArray(this.data) && this.data.length) {
+          this.loading = true
+          const {procInstId} = this.data[this.currentIndex]
+          const formData = {
+            cpdPdf: '1',
+            procInstId,
+            type: 'fwOrsw',
+            wjid: ''
+          }
+          const res = await searchAttachment(this.url, formData, this.ticket)
+          const {code, data} = res.data
+          if(code === 0) {
+            this.tableData = data.data
+            this.tableKey = Math.random().toString(36).substring(2)
+            await this.$nextTick()
+            this.tableData.forEach((item) => {
+              this.$refs.multipleTable.toggleRowSelection(item, this.selectedMap.has(item.id))
+            })
+          }  
         }
       }finally {
         this.loading = false
