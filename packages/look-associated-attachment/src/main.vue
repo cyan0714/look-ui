@@ -98,11 +98,11 @@ export default {
       try{
         if(Array.isArray(this.data) && this.data.length) {
           this.loading = true
-          const {procInstId, wjid} = this.data[this.currentIndex]
+          const {procInstId, wjid, type} = this.data[this.currentIndex]
           const formData = {
             cpdPdf: '1',
             procInstId,
-            type: 'fwOrsw',
+            type: type === 1 ? 'fw' : 'sw',
             wjid: wjid || ''
           }
           const res = await searchAttachment(this.url, formData, this.ticket)
