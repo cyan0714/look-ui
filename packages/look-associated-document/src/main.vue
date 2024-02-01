@@ -299,11 +299,14 @@ export default {
           justify-content: space-between;
           .lt-left {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             .ll-type {
+              height: 24px;
+              line-height: 24px;
+              flex-shrink: 0;
               font-size: 15px;
               margin-right: 10px;
-              padding: 2px 8px 4px;
+              padding: 0 8px;
               border-radius: 2px;
               &.receive {
                 color: #1da595;
@@ -318,11 +321,15 @@ export default {
               font-size: 16px;
               color: #000;
               font-weight: bold;
+              line-height: 24px;
             }
           }
           .lt-right {
+            min-width: 88px;
+            height: 24px;
+            line-height: 24px;
+            flex-shrink: 0;
             display: flex;
-            align-items: center;
             .lr-status {
               display: flex;
               align-items: center;
@@ -333,7 +340,7 @@ export default {
               }
             }
             .lr-status-button {
-              padding: 2px 12px 4px;
+              padding: 0 12px;
               border-radius: 2px;
               background-color: #d9f0f0;
               color: #1da595;
