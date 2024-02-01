@@ -45,7 +45,10 @@
               <div class="ll-title">{{ item.title }}</div>
             </div>
             <div class="lt-right">
-              <div class="lr-status" v-if="item.status === 0">
+              <div
+                  v-if="isSelected(item.url)"
+                  class="lr-status" 
+                >
                 <i class="el-icon-check"></i>
                 <span>已关联</span>
               </div>
@@ -135,6 +138,7 @@ export default {
       keywords: '',
       list: [],
       loading: false,
+      selectedDataMap: new Map()
     };
   },
   props: {
@@ -149,6 +153,9 @@ export default {
     
   },
   created() {
+    this.selectedData.forEach(item => {
+      this.selectedDataMap.set(item.url, item)
+    })
     this.getData()
   },
   mounted() {},
@@ -228,21 +235,28 @@ export default {
       await this.getData()
       this.$emit('search', this.keywords, this.list)
     },
+    isSelected(key) {
+      return this.selectedDataMap.has(key)
+    },
     addAssociation(item) {
-      item.status = 0
+      this.selectedDataMap.set(item.url, item)
       this.selectedList.push(item)
       this.$emit('update:selectedData', this.selectedList)
       this.$emit('add', item, this.selectedList)
     },
     deleteAssociation(params) {
-      params.status = 1
-      this.selectedList = this.selectedList.filter(item => item.procInstId !== params.procInstId)
+
+      if(this.selectedDataMap.has(params.url)) {
+        this.selectedDataMap.delete(params.url)
+      }
+
+      this.selectedList = this.selectedList.filter(item => item.url !== params.url)
       this.$emit('update:selectedData', this.selectedList)
       this.$emit('delete', params, this.selectedList)
     },
     clearAssociation() {
       this.selectedList.forEach(item => {
-        item.status = 1
+        this.selectedDataMap.delete(item.url)
       })
       this.selectedList = []
       this.$emit('update:selectedData', this.selectedList)
