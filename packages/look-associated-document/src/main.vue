@@ -231,11 +231,13 @@ export default {
     addAssociation(item) {
       item.status = 0
       this.selectedList.push(item)
+      this.$emit('update:selectedData', this.selectedList)
       this.$emit('add', item, this.selectedList)
     },
     deleteAssociation(params) {
       params.status = 1
       this.selectedList = this.selectedList.filter(item => item.procInstId !== params.procInstId)
+      this.$emit('update:selectedData', this.selectedList)
       this.$emit('delete', params, this.selectedList)
     },
     clearAssociation() {
@@ -243,6 +245,7 @@ export default {
         item.status = 1
       })
       this.selectedList = []
+      this.$emit('update:selectedData', this.selectedList)
       this.$emit('clear', this.selectedList)
     },
     nextStep() {
