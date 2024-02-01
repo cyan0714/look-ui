@@ -18,7 +18,7 @@
           <el-input
             class="lookui-input"
             v-model="keywords"
-            placeholder="请输入公文标题或来文单位"
+            placeholder="请输入公文标题"
             clearable
           />
           <el-button class="lookui-btn" type="primary" @click="handleQuery">查询</el-button>
