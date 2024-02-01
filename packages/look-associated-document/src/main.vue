@@ -242,6 +242,7 @@ export default {
       this.selectedList.forEach(item => {
         item.status = 1
       })
+      this.selectedList = []
       this.$emit('clear', this.selectedList)
     },
     nextStep() {
