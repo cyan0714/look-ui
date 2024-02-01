@@ -16,12 +16,16 @@
       </div>
       <div class="right-container">
         <el-table
+          v-loading="loading"
+          :key="tableKey"
           ref="multipleTable"
           class="lookui-table"
           :data="tableData"
           tooltip-effect="dark"
           height="100%"
-          @selection-change="handleSelectionChange">
+          @select="handleSelect"
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column prop="srcfilename" label="文件名"> </el-table-column>
         </el-table>
@@ -58,7 +62,10 @@ export default {
     return {
       multipleSelection: [],
       tableData: [],
-      currentIndex: 0
+      tableKey: '',
+      loading: false,
+      currentIndex: 0,
+      selectedMap: new Map(),
     };
   },
   props: { 
@@ -89,25 +96,45 @@ export default {
     }
   },
   created() {
-
   },
   mounted() {},
   methods: {
     async searchAttachment() {
-      const {procInstId} = this.data[this.currentIndex]
-      const formData = {
-        cpdPdf: '1',
-        procInstId,
-        type: 'fwOrsw',
-        wjid: ''
-      }
-      const res = await searchAttachment(this.url, formData, this.ticket)
-      const {code, data} = res.data
-      if(code === 0) {
-        this.tableData = data.data
+      try{
+        this.loading = true
+        const {procInstId} = this.data[this.currentIndex]
+        const formData = {
+          cpdPdf: '1',
+          procInstId,
+          type: 'fwOrsw',
+          wjid: ''
+        }
+        const res = await searchAttachment(this.url, formData, this.ticket)
+        const {code, data} = res.data
+        if(code === 0) {
+          this.tableData = data.data
+          this.tableKey = Math.random().toString(36).substring(2)
+          await this.$nextTick()
+          this.tableData.forEach((item) => {
+            this.$refs.multipleTable.toggleRowSelection(item, this.selectedMap.has(item.id))
+          })
+        }
+      }finally {
+        this.loading = false
       }
     },
+    handleSelect(selection, row) {
+      selection.find(item => item.id === row.id) ? this.selectedMap.set(row.id, row) : this.selectedMap.delete(row.id)
+    },
     handleSelectionChange(val) {
+      if(!val.length) {
+        this.multipleSelection.forEach(item => {
+          this.selectedMap.delete(item.id)
+        })
+      }
+      val.forEach(item => {
+        this.selectedMap.set(item.id, item)
+      })
       this.multipleSelection = val;
     },
     handleClick(index) {
@@ -118,7 +145,7 @@ export default {
       this.$emit('previous', this.multipleSelection)
     },  
     onConfirm() {
-      this.$emit('confirm', this.multipleSelection)
+      this.$emit('confirm', this.multipleSelection, [...this.selectedMap.values()])
     },
   },
 };
@@ -130,10 +157,13 @@ export default {
 }
 .look-associated-attachment {
   height: 100%;
+  display: flex;
+  flex-direction: column;
   .top-container {
     display: flex;
-    height: 100%;
+    flex: 1;
     padding: 20px;
+    overflow: auto;
     .left-container {
       width: 30%;
       height: 100%;
