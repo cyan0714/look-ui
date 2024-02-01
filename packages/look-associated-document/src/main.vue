@@ -239,7 +239,9 @@ export default {
       this.$emit('delete', params, this.selectedList)
     },
     clearAssociation() {
-      this.selectedList = []
+      this.selectedList.forEach(item => {
+        item.status = 1
+      })
       this.$emit('clear', this.selectedList)
     },
     nextStep() {
