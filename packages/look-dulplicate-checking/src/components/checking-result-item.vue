@@ -2,8 +2,12 @@
   <div class="checking-result-item">
     <div class="content">
       <div class="title" @click.stop="handleCheckingItemDetail">
+        <!-- 自定义来源 -->
         <div class="source-title" v-if="customSource().checkboxs.filter(item => item.checked).length > 0" :style="getCustomTitle(source).style" >{{ getCustomTitle(source).key }}</div>
-        <span>{{ source.name }}</span>
+        <!-- 任务类型 -->
+        <span class="task-type" v-if="taskTypes.includes(source.taskType)">【{{ getTaskTypeName() }}】</span>
+
+        <span class="name">{{ source.name }}</span>
       </div>
       <div class="tags-wrap">
         <div v-for="(tag, tagIndex) in source.featureName && source.featureName.split(',')" :key="tagIndex" class="tag-item">
@@ -71,15 +75,14 @@
 <script>
 export default {
   components: {
-    // missionResolve,
   },
   data() {
     return {
+      taskTypes: ['101', '102'],
       chooseFirstId: '',
       curId: '',
     };
   },
-  // inject: ['isShowBtnsFn', 'isShowSource', 'recommandTags'],
   inject: ['onCheckingNameClick', 'customSource', 'isShowCustomSource'],
   props: {
     source: {
@@ -96,10 +99,6 @@ export default {
       type: Boolean,
       default: true
     },
-    // item: {
-    //   type: Object,
-    //   default: () => {},
-    // },
     recommandTags: {
       type: Array,
       default: () => ([]),
@@ -116,6 +115,17 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    getTaskTypeName() {
+      const { taskType } = this.source
+      switch (taskType) {
+        case '101':
+          return '重大任务'
+        case '102':
+          return '省委常委会'
+        default:
+          return ''
+      }
+    },
     getCustomTitle(item) {
       const { checkboxs } = this.customSource()
       if (checkboxs.filter(checkbox => checkbox.checked).length === 0) {
@@ -196,7 +206,7 @@ export default {
         flex-shrink: 0;
         line-height: 24px;
       }
-      span {
+      .name {
         text-decoration: underline;
       }
     }
