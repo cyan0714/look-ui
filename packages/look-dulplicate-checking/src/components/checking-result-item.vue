@@ -22,23 +22,14 @@
         <div class="left">
           <div class="leader-unit">
             <span class="key">牵头单位:</span>
-            <div class="value">
-              <span
-                v-for="(leaderUnit, leaderUnitIndex) in qtOrgs"
-                :key="leaderUnitIndex"
-                class="leader-unit-item"
-                >{{ leaderUnit }}{{ leaderUnitIndex === qtOrgs.length - 1 ? '' : '，' }}</span>
+            <div class="value" :title="qtOrgs">
+              {{ qtOrgs }}
             </div>
           </div>
           <div class="supervise-unit">
             <span class="key">督办单位:</span>
-            <div class="value">
-              <span
-                v-for="(superviseUnit, superviseUnitIndex) in dbOrgName"
-                :key="superviseUnitIndex"
-                class="supervise-unit-item"
-                >{{ superviseUnit }}{{ superviseUnitIndex === dbOrgName.length - 1 ? '' : '，' }}</span
-              >
+            <div class="value" :title="dbOrgName">
+              {{ dbOrgName }}
             </div>
           </div>
         </div>
@@ -106,10 +97,10 @@ export default {
   },
   computed: {
     qtOrgs() {
-      return this.source.qtOrgs?.split(",");
+      return this.source.qtOrgs?.replace(/,/g, '，');
     },
     dbOrgName() {
-      return this.source.dbOrgName?.split(",");
+      return this.source.dbOrgName?.replace(/,/g, '，');
     },
   },
   created() {},
