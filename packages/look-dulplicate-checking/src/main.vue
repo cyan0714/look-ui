@@ -293,6 +293,12 @@ export default {
     };
   },
   watch: {
+    checkedTags(newV, oldV) {
+      if (newV.length === 0) {
+        this.$message.error('请至少勾选一个查重点');
+        this.checkedTags = oldV
+      }
+    },
     //未处理任务-存在相似任务-是否全选
     checkAllNoDealOfSimilar(val) {
       //未处理任务是否全选
@@ -392,13 +398,13 @@ export default {
   created() {
     this.shouldSendRequest = false
 
-    // 判断是否添加 source 字段(自定义来源)
-    // if (this.isShowCustomSource) {
+    // 初始化时判断是否添加 source 字段(自定义来源)
+    if (this.isShowCustomSource) {
       const source = this.customSource.checkboxs.filter(item => item.checked)
       if (source.length > 0) {
         this.sources.push('source')
       }
-    // }
+    }
 
     // 判断是否添加 orgId 字段
     for (let i = 0; i < this.data.length; i++) {
@@ -566,7 +572,7 @@ export default {
     handleInsert(row) {
       this.$emit('insertion-click', row, this.currentInstance);
     },
-    // 切换来源
+    // 切换查重点
     handleCheckedTagsChange(val) {
       // 将存在相似任务和无相似任务的全选状态设置为false
       this.checkAllNoDealOfSimilar = false;
@@ -587,10 +593,9 @@ export default {
       this.sources.push('tenantId'); // 固定
 
       // 判断是否添加 source 字段
-      if (!this.sources.includes('source')) {
-        this.sources.push('source');
-      } else {
-        this.sources.splice(this.sources.indexOf('source'), 1);
+      if (this.isShowCustomSource) {
+        const checkeds = this.customSource.checkboxs.filter(item => item.checked)
+        this.isAddSourceField(checkeds)
       }
 
       for (let i = 0; i < this.data.length; i++) {
@@ -612,18 +617,20 @@ export default {
       this.checkedAllNoDeal = false;
 
       // 判断是否添加 source 字段
-      if (val.length > 0) {
-        if (!this.sources.includes('source')) {
-          this.sources.push('source');
-        }
-      } else {
-        if (this.sources.includes('source')) {
-          this.sources.splice(this.sources.indexOf('source'), 1);
-        }
-      }
+      this.isAddSourceField(val)      
+
       this.paramsData.names = this.sources.toString();
       this.checkingResultList = [];
       this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
+    },
+    isAddSourceField(checkeds) {
+      if (!this.sources.includes('source') && checkeds.length > 0) {
+          this.sources.push('source');
+      } else {
+        if (this.sources.indexOf('source') > -1 && checkeds.length === 0) {
+          this.sources.splice(this.sources.indexOf('source'), 1);
+        }
+      }
     },
     // 全选未处理任务
     handleCheckAllNoDeal(val) {
