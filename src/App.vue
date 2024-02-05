@@ -21,11 +21,12 @@
         <el-button type="primary"> 创建任务 </el-button>
       </div>
     </el-dialog> -->
-    <!--<look-dulplicate-checking
+    <look-dulplicate-checking
       :data="data"
       searchRepeatedUrl="http://192.168.230.186:7076"
       isShowCustomSource
       :customSource="customSource"
+      :customNames="['taskType']"
       @createTasks="createTasks"
       @merging-click="mergingClick"
       @subscription-click="subscriptionClick"
@@ -35,12 +36,12 @@
       @detail-click="detailClick"
       @relation-click="relationClick"
       @onCancelBtnClick="handleCancelBtnClick">
-      <!~~ <template v-slot:operating-btns="slotProps">
+      <!-- <template v-slot:operating-btns="slotProps">
           <el-button size="small" @click="handleDiyBtnClick(slotProps)">自定义按钮</el-button>
-        </template> ~~>
-    </look-dulplicate-checking>-->
+        </template> -->
+    </look-dulplicate-checking>
     <!-- <look-associated-document /> -->
-    <look-associated-attachment style="height: 300px;" />
+    <!-- <look-associated-attachment style="height: 300px;" /> -->
   </div>
 </template>
 
@@ -102,6 +103,14 @@ export default {
           status: '已创建', // 已处理任务的状态
           relation:
             '《习近平主席出席金砖国家领导人第十五次会晤并对南非进行国事访问。立足南非和金砖，放眼非洲和世 界。》', // 已处理任务的关联任务的名字
+        },
+        {
+          name: '0131全是重大任务',
+          taskId: '1',
+          taskType: '101',
+          tenantId: '20221129',
+          checked: false,
+          status: '',
         },
         {
           taskId: '4',

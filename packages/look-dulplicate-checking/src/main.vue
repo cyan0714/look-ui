@@ -356,6 +356,12 @@ export default {
       type: Boolean,
       default: true,
     },
+    customNames: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     paramsData: {
       type: Object,
       default: function() {
@@ -398,7 +404,14 @@ export default {
   created() {
     this.shouldSendRequest = false
 
-    // 初始化时判断是否添加 source 字段(自定义来源)
+    // 初始化时是否给 this.paramsData.names 添加传入的自定义字段
+    if (this.customNames.length > 0) {
+      this.customNames.forEach(item => {
+        this.sources.push(item);
+      });
+    }
+
+    // 初始化时是否给 this.paramsData.names 添加 source 字段(自定义来源)
     if (this.isShowCustomSource) {
       const source = this.customSource.checkboxs.filter(item => item.checked)
       if (source.length > 0) {
@@ -406,7 +419,7 @@ export default {
       }
     }
 
-    // 判断是否添加 orgId 字段
+    // 初始化时是否给 this.paramsData.names 添加 orgId 字段
     for (let i = 0; i < this.data.length; i++) {
       // 只要有一个对象传了 orgId，就给 sources 加上 orgId
       if (this.data[i].orgId) {
@@ -585,21 +598,25 @@ export default {
         事项来源及依据: 'requirement',
       };
       this.sources = []
-      if (val.length > 0) {
-        val.forEach(item => {
-          this.sources.push(field[item]);
-        });
-      }
+      val.forEach(item => {
+        this.sources.push(field[item]);
+      });
       this.sources.push('tenantId'); // 固定
 
-      // 判断是否添加 source 字段
+      if (this.customNames.length > 0) {
+        this.customNames.forEach(item => {
+          this.sources.push(item);
+        });
+      }
+
+      // 判断是否给 this.paramsData.names 添加 source 字段
       if (this.isShowCustomSource) {
         const checkeds = this.customSource.checkboxs.filter(item => item.checked)
         this.isAddSourceField(checkeds)
       }
 
       for (let i = 0; i < this.data.length; i++) {
-        // 只要有一个对象传了 orgId，就给 sources 加上 orgId
+        // 只要有一个对象传了 orgId，就给 this.paramsData.names 添加 orgId 字段
         if (this.data[i].orgId) {
           this.sources.push('orgId')
           break;
@@ -610,13 +627,15 @@ export default {
       this.checkingResultList = [];
       this.fetchCheckingResultList(this.currentNoDealSimilarIndex);
     },
+
+    // 切换自定义来源
     handleCheckedCustomTagsChange(val) {
       // 将存在相似任务和无相似任务的全选状态设置为false
       this.checkAllNoDealOfSimilar = false;
       this.checkAllNoDealOfDissimilar = false;
       this.checkedAllNoDeal = false;
 
-      // 判断是否添加 source 字段
+      // 判断是否给 this.paramsData.names 添加 source 字段
       this.isAddSourceField(val)      
 
       this.paramsData.names = this.sources.toString();
