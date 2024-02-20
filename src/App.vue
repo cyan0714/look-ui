@@ -21,7 +21,7 @@
         <el-button type="primary"> 创建任务 </el-button>
       </div>
     </el-dialog> -->
-    <look-dulplicate-checking
+    <!-- <look-dulplicate-checking
       :data="data"
       searchRepeatedUrl="http://192.168.230.186:7076"
       isShowCustomSource
@@ -36,12 +36,10 @@
       @detail-click="detailClick"
       @relation-click="relationClick"
       @onCancelBtnClick="handleCancelBtnClick">
-      <!-- <template v-slot:operating-btns="slotProps">
-          <el-button size="small" @click="handleDiyBtnClick(slotProps)">自定义按钮</el-button>
-        </template> -->
-    </look-dulplicate-checking>
+    </look-dulplicate-checking> -->
     <!-- <look-associated-document /> -->
     <!-- <look-associated-attachment style="height: 300px;" /> -->
+    <look-performance-leader></look-performance-leader>
   </div>
 </template>
 
