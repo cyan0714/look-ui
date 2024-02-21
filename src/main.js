@@ -6,6 +6,9 @@ import LookUI from '../packages/index.js';
 import '../style/index.scss';
 import './normalize.css'
 
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(LookUI);

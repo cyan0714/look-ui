@@ -3,7 +3,7 @@
   height: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 18px;
 
   .stat {
     height: 100%;
@@ -12,6 +12,7 @@
     border-radius: 23px;
     position: relative;
     padding: 10px 23px;
+    box-sizing: border-box;
 
     .stat-title {
       position: absolute;
@@ -91,7 +92,7 @@
       gap: 14px;
 
       .group-item {
-        width: 50%;
+        width: calc(50% - 7px);
         height: 100%;
         display: flex;
         justify-content: space-between;
@@ -105,6 +106,7 @@
           background-color: #FFFFFF;
           border: 1px solid #CFB88D;
           border-radius: 10px;
+          overflow: hidden;
 
           .group-item-title {
             padding: 8px 10px 13px;
@@ -135,6 +137,7 @@
                   background: transparent;
                   border: none;
                 }
+
                 &::-webkit-scrollbar-track {
                   border: none;
                 }
@@ -150,6 +153,10 @@
                   display: none;
                   width: 0;
                 }
+              }
+
+              .common-cell {
+                padding: 10px 0;
               }
 
               .el-table__body {
@@ -168,7 +175,7 @@
 
         .table-rank {}
 
-        .table-echarts {}
+        .table-pie {}
 
         .table-stat {}
       }
@@ -177,6 +184,229 @@
 
   .list {
     height: 100%;
-    flex: 1;
+    width: calc(30% - 18px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+
+    .rb-list {
+      flex: 1;
+      width: 100%;
+      background-color: #F9F7F5;
+      border-radius: 23px;
+      position: relative;
+      padding: 20px 23px;
+
+      .rb-list-title {
+        position: absolute;
+        left: 30px;
+        top: 0;
+        height: 42px;
+        line-height: 42px;
+        padding: 0 12px;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        background-color: #CFB88D;
+        color: #856D2E;
+        font-weight: 700;
+      }
+
+      .rb-list-content {
+        margin-top: 40px;
+        height: calc(100% - 40px);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 26px;
+
+        ::v-deep .red-table,
+        ::v-deep .black-table {
+          .el-table__body-wrapper {
+            &::-webkit-scrollbar {
+              width: 0;
+              background: transparent;
+              border: none;
+            }
+
+            &::-webkit-scrollbar-track {
+              border: none;
+            }
+          }
+
+          th.gutter {
+            display: none;
+            width: 0 !important;
+          }
+
+          colgroup {
+            col[name='gutter'] {
+              display: none;
+              width: 0;
+            }
+          }
+
+          .el-table__body {
+            width: 100% !important;
+          }
+
+
+          .common-cell {
+            padding: 10px 0;
+          }
+
+          .red-header-cell {
+            background-color: #CB1C1D;
+            color: #fff;
+            padding: 9px 0;
+            border-bottom: 0;
+          }
+
+          .black-header-cell {
+            background-color: #000;
+            color: #fff;
+            padding: 9px 0;
+            border-bottom: 0;
+          }
+
+          .icon-medal {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        &>div {
+          height: calc(50% - 13px);
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          gap: 2px;
+
+          .list-name {
+            width: 31px;
+            height: 100%;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+          }
+
+          .list-table {
+            width: calc(100% - 33px);
+            height: 100%;
+          }
+        }
+
+        .red-list {
+          .list-name {
+            background-color: #CB1C1D;
+            color: #fff;
+          }
+        }
+
+        .black-list {
+          .list-name {
+            background-color: #000;
+            color: #fff;
+          }
+        }
+      }
+    }
+
+    .point-rank-list {
+      flex: 1;
+      width: 100%;
+      background-color: #F9F7F5;
+      border-radius: 23px;
+      position: relative;
+      padding: 20px 23px;
+
+      .point-rank-list-title {
+        position: absolute;
+        left: 30px;
+        top: 0;
+        height: 42px;
+        line-height: 42px;
+        padding: 0 12px;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        background-color: #CFB88D;
+        color: #856D2E;
+        font-weight: 700;
+      }
+
+      .point-rank-list-more {
+        position: absolute;
+        right: 23px;
+        top: 13px;
+        color: #856D2E;
+        cursor: pointer;
+      }
+
+      .point-rank-list-content {
+        margin-top: 40px;
+        height: calc(100% - 40px);
+        width: 100%;
+
+        ::v-deep .point-rank-table {
+          .el-table__body-wrapper {
+            &::-webkit-scrollbar {
+              width: 0;
+              background: transparent;
+              border: none;
+            }
+
+            &::-webkit-scrollbar-track {
+              border: none;
+            }
+          }
+
+          th.gutter {
+            display: none;
+            width: 0 !important;
+          }
+
+          colgroup {
+            col[name='gutter'] {
+              display: none;
+              width: 0;
+            }
+          }
+
+          .common-cell {
+            padding: 10px 0;
+          }
+
+          .el-table__body {
+            width: 100% !important;
+          }
+
+          .point-rank-header-cell {
+            background-color: #CFB88D;
+            color: #fff;
+            padding: 9px 0;
+            border-bottom: 0;
+          }
+
+          .sort-caret.ascending {
+            border-bottom-color: #fff;
+          }
+
+          .ascending .sort-caret.ascending {
+            border-bottom-color: #409EFF;
+          }
+
+          .sort-caret.descending {
+            border-top-color: #fff;
+          }
+
+          .descending .sort-caret.descending {
+            border-top-color: #409EFF;
+          }
+        }
+      }
+    }
   }
 }
