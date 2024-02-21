@@ -200,7 +200,6 @@
           >
             <checking-result-item
                 v-for="(item, index) in checkingResultList"
-    
                 :source="item"
                 :recommandTags="checkedTags"
                 :isShowBtns="currentMissionType == 0"
