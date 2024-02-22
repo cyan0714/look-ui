@@ -112,7 +112,7 @@
         type="primary"
         @click="nextStep"
         >
-        下一步
+        确定
       </el-button>
       </div>
     </div>
