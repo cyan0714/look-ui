@@ -4,9 +4,9 @@
       <div class="name">绩效考核应用管理</div>
     </header>
     <section class="section-container">
-      <el-form :inline="true" :model="form" class="form-inline">
-        <el-form-item label="应用名称">
-          <el-input v-model="form.name" placeholder="请输入"></el-input>
+      <el-form :inline="true" ref="form" :model="form" class="form-inline">
+        <el-form-item label="应用名称" prop="appName">
+          <el-input v-model="form.appName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -27,11 +27,11 @@
         </el-form-item>
       </el-form>
       <div class="operation-btns">
-        <el-button class="lookui-btn" type="primary" size="medium" icon="el-icon-plus"
+        <el-button class="lookui-btn" type="primary" size="medium" icon="el-icon-plus" @click="handleAdd"
           >新增</el-button
         >
       </div>
-      <el-table :data="tableData" style="width: 100%" class="lookui-table">
+      <el-table :data="tableData" height="630" style="width: 100%" class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <el-table-column prop="appName" label="应用名称" align="center"></el-table-column>
         <el-table-column prop="appId" label="应用APPID" align="center"></el-table-column>
@@ -49,7 +49,7 @@
             <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
               >修改</el-button
             >
-            <el-button size="mini" type="text" icon="el-icon-delete">删除</el-button>
+            <el-button size="mini" type="text" icon="el-icon-delete" @click="handleRemove(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -58,30 +58,76 @@
           class="lookui-pagination"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="queryParams.current"
           :page-sizes="[10, 20, 30, 40]"
-          :page-size="pageSize"
+          :page-size="queryParams.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
           background>
         </el-pagination>
       </div>
+      <el-dialog
+        :title="`${currentOperation}应用`"
+        width="40%"
+        destroy-on-close
+        append-to-body
+        :visible.sync="dialogVisible">
+        <el-form ref="formAdd" :rules="rules" :model="formAdd" label-width="100px">
+          <el-form-item label="应用名称" prop="appName">
+            <el-input v-model="formAdd.appName"></el-input>
+          </el-form-item>
+          <el-form-item label="应用APPID" prop="appId">
+            <el-input v-model="formAdd.appId"></el-input>
+          </el-form-item>
+          <el-form-item label="密钥" prop="appKeySecret">
+            <el-input v-model="formAdd.appKeySecret"></el-input>
+          </el-form-item>
+          <el-form-item label="跳转地址" prop="url">
+            <el-input v-model="formAdd.url"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="handleConfirmAdd">确定</el-button>
+          <el-button @click="handleCancelAdd">取消</el-button>
+        </span>
+      </el-dialog>
     </section>
   </div>
 </template>
 
 <script>
 const baseUrl = 'http://192.168.10.28:7078';
-import { add, getList } from '../api/manage-application';
+import { add, detail, getList, remove } from '../api/manage-application';
 export default {
   name: 'manage-application',
   components: {},
   data() {
     return {
-      pageSize: 10,
+      rules: {
+        appName: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
+        appId: [{ required: true, message: '请输入应用APPID', trigger: 'blur' }],
+        appKeySecret: [{ required: true, message: '请输入密钥', trigger: 'blur' }],
+        url: [{ required: true, message: '请输入跳转地址', trigger: 'blur' }],
+      },
+      formAdd: {
+        appName: '',
+        appId: '',
+        appKeySecret: '',
+        url: '',
+      },
+      dialogVisible: false,
       total: 0,
-      currentPage: 1,
-      form: {},
+      queryParams: {
+        app: {
+          appName: '',
+        },
+        current: 1,
+        pageSize: 10,
+      },
+      form: {
+        appName: '',
+      },
+      currentOperation: '新增',
       tableData: [],
     };
   },
@@ -91,29 +137,90 @@ export default {
     this._getList();
   },
   methods: {
-    handleUpdate() {},
+    handleRemove(row) {
+      this.$confirm('是否确认删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          remove(baseUrl, row.id).then(res => {
+            if (res.data.code === '000000') {
+              this.$message.success('删除成功');
+            } else {
+              this.$message.error(res.data.mesg);
+            }
+            this.queryParams.current = 1;
+            this._getList();
+          });
+        })
+        .catch(() => {
+        });
+    },
+    handleAdd() {
+      this.currentOperation = '新增';
+      this.dialogVisible = true;
+      this.formAdd = {
+        appName: '',
+        appId: '',
+        appKeySecret: '',
+        url: '',
+      };
+    },
+    handleCancelAdd() {
+      this.dialogVisible = false;
+    },
+    handleConfirmAdd() {
+      this.$refs.formAdd.validate(valid => {
+        if (valid) {
+          add(baseUrl, this.formAdd).then(res => {
+            if (res.data.code === '000000') {
+              this.$message.success(`${this.currentOperation}成功`);
+            } else {
+              this.$message.error(res.data.mesg);
+            }
+            this.dialogVisible = false;
+            this._getList();
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    handleUpdate(row) {
+      this.currentOperation = '修改';
+      this.dialogVisible = true;
+      detail(baseUrl, row.id).then(res => {
+        this.formAdd = res.data.data;
+      });
+    },
     handleTenant() {},
     _getList() {
-      getList(baseUrl, { app: {}, current: 1, pageSize: 10 }).then(res => {
+      getList(baseUrl, this.queryParams).then(res => {
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
-        console.log('res', res);
       });
-      const params = {
-        appName: 'test',
-        appId: 'testId',
-        appKeySecret: 'xxxx',
-        url: 'http://www.baidu.com',
-      }
-      add(params).then(res => {
-        console.log('add', res);
-      })
     },
-    handleQuery() {},
-    handleCurrentChange() {},
-    handleSizeChange() {},
+    handleQuery() {
+      this.queryParams = {
+        app: this.form,
+        current: 1,
+        pageSize: 10,
+      }
+      this._getList();
+    },
+    handleCurrentChange(current) {
+      this.queryParams.current = current;
+      this._getList();
+    },
+    handleSizeChange(pageSize) {
+      this.queryParams.pageSize = pageSize;
+      this.queryParams.current = 1;
+      this._getList();
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.handleQuery();
     },
   },
 };
@@ -155,3 +262,4 @@ section.section-container {
   margin-top: 10px;
 }
 </style>
+

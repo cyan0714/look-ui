@@ -104,3 +104,14 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.el-button--primary {
+  background-color: #506eda;
+  border-color: #506eda;
+  color: #fff;
+  &:hover {
+    background-color: #506eda;
+    border-color: #506eda;
+  }
+}
+</style>

@@ -17,3 +17,17 @@ export const add = function (baseUrl, data) {
     data
   });
 };
+
+export const detail = function (baseUrl, id) {
+  return request({
+    url: `${baseUrl}/api/performance/app/get/${id}`,
+    method: 'get',
+  });
+};
+
+export const remove = function (baseUrl, id) {
+  return request({
+    url: `${baseUrl}/api/performance/app/delete/${id}`,
+    method: 'delete',
+  });
+};
