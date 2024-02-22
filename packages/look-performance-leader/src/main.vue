@@ -7,7 +7,8 @@
           class="lookui-select stat-select"
           v-model="statSelect"
           placeholder="请选择"
-          popper-class="lookui-select-dropdown"
+          popper-class="stat-select-dropdown"
+          @change="statChange"
         >
           <el-option
             v-for="item in statOptions"
@@ -208,7 +209,7 @@
       </div>
       <div class="point-rank-list">
         <div class="point-rank-list-title">绩效考核总分排行榜</div>
-        <div class="point-rank-list-more">
+        <div class="point-rank-list-more" @click="openPointRankPop">
           查看更多
           <i class="el-icon-d-arrow-right" />
         </div>
@@ -250,14 +251,34 @@
         </div>
       </div>
     </div>
+
+
+    <el-dialog
+      :class="['point-rank-dialog', `point-rank-${themeType}`]"
+      title="绩效考核总分排行榜"
+      v-if="pointRankListShow"
+      :visible.sync="pointRankListShow"
+      top="5vh"
+      width="90%"
+      :before-close="closePointRankPop"
+    >
+      <pointRankListDetail :themeType="themeType" />
+    </el-dialog>
+    
   </div>
 </template>
 
 <script>
+import pointRankListDetail from './components/pointRankListDetail.vue'
+
 export default {
   name: 'look-performance-leader',
+  components: {
+    pointRankListDetail,
+  },
   data() {
     return {
+      themeType: 'leader', // 页面类型
       statSelect: 1, // 下拉框选值
       statOptions: [
         {
@@ -445,6 +466,7 @@ export default {
           point: 30,
         },
       ], // 绩效总分排行榜数据数组
+      pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
     }
   },
   mounted() {
@@ -624,8 +646,27 @@ export default {
     getPointRankHeight() {
       this.pointRankHeight = this.$refs.pointRankTable.offsetHeight
     },
+    /*
+     * @Description: 考核情况统计下拉框切换情况
+     */
+    statChange(val) {
+      console.log(val)
+    },
+    /* 
+     * @Description: 打开绩效总分排行榜榜单弹窗
+    */     
+    openPointRankPop() {
+      this.pointRankListShow = true;
+    },
+    /* 
+     * @Description: 关闭绩效总分排行榜榜单弹窗
+    */     
+    closePointRankPop() {
+      this.pointRankListShow = false;
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped src="./css/performanceLeader.scss"></style>
+<style lang="scss" scoped src="../../../style/look-performance-theme/index.scss"></style>

@@ -1,0 +1,138 @@
+@import '../../../../../style/look-performance-theme/index.scss';
+
+#pointRankListDetail {
+  height: 85vh;
+  width: 100%;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+
+  .search-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+
+    &>div {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .common-area {
+      ::v-deep .el-input {
+        width: 290px;
+
+        &.theme-leader {
+          .el-input-group__append {
+            color: #fff;
+            background-color: $theme-leader;
+          }
+        }
+
+        &.theme-unit {
+          .el-input-group__append {
+            color: #fff;
+            background-color: $theme-unit;
+          }
+        }
+      }
+    }
+
+    .unit-area {
+      ::v-deep .el-button {
+        color: #fff;
+        background-color: $theme-unit;
+      }
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    height: 0;
+    width: 100%;
+    overflow: hidden;
+
+    ::v-deep .point-rank-table {
+      border-bottom: 1px solid #eee;
+
+      .el-table__body-wrapper {
+        &::-webkit-scrollbar {
+          width: 0;
+          background: transparent;
+          border: none;
+        }
+
+        &::-webkit-scrollbar-track {
+          border: none;
+        }
+      }
+
+      th.gutter {
+        display: none;
+        width: 0 !important;
+      }
+
+      colgroup {
+        col[name='gutter'] {
+          display: none;
+          width: 0;
+        }
+      }
+
+      .common-cell {
+        padding: 10px 0;
+      }
+
+      .el-table__body {
+        width: 100% !important;
+      }
+
+      .theme-leader-header-cell {
+        background-color: $theme-leader;
+        color: #fff;
+        padding: 9px 0;
+        border-bottom: 0;
+      }
+
+      .theme-unit-header-cell {
+        background-color: $theme-unit;
+        color: #fff;
+        padding: 9px 0;
+        border-bottom: 0;
+      }
+    }
+  }
+
+  .footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    ::v-deep .el-pagination {
+      &.theme-leader-pagination {
+        .el-pager {
+          li.active {
+            background-color: $theme-leader;
+          }
+
+          li:hover {
+            background-color: $theme-leader;
+            color: #fff;
+          }
+        }
+
+        .el-pagination__jump {
+          input.el-input__inner:focus {
+            border-color: $theme-leader;
+          }
+        }
+      }
+    }
+  }
+}
