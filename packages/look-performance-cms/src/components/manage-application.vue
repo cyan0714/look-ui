@@ -27,7 +27,12 @@
         </el-form-item>
       </el-form>
       <div class="operation-btns">
-        <el-button class="lookui-btn" type="primary" size="medium" icon="el-icon-plus" @click="handleAdd"
+        <el-button
+          class="lookui-btn"
+          type="primary"
+          size="medium"
+          icon="el-icon-plus"
+          @click="handleAdd"
           >新增</el-button
         >
       </div>
@@ -49,7 +54,13 @@
             <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
               >修改</el-button
             >
-            <el-button size="mini" type="text" icon="el-icon-delete" @click="handleRemove(scope.row)">删除</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleRemove(scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -66,8 +77,11 @@
           background>
         </el-pagination>
       </div>
+
+      <!-- 应用管理新增、修改应用弹窗 -->
       <el-dialog
         :title="`${currentOperation}应用`"
+        class="lookui-dialog"
         width="40%"
         destroy-on-close
         append-to-body
@@ -87,8 +101,114 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="handleConfirmAdd">确定</el-button>
-          <el-button @click="handleCancelAdd">取消</el-button>
+          <el-button type="primary" @click="handleConfirmAdd">提交</el-button>
+          <el-button @click="handleCancelAdd">关闭</el-button>
+        </span>
+      </el-dialog>
+
+      <!-- 租户管理弹窗 -->
+      <el-dialog
+        title="租户管理"
+        width="70%"
+        top="100px"
+        class="lookui-dialog"
+        destroy-on-close
+        append-to-body
+        :visible.sync="dialogTenantVisible">
+        <el-form :inline="true" ref="formTenant" :model="formTenant" class="form-inline">
+          <el-form-item label="租户名称" prop="tenantName">
+            <el-input v-model="formTenant.tenantName" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              class="lookui-btn"
+              type="primary"
+              size="medium"
+              icon="el-icon-search"
+              @click="handleTenantQuery"
+              >查询</el-button
+            >
+          </el-form-item>
+        </el-form>
+        <div class="operation-btns">
+          <el-button
+            class="lookui-btn"
+            type="primary"
+            size="medium"
+            icon="el-icon-plus"
+            @click="handleTenantAdd"
+            >新增</el-button
+          >
+        </div>
+        <el-table :data="tableTenantData" height="530" style="width: 100%" class="lookui-table">
+          <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
+          <el-table-column prop="tenantName" label="租户名称" align="center"></el-table-column>
+          <el-table-column prop="tenantId" label="租户ID" align="center"></el-table-column>
+          <el-table-column prop="schemeName" label="方案名称" align="center"></el-table-column>
+          <el-table-column prop="schemeId" label="方案ID" align="center"></el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-edit"
+                @click="handleTenantUpdate(scope.row)"
+                >修改</el-button
+              >
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-delete"
+                @click="handleTenantRemove(scope.row)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination-container">
+          <el-pagination
+            class="lookui-pagination"
+            @size-change="handleTenantSizeChange"
+            @current-change="handleTenantCurrentChange"
+            :current-page="queryTenantParams.current"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="queryTenantParams.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalTenant"
+            background>
+          </el-pagination>
+        </div>
+      </el-dialog>
+
+      <!-- 租户管理新增、修改应用弹窗 -->
+      <el-dialog
+        :title="`${currentTenantOperation}租户`"
+        class="lookui-dialog"
+        width="40%"
+        destroy-on-close
+        append-to-body
+        :visible.sync="dialogTenantUpdateVisible">
+        <el-form
+          ref="formTenantAdd"
+          :rules="rulesTenant"
+          :model="formTenantAdd"
+          label-width="100px">
+          <el-form-item label="租户名称" prop="tenantName">
+            <el-input v-model="formTenantAdd.tenantName"></el-input>
+          </el-form-item>
+          <el-form-item label="租户ID" prop="tenantId">
+            <el-input v-model="formTenantAdd.tenantId"></el-input>
+          </el-form-item>
+          <el-form-item label="方案名称" prop="schemeName">
+            <el-input v-model="formTenantAdd.schemeName"></el-input>
+          </el-form-item>
+          <el-form-item label="方案ID" prop="schemeId">
+            <el-input v-model="formTenantAdd.schemeId"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="handleConfirmTenantAdd">提交</el-button>
+          <el-button @click="handleCancelTenantAdd">关闭</el-button>
         </span>
       </el-dialog>
     </section>
@@ -97,17 +217,35 @@
 
 <script>
 const baseUrl = 'http://192.168.10.28:7078';
-import { add, detail, getList, remove } from '../api/manage-application';
+import {
+  add,
+  detail,
+  getList,
+  remove,
+  getTenantList,
+  addTenant,
+  detailTenant,
+  removeTenant,
+} from '../api/manage-application';
 export default {
   name: 'manage-application',
   components: {},
   data() {
     return {
+      dialogVisible: false,
+      dialogTenantVisible: false,
+      dialogTenantUpdateVisible: false,
       rules: {
         appName: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
         appId: [{ required: true, message: '请输入应用APPID', trigger: 'blur' }],
         appKeySecret: [{ required: true, message: '请输入密钥', trigger: 'blur' }],
         url: [{ required: true, message: '请输入跳转地址', trigger: 'blur' }],
+      },
+      rulesTenant: {
+        tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' }],
+        tenantId: [{ required: true, message: '请输入租户ID', trigger: 'blur' }],
+        schemeName: [{ required: true, message: '请输入方案名称', trigger: 'blur' }],
+        schemeId: [{ required: true, message: '请输入方案ID', trigger: 'blur' }],
       },
       formAdd: {
         appName: '',
@@ -115,8 +253,14 @@ export default {
         appKeySecret: '',
         url: '',
       },
-      dialogVisible: false,
+      formTenantAdd: {
+        tenantName: '',
+        tenantId: '',
+        schemeName: '',
+        schemeId: '',
+      },
       total: 0,
+      totalTenant: 0,
       queryParams: {
         app: {
           appName: '',
@@ -124,11 +268,23 @@ export default {
         current: 1,
         pageSize: 10,
       },
+      queryTenantParams: {
+        appTenantScheme: {
+          tenantName: '',
+        },
+        current: 1,
+        pageSize: 10,
+      },
       form: {
         appName: '',
       },
+      formTenant: {
+        tenantName: '',
+      },
       currentOperation: '新增',
+      currentTenantOperation: '新增',
       tableData: [],
+      tableTenantData: [],
     };
   },
   computed: {},
@@ -137,6 +293,14 @@ export default {
     this._getList();
   },
   methods: {
+    // 获取应用列表
+    _getList() {
+      getList(baseUrl, this.queryParams).then(res => {
+        this.tableData = res.data.data.records;
+        this.total = res.data.data.total;
+      });
+    },
+    // 删除某条应用
     handleRemove(row) {
       this.$confirm('是否确认删除?', '提示', {
         confirmButtonText: '确定',
@@ -154,9 +318,9 @@ export default {
             this._getList();
           });
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
+    // 新增应用
     handleAdd() {
       this.currentOperation = '新增';
       this.dialogVisible = true;
@@ -167,9 +331,7 @@ export default {
         url: '',
       };
     },
-    handleCancelAdd() {
-      this.dialogVisible = false;
-    },
+    // 确认新增应用
     handleConfirmAdd() {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
@@ -187,6 +349,99 @@ export default {
         }
       });
     },
+    // 搜索应用
+    handleQuery() {
+      this.queryParams = {
+        app: this.form,
+        current: 1,
+        pageSize: 10,
+      };
+      this._getList();
+    },
+    handleCancelAdd() {
+      this.dialogVisible = false;
+    },
+    handleCancelTenantAdd() {
+      this.dialogTenantUpdateVisible = false;
+    },
+    // 租户管理
+    handleTenant(row) {
+      this.dialogTenantVisible = true;
+      this.currentAppId = row.appId;
+      this._getTenantList(this.currentAppId);
+    },
+    // 删除某个应用下的某个租户
+    handleTenantRemove(row) {
+      this.$confirm('是否确认删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          removeTenant(baseUrl, row.id).then(res => {
+            if (res.data.code === '000000') {
+              this.$message.success('删除成功');
+            } else {
+              this.$message.error(res.data.mesg);
+            }
+            this.queryTenantParams.current = 1;
+            this._getTenantList(this.currentAppId);
+          });
+        })
+        .catch(() => {});
+    },
+    // 修改某个应用下的某个租户
+    handleTenantUpdate(row) {
+      this.currentTenantOperation = '修改';
+      this.dialogTenantUpdateVisible = true;
+      detailTenant(baseUrl, row.id).then(res => {
+        this.formTenantAdd = res.data.data;
+      });
+    },
+    // 新增租户
+    handleTenantAdd() {
+      this.currentTenantOperation = '新增';
+      this.dialogTenantUpdateVisible = true;
+      this.formTenantAdd = {
+        tenantName: '',
+        tenantId: '',
+        schemeName: '',
+        schemeId: '',
+      };
+    },
+    // 确认新增租户
+    handleConfirmTenantAdd() {
+      this.$refs.formTenantAdd.validate(valid => {
+        if (valid) {
+          this.formTenantAdd.appId = this.currentAppId;
+          if (this.currentTenantOperation === '新增') {
+            addTenant(baseUrl, this.formTenantAdd).then(res => {
+              if (res.data.code === '000000') {
+                this.$message.success('新增成功');
+              } else {
+                this.$message.error(res.data.mesg);
+              }
+              this.queryTenantParams.current = 1;
+              this._getTenantList(this.currentAppId);
+            });
+          } else {
+            addTenant(baseUrl, this.formTenantAdd).then(res => {
+              if (res.data.code === '000000') {
+                this.$message.success('修改成功');
+              } else {
+                this.$message.error(res.data.mesg);
+              }
+              this.queryTenantParams.current = 1;
+              this._getTenantList(this.currentAppId);
+            });
+          }
+          this.dialogTenantUpdateVisible = false;
+        } else {
+          return false;
+        }
+      });
+    },
+    // 修改某个应用
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
@@ -194,30 +449,46 @@ export default {
         this.formAdd = res.data.data;
       });
     },
-    handleTenant() {},
-    _getList() {
-      getList(baseUrl, this.queryParams).then(res => {
-        this.tableData = res.data.data.records;
-        this.total = res.data.data.total;
+    // 获取租户列表
+    _getTenantList(id) {
+      this.queryTenantParams.appTenantScheme.appId = id;
+      getTenantList(baseUrl, this.queryTenantParams).then(res => {
+        this.tableTenantData = res.data.data.records;
+        this.totalTenant = res.data.data.total;
       });
     },
-    handleQuery() {
-      this.queryParams = {
-        app: this.form,
+    // 搜索租户
+    handleTenantQuery() {
+      this.queryTenantParams = {
+        tenant: this.formTenant,
         current: 1,
         pageSize: 10,
-      }
-      this._getList();
+      };
+      this._getTenantList(this.currentAppId);
     },
+    // 应用列表当前页变化
     handleCurrentChange(current) {
       this.queryParams.current = current;
       this._getList();
     },
+    // 应用列表 pageSize 变化
     handleSizeChange(pageSize) {
       this.queryParams.pageSize = pageSize;
       this.queryParams.current = 1;
       this._getList();
     },
+    // 租户列表当前页变化
+    handleTenantCurrentChange(current) {
+      this.queryTenantParams.current = current;
+      this._getTenantList(this.currentAppId);
+    },
+    // 租户列表 pageSize 变化
+    handleTenantSizeChange(pageSize) {
+      this.queryTenantParams.pageSize = pageSize;
+      this.queryTenantParams.current = 1;
+      this._getTenantList(this.currentAppId);
+    },
+    // 重置应用表单搜索条件
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.handleQuery();
@@ -262,4 +533,3 @@ section.section-container {
   margin-top: 10px;
 }
 </style>
-

@@ -114,4 +114,7 @@ export default {
     border-color: #506eda;
   }
 }
+.operation-btns {
+  margin-bottom: 14px;
+}
 </style>
