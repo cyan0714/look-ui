@@ -111,6 +111,8 @@ export default {
           return require(`../imgs/icon_10.png`);
         case '已插入':
           return require(`../imgs/icon_11.png`);
+        case '已关联':
+          return require(`../imgs/icon_12.png`);
       }
     },
     handleCheckedChange(val) {
