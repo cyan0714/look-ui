@@ -51,7 +51,7 @@
           >
         </div>
       </div>
-      <div class="right" v-if="isShowBtns">
+      <div class="right" v-if="isShowBtns || isShowBtnsInHadDealMission()">
         <slot name="operation-btns" :source="source">
           <el-button size="small" class="lookui-btn" type="primary" @click="handleInsert">插入任务</el-button>
           <el-button size="small" @click="handleSubscribe">关注</el-button>
@@ -74,7 +74,7 @@ export default {
       curId: '',
     };
   },
-  inject: ['onCheckingNameClick', 'customSource', 'isShowCustomSource'],
+  inject: ['onCheckingNameClick', 'customSource', 'isShowCustomSource', 'isShowBtnsInHadDealMission'],
   props: {
     source: {
       type: Object,

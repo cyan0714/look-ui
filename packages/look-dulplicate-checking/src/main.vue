@@ -239,14 +239,16 @@ export default {
   provide() {
     return {
       onCancelBtnClick: this.handleCancelBtnClick,
+      onCancelRowBtnClick: this.onCancelRowBtnClick,
       onViewDetailsClick: this.goDetail,
       onCheckingNameClick: this.onCheckingNameClick,
       onRelationClick: this.onRelationClick,
+      onRelationRowClick: this.onRelationRowClick,
       onNameClick: this.onNameClick,
       isShowSource: () => this.isShowSource,
-      isShowBtnsFn: () => this.currentMissionType == 0,
       recommandTags: () => this.checkedTags,
       isShowCustomSource: () => this.isShowCustomSource,
+      isShowBtnsInHadDealMission: () => this.isShowBtnsInHadDealMission,
       customSource: () => this.customSource,
     };
   },
@@ -354,6 +356,10 @@ export default {
     isShowSource: {
       type: Boolean,
       default: true,
+    },
+    isShowBtnsInHadDealMission: {
+      type: Boolean,
+      default: false,
     },
     customNames: {
       type: Array,
@@ -464,6 +470,10 @@ export default {
     onRelationClick(task) {
       this.$emit('relation-click', task);
     },
+    // relation 为当前点击的已处理的任务，task 为这条任务所在的当前导入的任务
+    onRelationRowClick(relation, task) {
+      this.$emit('relation-row-click', relation, task);
+    },
     onCheckingNameClick(checkingTask) {
       this.$emit('checking-name-click', checkingTask);
     },
@@ -472,6 +482,9 @@ export default {
     },
     handleCancelBtnClick(task) {
       this.$emit('onCancelBtnClick', task);
+    },
+    onCancelRowBtnClick(relation, task) {
+      this.$emit('onCancelRowBtnClick', relation, task);
     },
     fetchCheckingResultList(index) {
       this.loadingCheckResultList = true;

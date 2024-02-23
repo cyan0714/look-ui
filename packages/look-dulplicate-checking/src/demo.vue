@@ -3,6 +3,7 @@
     :data="data"
     searchRepeatedUrl="http://192.168.230.186:7076"
     isShowCustomSource
+    isShowBtnsInHadDealMission
     :customSource="customSource"
     :customNames="['taskType']"
     @createTasks="createTasks"
@@ -13,7 +14,9 @@
     @checking-name-click="checkingNameClick"
     @detail-click="detailClick"
     @relation-click="relationClick"
-    @onCancelBtnClick="handleCancelBtnClick">
+    @relation-row-click="relationRowClick"
+    @onCancelBtnClick="handleCancelBtnClick"
+    @onCancelRowBtnClick="onCancelRowBtnClick">
   </look-dulplicate-checking>
 </template>
 
@@ -53,8 +56,18 @@ export default {
           name: '三亚市第一艘海洋休闲渔船',
           checked: false,
           tenantId: '4602000038',
-          status: '',
+          status: '已关联',
           checkResultListLength: 0,
+          relations: [
+            {
+              name: 'globe forest from earlier connected hang',
+              id: 1
+            },
+            {
+              name: '新需求',
+              id: 2
+            },
+          ]
         },
         {
           taskId: '2',
@@ -98,6 +111,14 @@ export default {
   created() {},
   computed: {},
   methods: {
+    onCancelRowBtnClick(relation, task) {
+      console.log('relation', relation);
+      console.log('task', task);
+    },
+    relationRowClick(relation, task) {
+      console.log('relation', relation);
+      console.log('task', task);
+    },
     relationClick(task) {
       console.log('relation', task);
     },

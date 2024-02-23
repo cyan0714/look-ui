@@ -24,7 +24,17 @@
       </div>
       <div class="result-detail" v-if="isDealMission">
         <div class="rd-title">处理结果</div>
-        <a class="double-row-ellip" @click.stop="handleRelationClick">{{ item.relation }}</a>
+        <template v-if="item.status === '已关联'">
+          <div class="rd-content">
+            <div v-for="(relation, index) in item.relations" class="relation-relevance-item" :key="index">
+              <a class="double-row-ellip" @click.stop="handleRelationRowClick(relation)">{{ relation.name }}</a>
+              <span class="text-btn" @click.stop="handleRowCancel(relation)">取消关联</span>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <a class="double-row-ellip" @click.stop="handleRelationClick">{{ item.relation }}</a>
+        </template>
       </div>
       <div class="btn-area" v-if="isDealMission">
         <el-button class="lookui-btn" size="small" type="primary" @click.native="handleCancel">取消{{item.status.slice(1)}}</el-button>
@@ -57,7 +67,7 @@ export default {
       default: () => {},
     },
   },
-  inject: ['onCancelBtnClick', 'onViewDetailsClick', 'onNameClick', 'onRelationClick'],
+  inject: ['onCancelBtnClick', 'onViewDetailsClick', 'onNameClick', 'onRelationClick', 'onRelationRowClick', 'onCancelRowBtnClick'],
   computed: {
     hasList() {
       return this.item.checkResultListLength > 0;
@@ -66,6 +76,12 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleRowCancel(relation) {
+      this.onCancelRowBtnClick(relation, this.item)
+    },
+    handleRelationRowClick(relation) {
+      this.onRelationRowClick(relation, this.item)
+    },
     handleRelationClick() {
       this.onRelationClick(this.item)
     },
@@ -191,6 +207,16 @@ export default {
       border-radius: 6px;
       flex-shrink: 0;
       align-self: start;
+    }
+    .rd-content {
+      .relation-relevance-item {
+        display: flex;
+        align-items: center;
+        .text-btn {
+          margin-left: 20px;
+          color: red;
+        }
+      }
     }
     a {
       text-decoration: underline;
