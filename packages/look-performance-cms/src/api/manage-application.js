@@ -1,5 +1,6 @@
 import request from '/utils/request';
 
+// 获取应用列表
 export const getList = function (baseUrl, data) {
   return request({
     url: `${baseUrl}/api/performance/app/page?current=${data.current}&pageSize=${data.pageSize}`,
@@ -10,6 +11,7 @@ export const getList = function (baseUrl, data) {
   });
 };
 
+// 新增应用
 export const add = function (baseUrl, data) {
   return request({
     url: `${baseUrl}/api/performance/app/add`,
@@ -18,6 +20,7 @@ export const add = function (baseUrl, data) {
   });
 };
 
+// 应用详情
 export const detail = function (baseUrl, id) {
   return request({
     url: `${baseUrl}/api/performance/app/get/${id}`,
@@ -25,6 +28,7 @@ export const detail = function (baseUrl, id) {
   });
 };
 
+// 删除应用
 export const remove = function (baseUrl, id) {
   return request({
     url: `${baseUrl}/api/performance/app/delete/${id}`,
@@ -32,6 +36,7 @@ export const remove = function (baseUrl, id) {
   });
 };
 
+// 获取租户列表
 export const getTenantList = function (baseUrl, data) {
   return request({
     url: `${baseUrl}/api/performance/app-tenant-scheme/page?current=${data.current}&pageSize=${data.pageSize}`,
@@ -42,6 +47,7 @@ export const getTenantList = function (baseUrl, data) {
   });
 };
 
+// 新增租户
 export const addTenant = function (baseUrl, data) {
   return request({
     url: `${baseUrl}/api/performance/app-tenant-scheme/add`,
@@ -50,6 +56,7 @@ export const addTenant = function (baseUrl, data) {
   });
 };
 
+// 租户详情
 export const detailTenant = function (baseUrl, id) {
   return request({
     url: `${baseUrl}/api/performance/app-tenant-scheme/get/${id}`,
@@ -57,6 +64,7 @@ export const detailTenant = function (baseUrl, id) {
   });
 };
 
+// 删除租户
 export const removeTenant = function (baseUrl, id) {
   return request({
     url: `${baseUrl}/api/performance/app-tenant-scheme/delete/${id}`,

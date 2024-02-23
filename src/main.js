@@ -6,6 +6,7 @@ import LookUI from '../packages/index.js';
 import '../style/index.scss';
 import './normalize.css'
 
+import router from './router.js'
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
@@ -14,4 +15,5 @@ Vue.use(ElementUI);
 Vue.use(LookUI);
 new Vue({
   render: h => h(App),
+  router,
 }).$mount('#app');
