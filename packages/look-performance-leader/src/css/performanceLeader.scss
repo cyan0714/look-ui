@@ -83,6 +83,10 @@
           font-size: 20px;
           font-weight: 700;
 
+          &>div {
+            cursor: pointer;
+          }
+
           .details-item-img {
             height: 80px;
             width: 80px;

@@ -24,11 +24,15 @@
             v-for="(item, index) in statSituationList"
             :key="index"
           >
-            <div class="details-item-img">
+            <div class="details-item-img" @click="openPointRule(index)">
               <img src="./imgs/icon_stat_situation.png" alt="" />
             </div>
-            <div class="details-item-title">{{ item.title }}</div>
-            <div class="details-item-point">{{ item.point }}分</div>
+            <div class="details-item-title" @click="openPointRule(index)">
+              {{ item.title }}
+            </div>
+            <div class="details-item-point" @click="openPointRule(index)">
+              {{ item.point }}分
+            </div>
           </div>
         </div>
       </div>
@@ -252,7 +256,7 @@
       </div>
     </div>
 
-
+    <!-- 绩效总分排行榜弹窗 -->
     <el-dialog
       :class="['point-rank-dialog', `point-rank-${themeType}`]"
       title="绩效考核总分排行榜"
@@ -264,17 +268,47 @@
     >
       <pointRankListDetail :themeType="themeType" />
     </el-dialog>
-    
+
+    <!-- 绩效考核评分规则弹窗 -->
+    <el-dialog
+      class="point-rule-dialog"
+      v-if="pointRuleShow"
+      :visible.sync="pointRuleShow"
+      width="80%"
+      top="10vh"
+      center
+    >
+      <div class="point-rule-title" slot="title">
+        <div class="icon-left">
+          <div :class="`icon-hr icon-hr-${themeType}`"></div>
+          <div :class="`icon-square icon-square-${themeType}`"></div>
+        </div>
+        <div :class="`title-content title-content-${themeType}`">
+          绩效考核评分规则
+        </div>
+        <div class="icon-right">
+          <div :class="`icon-square icon-square-${themeType}`"></div>
+          <div :class="`icon-hr icon-hr-${themeType}`"></div>
+        </div>
+      </div>
+      <pointRule 
+        :themeType="themeType"
+        :curIndex="pointRuleIndex" 
+        :statSituationList="statSituationList" 
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import pointRankListDetail from './components/pointRankListDetail.vue'
+import pointRule from './components/pointRule.vue'
 
 export default {
   name: 'look-performance-leader',
   components: {
     pointRankListDetail,
+    pointRule,
   },
   data() {
     return {
@@ -295,12 +329,33 @@ export default {
         },
       ],
       statSituationList: [
-        { title: '反馈时效', point: 30 },
-        { title: '反馈质量', point: 40 },
-        { title: '推进情况', point: 30 },
-        { title: '任务数量加分项', point: 25 },
-        { title: '日常加减分项', point: 15 },
+        { 
+          title: '反馈时效', 
+          point: 30, 
+          rules: ['每逾期一次(-0.5分)', '逾期4个工作白(自动判定该事项为推进缓慢，取消逾期次数的扣分，只扣推进缓慢的分。)', '为每个事项进行判断，从30分里扣除，扣完为止。'], 
+        },
+        { 
+          title: '反馈质量', 
+          point: 40 ,
+          rules: ['优秀(+1分)、好(不加分)、一般(-0.5分)、差(-2分)', '为每个事项进行判断，从40分里扣除，扣完为止。'], 
+        },
+        { 
+          title: '推进情况', 
+          point: 30,
+          rules: ['难度系数1.1事项推进缓慢(-2分)', '难度系数0.9事项推进缓慢(-1分)', '一个事项不管多少个阶段，都只扣一次'],
+        },
+        { 
+          title: '任务数量加分项', 
+          point: 25,
+          rules: ['完成难度系数1.1事项加分:事项数量≥10件(+0.3分/件)、事项数量≥20件(+0.4分/1件)、事项数量≥30件(+0.5分/1件)', '完成难度系数0.9事项加分:事项数量≥10件(+0.15分/1件)、事项数量≥20件(+0.2分/1件)、事项数量≥30件(+0.3分/1件)', '年度总加分不超过25分'],
+        },
+        { 
+          title: '日常加减分项', 
+          point: 15,
+          rules: ['经与承办单位四级责任人进行实查面谈、研究确认后给予专项扣分', '实施督查问责预警，对经过“三察"后一段时间仍无明显进展的事项，启动督查问责预警并给予专项扣分', '亮牌加减分，通过“红黄绿”晾晒通报机制', '每个承办单位年度专项扣分不超过15分'],
+        },
       ],
+      pointRuleIndex: 0, // 绩效考核评分规则弹窗默认下标
       rankData: [
         {
           rank: 1,
@@ -467,6 +522,7 @@ export default {
         },
       ], // 绩效总分排行榜数据数组
       pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
+      pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
     }
   },
   mounted() {
@@ -652,21 +708,28 @@ export default {
     statChange(val) {
       console.log(val)
     },
-    /* 
+    /*
      * @Description: 打开绩效总分排行榜榜单弹窗
-    */     
+     */
     openPointRankPop() {
-      this.pointRankListShow = true;
+      this.pointRankListShow = true
     },
-    /* 
+    /*
      * @Description: 关闭绩效总分排行榜榜单弹窗
-    */     
+     */
     closePointRankPop() {
-      this.pointRankListShow = false;
+      this.pointRankListShow = false
+    },
+    /*
+     * @Description: 打开绩效考核评分规则弹窗
+     */
+    openPointRule(index) {
+      this.pointRuleIndex = `${index}`
+      this.pointRuleShow = true
     },
   },
 }
 </script>
 
 <style lang="scss" scoped src="./css/performanceLeader.scss"></style>
-<style lang="scss" scoped src="../../../style/look-performance-theme/index.scss"></style>
+<style lang="scss" scoped src="./css/common.scss"></style>

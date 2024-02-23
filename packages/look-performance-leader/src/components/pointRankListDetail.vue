@@ -267,8 +267,4 @@ export default {
 }
 </script>
 
-<style
-  lang="scss"
-  scoped
-  src="../css/components/pointRankListDetail.scss"
-></style>
+<style lang="scss" scoped src="../css/components/pointRankListDetail.scss"></style>

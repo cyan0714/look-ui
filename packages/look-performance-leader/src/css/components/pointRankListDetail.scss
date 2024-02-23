@@ -1,4 +1,4 @@
-@import '../../../../../style/look-performance-theme/index.scss';
+@import '../common.scss';
 
 #pointRankListDetail {
   height: 85vh;
@@ -104,6 +104,22 @@
         color: #fff;
         padding: 9px 0;
         border-bottom: 0;
+      }
+
+      .sort-caret.ascending {
+        border-bottom-color: #fff;
+      }
+
+      .ascending .sort-caret.ascending {
+        border-bottom-color: #409EFF;
+      }
+
+      .sort-caret.descending {
+        border-top-color: #fff;
+      }
+
+      .descending .sort-caret.descending {
+        border-top-color: #409EFF;
       }
     }
   }
