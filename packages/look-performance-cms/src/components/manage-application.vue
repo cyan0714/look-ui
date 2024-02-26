@@ -1,5 +1,5 @@
 <template>
-  <div class="manage-application">
+  <div class="manage-application manage-cms">
     <header class="header-container">
       <div class="name">绩效考核应用管理</div>
     </header>
@@ -497,39 +497,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.manage-application {
-  width: 100%;
-  .header-container {
-    padding: 14px;
-    background-color: #fff;
-    border-bottom: 1px solid #e6ebfb;
-    .name {
-      padding-left: 10px;
-      font-size: 18px;
-      font-weight: 600;
-      border-left: 3px solid #5479ff;
-    }
-  }
-}
-section.section-container {
-  padding: 20px;
-  background-color: #fff;
-  .form-inline {
-    border-bottom: 1px dashed #e6ebfb;
-    margin-bottom: 14px;
-  }
-  .operation-btns {
-    margin-bottom: 14px;
-  }
-  ::v-deep .el-table th {
-    background-color: #e6ebfb !important;
-    color: #000;
-  }
-}
-.pagination-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-</style>
+<style lang="scss" src="../css/common.scss"></style>

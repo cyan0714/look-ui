@@ -34,7 +34,8 @@ export default {
   },
   data() {
     return {
-      currentComponent: 'ManageApplication',
+      // currentComponent: 'ManageApplication',
+      currentComponent: 'ManageIndicator', // 默认显示'考核指标配置管理
       currentNavIndex: 0,
       navs: [
         {
