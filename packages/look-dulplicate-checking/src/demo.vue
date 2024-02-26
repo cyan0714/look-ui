@@ -16,7 +16,7 @@
     @relation-click="relationClick"
     @relation-row-click="relationRowClick"
     @onCancelBtnClick="handleCancelBtnClick"
-    @onCancelRowBtnClick="onCancelRowBtnClick">
+    @on-cancel-row-btn-click="onCancelRowBtnClick">
   </look-dulplicate-checking>
 </template>
 

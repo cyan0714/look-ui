@@ -481,10 +481,12 @@ export default {
       this.$emit('name-click', task)
     },
     handleCancelBtnClick(task) {
-      this.$emit('onCancelBtnClick', task);
+      this.$emit('onCancelBtnClick', task)
+      this.$emit('on-cancel-btn-click', task); // 防止在非 vue 项目使用时不支持小驼峰命名
     },
     onCancelRowBtnClick(relation, task) {
-      this.$emit('onCancelRowBtnClick', relation, task);
+      this.$emit('onCancelRowBtnClick', relation, task)
+      this.$emit('on-cancel-row-btn-click', relation, task); // 防止在非 vue 项目使用时不支持小驼峰命名
     },
     fetchCheckingResultList(index) {
       this.loadingCheckResultList = true;
