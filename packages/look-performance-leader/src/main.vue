@@ -228,6 +228,7 @@
             header-row-class-name="point-rank-header-row"
             cell-class-name="common-cell"
             :max-height="pointRankHeight"
+            @cell-click="pointTableClick"
           >
             <el-table-column
               prop="rank"
@@ -275,26 +276,14 @@
       v-if="pointRuleShow"
       :visible.sync="pointRuleShow"
       width="80%"
-      top="10vh"
+      :top="curOrg.orgName ? '5vh' : '10vh'"
       center
     >
-      <div class="point-rule-title" slot="title">
-        <div class="icon-left">
-          <div :class="`icon-hr icon-hr-${themeType}`"></div>
-          <div :class="`icon-square icon-square-${themeType}`"></div>
-        </div>
-        <div :class="`title-content title-content-${themeType}`">
-          绩效考核评分规则
-        </div>
-        <div class="icon-right">
-          <div :class="`icon-square icon-square-${themeType}`"></div>
-          <div :class="`icon-hr icon-hr-${themeType}`"></div>
-        </div>
-      </div>
       <pointRule 
         :themeType="themeType"
         :curIndex="pointRuleIndex" 
-        :statSituationList="statSituationList" 
+        :statSituationList="statSituationList"
+        :curOrg="curOrg"
       />
     </el-dialog>
   </div>
@@ -523,6 +512,7 @@ export default {
       ], // 绩效总分排行榜数据数组
       pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
       pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
+      curOrg: {}, // 绩效考核总分当前选中单位
     }
   },
   mounted() {
@@ -724,9 +714,30 @@ export default {
      * @Description: 打开绩效考核评分规则弹窗
      */
     openPointRule(index) {
+      if (index === undefined) {
+        index = 0;
+      } else {
+        this.curOrg = {};
+      }
       this.pointRuleIndex = `${index}`
       this.pointRuleShow = true
     },
+    /* 
+     * @Description: 单元格点击方法
+     * @param: row 行数据
+     * @param: column 列对象
+     * @param: cell 单元格document对象
+     * @param: event 事件对象
+    */     
+    pointTableClick(row, column, cell, event) {
+      if (column?.property == 'orgName') {
+        // 点击单位时   才能进一步触发事件
+        this.curOrg = row;
+        setTimeout(() => {
+          this.openPointRule();
+        });
+      }
+    }
   },
 }
 </script>

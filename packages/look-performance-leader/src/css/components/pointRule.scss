@@ -2,7 +2,207 @@
 
 #pointRule {
   font-size: 18px;
-  height: 65vh;
+
+  .point-rule-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+
+    .title-icon {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .title-content {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    &.point-rule-title-unit {
+      color: $theme-unit;
+
+      .title-icon {
+        background-color: $theme-unit;
+      }
+    }
+
+    &.point-rule-title-leader {
+      color: $theme-leader;
+
+      .title-icon {
+        background-color: $theme-leader;
+      }
+    }
+  }
+
+  .org-table-list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+
+    &>div {
+      width: calc(100% - 9px);
+      border: 1px solid #eee;
+    }
+
+    ::v-deep .org-point-table {
+      .org-point-header-cell {
+        border-bottom: 0;
+        background: #32CD32;
+        color: #fff;
+
+        &.total-point-cell {
+          background-color: #FF9900;
+        }
+      }
+
+      .org-point-common-cell {
+        background-color: #D7F5D7;
+        font-weight: 700;
+
+        div {
+          color: #05832B;
+        }
+
+        &.total-point-cell {
+          background-color: #FFEBCD;
+
+          div {
+            color: #FF9E0C;
+          }
+        }
+
+        &.usual-point-cell {
+          div {
+            color: #FC1611;
+          }
+        }
+      }
+    }
+
+    ::v-deep .task-count-table {
+      .task-count-header-cell {
+        border-bottom: 0;
+        background: #4264BF;
+        color: #fff;
+
+        &.total-count-cell {
+          background-color: #339AFF;
+        }
+      }
+
+      .task-count-common-cell {
+        background-color: #DDE3F3;
+        font-weight: 700;
+
+        div {
+          color: #4264BF;
+        }
+
+        &.total-count-cell {
+          background-color: #D7EBFF;
+
+          div {
+            color: #339AFF;
+          }
+        }
+
+        &.overTime-count-cell {
+          div {
+            color: #FC1611;
+          }
+        }
+
+        &.quality-stat-cell {
+          .quality-stat-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .quality-stat-excellent {
+              color: #008000;
+            }
+
+            .quality-stat-well {
+              color: #000;
+            }
+
+            .quality-stat-normal {
+              color: #FF9900;
+            }
+
+            .quality-stat-poor {
+              color: #FF0000;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .rule-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+    margin-bottom: 12px;
+
+    .title-content {
+      font-size: 26px;
+      font-weight: 700;
+
+      &.title-content-leader {
+        color: $theme-leader;
+      }
+
+      &.title-content-unit {
+        color: $theme-unit;
+      }
+    }
+
+    .icon-left,
+    .icon-right {
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .icon-hr {
+        width: 100%;
+        height: 0;
+        border: 1px solid;
+
+        &.icon-hr-leader {
+          border-color: $theme-leader;
+        }
+
+        &.icon-hr-unit {
+          border-color: $theme-unit;
+        }
+      }
+
+      .icon-square {
+        width: 0;
+        height: 0;
+        border: 3px solid;
+        transform: rotate(45deg);
+
+        &.icon-square-leader {
+          border-color: $theme-leader;
+        }
+
+        &.icon-square-unit {
+          border-color: $theme-unit;
+        }
+      }
+    }
+
+  }
 
   .rule-description {
     text-indent: 2em;
@@ -143,7 +343,7 @@
           height: 100%;
 
           .tab-item-content {
-            height: 100%;
+            height: 234px;
             padding-top: 18px;
             overflow: auto;
 
