@@ -21,7 +21,7 @@
         <div class="stat-details">
           <div
             class="stat-details-item"
-            v-for="(item, index) in statSituationList"
+            v-for="(item, index) in curStatSituation"
             :key="index"
           >
             <div class="details-item-img" @click="openPointRule(index)">
@@ -267,7 +267,10 @@
       width="90%"
       :before-close="closePointRankPop"
     >
-      <pointRankListDetail :themeType="themeType" />
+      <pointRankListDetail
+        :themeType="themeType"
+        :statSituationList="statSituationList"
+      />
     </el-dialog>
 
     <!-- 绩效考核评分规则弹窗 -->
@@ -279,9 +282,9 @@
       :top="curOrg.orgName ? '5vh' : '10vh'"
       center
     >
-      <pointRule 
+      <pointRule
         :themeType="themeType"
-        :curIndex="pointRuleIndex" 
+        :curIndex="pointRuleIndex"
         :statSituationList="statSituationList"
         :curOrg="curOrg"
       />
@@ -292,6 +295,7 @@
 <script>
 import pointRankListDetail from './components/pointRankListDetail.vue'
 import pointRule from './components/pointRule.vue'
+import { pointDetails } from './common/staticData'
 
 export default {
   name: 'look-performance-leader',
@@ -317,33 +321,54 @@ export default {
           label: '按年统计',
         },
       ],
-      statSituationList: [
-        { 
-          title: '反馈时效', 
-          point: 30, 
-          rules: ['每逾期一次(-0.5分)', '逾期4个工作白(自动判定该事项为推进缓慢，取消逾期次数的扣分，只扣推进缓慢的分。)', '为每个事项进行判断，从30分里扣除，扣完为止。'], 
-        },
-        { 
-          title: '反馈质量', 
-          point: 40 ,
-          rules: ['优秀(+1分)、好(不加分)、一般(-0.5分)、差(-2分)', '为每个事项进行判断，从40分里扣除，扣完为止。'], 
-        },
-        { 
-          title: '推进情况', 
+      curStatSituation: [
+        {
+          name: '反馈时效',
           point: 30,
-          rules: ['难度系数1.1事项推进缓慢(-2分)', '难度系数0.9事项推进缓慢(-1分)', '一个事项不管多少个阶段，都只扣一次'],
+          rules: [
+            '每逾期一次(-0.5分)',
+            '逾期4个工作白(自动判定该事项为推进缓慢，取消逾期次数的扣分，只扣推进缓慢的分。)',
+            '为每个事项进行判断，从30分里扣除，扣完为止。',
+          ],
         },
-        { 
-          title: '任务数量加分项', 
+        {
+          name: '反馈质量',
+          point: 40,
+          rules: [
+            '优秀(+1分)、好(不加分)、一般(-0.5分)、差(-2分)',
+            '为每个事项进行判断，从40分里扣除，扣完为止。',
+          ],
+        },
+        {
+          name: '推进情况',
+          point: 30,
+          rules: [
+            '难度系数1.1事项推进缓慢(-2分)',
+            '难度系数0.9事项推进缓慢(-1分)',
+            '一个事项不管多少个阶段，都只扣一次',
+          ],
+        },
+        {
+          name: '任务数量加分项',
           point: 25,
-          rules: ['完成难度系数1.1事项加分:事项数量≥10件(+0.3分/件)、事项数量≥20件(+0.4分/1件)、事项数量≥30件(+0.5分/1件)', '完成难度系数0.9事项加分:事项数量≥10件(+0.15分/1件)、事项数量≥20件(+0.2分/1件)、事项数量≥30件(+0.3分/1件)', '年度总加分不超过25分'],
+          rules: [
+            '完成难度系数1.1事项加分:事项数量≥10件(+0.3分/件)、事项数量≥20件(+0.4分/1件)、事项数量≥30件(+0.5分/1件)',
+            '完成难度系数0.9事项加分:事项数量≥10件(+0.15分/1件)、事项数量≥20件(+0.2分/1件)、事项数量≥30件(+0.3分/1件)',
+            '年度总加分不超过25分',
+          ],
         },
-        { 
-          title: '日常加减分项', 
+        {
+          name: '日常加减分项',
           point: 15,
-          rules: ['经与承办单位四级责任人进行实查面谈、研究确认后给予专项扣分', '实施督查问责预警，对经过“三察"后一段时间仍无明显进展的事项，启动督查问责预警并给予专项扣分', '亮牌加减分，通过“红黄绿”晾晒通报机制', '每个承办单位年度专项扣分不超过15分'],
-        },
+          rules: [
+            '经与承办单位四级责任人进行实查面谈、研究确认后给予专项扣分',
+            '实施督查问责预警，对经过“三察"后一段时间仍无明显进展的事项，启动督查问责预警并给予专项扣分',
+            '亮牌加减分，通过“红黄绿”晾晒通报机制',
+            '每个承办单位年度专项扣分不超过15分',
+          ],
+        }, // 绩效考核情况统计得分
       ],
+      statSituationList: [],
       pointRuleIndex: 0, // 绩效考核评分规则弹窗默认下标
       rankData: [
         {
@@ -458,56 +483,67 @@ export default {
           rank: 1,
           orgName: '旅游和文化广电体育局',
           point: 120,
+          pointDetails,
         },
         {
           rank: 2,
           orgName: '教育厅',
           point: 110,
+          pointDetails,
         },
         {
           rank: 3,
           orgName: 'aaaa',
           point: 100,
+          pointDetails,
         },
         {
           rank: 4,
           orgName: 'bbbbb',
           point: 90,
+          pointDetails,
         },
         {
           rank: 5,
           orgName: 'cccc',
           point: 80,
+          pointDetails,
         },
         {
           rank: 6,
           orgName: 'ddd',
           point: 70,
+          pointDetails,
         },
         {
           rank: 7,
           orgName: 'eee',
           point: 60,
+          pointDetails,
         },
         {
           rank: 8,
           orgName: 'fff',
           point: 60,
+          pointDetails,
         },
         {
           rank: 9,
           orgName: 'ggg',
           point: 50,
+          pointDetails,
         },
         {
           rank: 10,
           orgName: 'hhh',
           point: 40,
+          pointDetails,
         },
         {
           rank: 11,
           orgName: 'iii',
           point: 30,
+          pointDetails,
         },
       ], // 绩效总分排行榜数据数组
       pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
@@ -715,29 +751,31 @@ export default {
      */
     openPointRule(index) {
       if (index === undefined) {
-        index = 0;
+        index = 0
       } else {
         this.curOrg = {};
+        this.statSituationList = this.curStatSituation;
       }
       this.pointRuleIndex = `${index}`
       this.pointRuleShow = true
     },
-    /* 
+    /*
      * @Description: 单元格点击方法
      * @param: row 行数据
      * @param: column 列对象
      * @param: cell 单元格document对象
      * @param: event 事件对象
-    */     
+     */
     pointTableClick(row, column, cell, event) {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件
         this.curOrg = row;
+        this.statSituationList = row.pointDetails;
         setTimeout(() => {
-          this.openPointRule();
-        });
+          this.openPointRule()
+        })
       }
-    }
+    },
   },
 }
 </script>

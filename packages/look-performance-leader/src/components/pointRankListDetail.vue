@@ -27,8 +27,10 @@
         :header-row-class-name="`${themeClass}-header-row`"
         cell-class-name="common-cell"
         border
+        stripe
         style="width: 100%"
         @sort-change="sortChange"
+        @cell-click="pointTableClick"
       >
         <el-table-column
           prop="rank"
@@ -45,35 +47,16 @@
           :resizable="false"
         />
         <el-table-column
-          prop="timelinessPoint"
-          label="反馈时效得分"
+          v-for="(item, index) in tableData[0].pointDetails"
+          :key="index"
+          :label="`${item.name}得分`"
           align="center"
           :resizable="false"
-        />
-        <el-table-column
-          prop="qualityPoint"
-          label="反馈质量得分"
-          align="center"
-          :resizable="false"
-        />
-        <el-table-column
-          prop="pushPoint"
-          label="推进情况得分"
-          align="center"
-          :resizable="false"
-        />
-        <el-table-column
-          prop="taskCountPoint"
-          label="任务数量得分"
-          align="center"
-          :resizable="false"
-        />
-        <el-table-column
-          prop="usualPoint"
-          label="日常加减分得分"
-          align="center"
-          :resizable="false"
-        />
+        >
+          <template slot-scope="scope">
+            <div>{{ scope.row.pointDetails[index].point }}</div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="totalPoint"
           label="绩效得分"
@@ -96,10 +79,30 @@
         background
       />
     </div>
+
+    <!-- 绩效考核评分规则弹窗 -->
+    <el-dialog
+      class="rank-point-rule-dialog"
+      v-if="pointRuleShow"
+      :visible.sync="pointRuleShow"
+      width="80%"
+      :top="curOrg.orgName ? '5vh' : '10vh'"
+      center
+      append-to-body
+    >
+      <pointRule
+        :themeType="themeType"
+        :statSituationList="statSituationList"
+        :curOrg="curOrg"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import pointRule from './pointRule.vue'
+import { pointDetails } from '../common/staticData'
+
 export default {
   name: 'pointRankListDetail',
   props: {
@@ -107,6 +110,13 @@ export default {
       type: String,
       default: 'unit',
     },
+    statSituationList: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  components: {
+    pointRule,
   },
   data() {
     return {
@@ -116,105 +126,67 @@ export default {
         {
           rank: 1,
           orgName: '旅游和文化广电体育局',
-          timelinessPoint: 40, // 反馈时效得分
-          qualityPoint: 40, // 反馈质量得分
-          pushPoint: 20, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
           totalPoint: 120, // 绩效得分（总分）
+          pointDetails,
         },
         {
           rank: 2,
           orgName: '教育厅',
-          timelinessPoint: 40, // 反馈时效得分
-          qualityPoint: 30, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
+          pointDetails,
           totalPoint: 100, // 绩效得分（总分）
         },
         {
           rank: 3,
           orgName: 'aaaa',
-          timelinessPoint: 30, // 反馈时效得分
-          qualityPoint: 30, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
+          pointDetails,
           totalPoint: 90, // 绩效得分（总分）
         },
         {
           rank: 4,
           orgName: 'bbbbb',
-          timelinessPoint: 30, // 反馈时效得分
-          qualityPoint: 20, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
+          pointDetails,
           totalPoint: 80, // 绩效得分（总分）
         },
         {
           rank: 5,
           orgName: 'cccc',
-          timelinessPoint: 20, // 反馈时效得分
-          qualityPoint: 20, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
+          pointDetails,
           totalPoint: 70, // 绩效得分（总分）
         },
         {
           rank: 6,
           orgName: 'ddd',
-          timelinessPoint: 20, // 反馈时效得分
-          qualityPoint: 10, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
+          pointDetails,
           totalPoint: 60, // 绩效得分（总分）
         },
         {
           rank: 7,
           orgName: 'eee',
-          timelinessPoint: 10, // 反馈时效得分
-          qualityPoint: 10, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 10, // 日常加减分得分
+          pointDetails,
           totalPoint: 50, // 绩效得分（总分）
         },
         {
           rank: 8,
           orgName: 'fff',
-          timelinessPoint: 20, // 反馈时效得分
-          qualityPoint: 10, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 0, // 日常加减分得分
+          pointDetails,
           totalPoint: 50, // 绩效得分（总分）
         },
         {
           rank: 9,
           orgName: 'ggg',
-          timelinessPoint: 10, // 反馈时效得分
-          qualityPoint: 10, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 10, // 任务数量得分
-          usualPoint: 0, // 日常加减分得分
+          pointDetails,
           totalPoint: 40, // 绩效得分（总分）
         },
         {
           rank: 10,
           orgName: 'hhh',
-          timelinessPoint: 10, // 反馈时效得分
-          qualityPoint: 10, // 反馈质量得分
-          pushPoint: 10, // 推进情况得分
-          taskCountPoint: 0, // 任务数量得分
-          usualPoint: 0, // 日常加减分得分
+          pointDetails,
           totalPoint: 30, // 绩效得分（总分）
         },
       ],
       currentPage: 1,
+      pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
+      curOrg: {}, // 绩效考核总分当前选中单位
     }
   },
   computed: {
@@ -263,8 +235,46 @@ export default {
     sortChange(column, prop, order) {
       console.log(column, prop, order)
     },
+    /*
+     * @Description: 打开绩效考核评分规则弹窗
+     */
+    openPointRule(index) {
+      if (index === undefined) {
+        index = 0
+      } else {
+        this.curOrg = {}
+      }
+      this.pointRuleIndex = `${index}`
+      this.pointRuleShow = true
+    },
+    /*
+     * @Description: 单元格点击方法
+     * @param: row 行数据
+     * @param: column 列对象
+     * @param: cell 单元格document对象
+     * @param: event 事件对象
+     */
+    pointTableClick(row, column, cell, event) {
+      if (column?.property == 'orgName') {
+        // 点击单位时   才能进一步触发事件
+        this.curOrg = row
+        this.statSituationList = row.pointDetails
+        setTimeout(() => {
+          this.openPointRule()
+        })
+      }
+    },
   },
 }
 </script>
 
-<style lang="scss" scoped src="../css/components/pointRankListDetail.scss"></style>
+<style
+  lang="scss"
+  scoped
+  src="../css/components/pointRankListDetail.scss"
+></style>
+<style>
+.rank-point-rule-dialog .el-dialog__body{
+  padding-top: 0;
+}
+</style>

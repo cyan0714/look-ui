@@ -26,50 +26,14 @@
             class-name="total-point-cell"
           />
           <el-table-column
-            prop="timelinessPoint"
-            label="反馈时效得分"
+            v-for="(item, index) in statSituationList"
+            :key="index"
+            :label="`${item.name}得分`"
             align="center"
             :resizable="false"
           >
-            <template slot-scope="scope">
-              <div @click="openPointDetail">{{ scope.row.timelinessPoint }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="qualityPoint"
-            label="反馈质量得分"
-            align="center"
-            :resizable="false"
-          >
-            <template slot-scope="scope">
-              <div @click="openPointDetail">{{ scope.row.qualityPoint }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="pushPoint"
-            label="推进情况得分"
-            align="center"
-            :resizable="false"
-          >
-            <template slot-scope="scope">
-              <div @click="openPointDetail">{{ scope.row.pushPoint }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="taskCountPoint"
-            label="任务数量加分"
-            align="center"
-            :resizable="false"
-          />
-          <el-table-column
-            prop="usualPoint"
-            label="日常加减分"
-            align="center"
-            :resizable="false"
-            class-name="usual-point-cell"
-          >
-            <template slot-scope="scope">
-              <div @click="openPointDetail">{{ scope.row.usualPoint }}</div>
+            <template>
+              <div @click="openPointDetail(item)">{{ item.point }}</div>
             </template>
           </el-table-column>
         </el-table>
@@ -182,7 +146,7 @@
                 alt=""
               />
             </div>
-            <div class="list-title-type">{{ item.title }}</div>
+            <div class="list-title-type">{{ item.name }}</div>
             <div class="list-title-point">{{ item.point }}分</div>
           </div>
           <div class="tab-item-content">
@@ -198,12 +162,34 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+
+    <!-- 具体分值记录弹窗 -->
+    <el-dialog
+      class="point-detail-dialog"
+      v-if="pointDetailShow"
+      :visible.sync="pointDetailShow"
+      width="90%"
+      top="10vh"
+      center
+      append-to-body
+    >
+      <pointDetail
+        :themeType="themeType"
+        :statSituationList="statSituationList"
+        :curOrg="curOrg"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import pointDetail from './pointDetail.vue'
+
 export default {
   name: 'pointRule',
+  components: {
+    pointDetail,
+  },
   props: {
     themeType: {
       type: String,
@@ -247,6 +233,7 @@ export default {
           usualCount: 0, // 日常加减分次数
         },
       ], // 事项总数表格
+      pointDetailShow: false,
     }
   },
   mounted() {
@@ -259,14 +246,22 @@ export default {
     init() {
       this.typeIndex = this.curIndex
     },
-    /* 
+    /*
      * @Description: 打开具体得分详情弹窗
-    */     
+     */
     openPointDetail(type) {
       console.log(type)
-    }
+      if (type.name != '任务数量') {
+        this.pointDetailShow = true
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped src="../css/components/pointRule.scss"></style>
+<style>
+.point-detail-dialog .el-dialog__body{
+  padding-top: 0;
+}
+</style>
