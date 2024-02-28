@@ -1,3 +1,41 @@
-#pointDetail{
-  
+@import '../common.scss';
+
+
+#pointDetail {
+  font-size: 18px;
+
+  .point-detail-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+
+    .title-icon {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .title-content {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    &.point-detail-title-unit {
+      color: $theme-unit;
+
+      .title-icon {
+        background-color: $theme-unit;
+      }
+    }
+
+    &.point-detail-title-leader {
+      color: $theme-leader;
+
+      .title-icon {
+        background-color: $theme-leader;
+      }
+    }
+  }
 }

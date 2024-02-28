@@ -3,7 +3,6 @@
     <div
       v-if="curOrg.orgName"
       :class="`point-rule-title point-rule-title-${themeType}`"
-      slot="title"
     >
       <div class="title-icon"></div>
       <div class="title-content">{{ curOrg.orgName }}</div>
