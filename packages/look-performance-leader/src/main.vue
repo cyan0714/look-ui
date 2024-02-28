@@ -28,7 +28,7 @@
               <img src="./imgs/icon_stat_situation.png" alt="" />
             </div>
             <div class="details-item-title" @click="openPointRule(index)">
-              {{ item.title }}
+              {{ item.name }}
             </div>
             <div class="details-item-point" @click="openPointRule(index)">
               {{ item.point }}分
