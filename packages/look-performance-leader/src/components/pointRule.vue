@@ -164,12 +164,12 @@
 
     <!-- 具体分值记录弹窗 -->
     <el-dialog
-      class="point-detail-dialog"
+      class="lookui-dialog point-detail-dialog"
       v-if="pointDetailShow"
       :visible.sync="pointDetailShow"
-      width="90%"
+      :title="curOrg.orgName"
+      width="70%"
       top="10vh"
-      center
       append-to-body
     >
       <pointDetail
@@ -232,7 +232,7 @@ export default {
           usualCount: 0, // 日常加减分次数
         },
       ], // 事项总数表格
-      pointDetailShow: false,
+      pointDetailShow: true
     }
   },
   mounted() {

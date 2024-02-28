@@ -546,8 +546,8 @@ export default {
           pointDetails,
         },
       ], // 绩效总分排行榜数据数组
-      pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
-      pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
+      pointRankListShow: true, // 是否展示绩效总分排行榜榜单弹窗
+      pointRuleShow: true, // 是否显示绩效考核评分规则弹窗
       curOrg: {}, // 绩效考核总分当前选中单位
     }
   },

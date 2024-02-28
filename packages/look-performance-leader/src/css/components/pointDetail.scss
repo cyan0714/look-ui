@@ -1,39 +1,95 @@
 @import '../common.scss';
 
-
-#pointDetail {
-  font-size: 18px;
-
-  .point-detail-title {
+div#pointDetail {
+  padding: 40px 10px 10px;
+  .point-detail-info {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #ddd;
+    div.name-area {
+      div.name {
+        color: #fff;
+        padding: 10px 50px;
+      }
 
-    .title-icon {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-
-    .title-content {
-      font-size: 22px;
-      font-weight: 700;
-    }
-
-    &.point-detail-title-unit {
-      color: $theme-unit;
-
-      .title-icon {
-        background-color: $theme-unit;
+      div.count {
+        padding: 12px 50px;
+        background-color: #dde3f3;
+        text-align: center;
+        span.count-item {
+          font-weight: bold;
+          > span:nth-child(2) {
+            color: #000;
+          }
+        }
       }
     }
 
-    &.point-detail-title-leader {
-      color: $theme-leader;
+    div.score-area {
+      margin-left: 14px;
+      div.name {
+        color: #fff;
+        background-color: #32cd32;
+        padding: 10px 40px;
+        text-align: center;
+      }
 
-      .title-icon {
+      div.score {
+        background-color: #d7f5d7;
+        color: #32cd32;
+        font-size: 20px;
+        padding: 9px 40px;
+        text-align: center;
+      }
+    }
+
+    div.score-process {
+      margin-left: 30px;
+      margin-top: 20px;
+      div.name {
+        font-size: 18px;
+        color: #000;
+      }
+
+      div.process {
+
+      }
+    }
+
+    div.detail-area {
+      margin-left: 80px;
+      div.statement {
+        div.statement-item {
+          color: #000;
+          margin-bottom: 4px;
+          span.square-icon {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 4px;
+          }
+
+          span {
+
+          }
+        }
+
+        div.attention-text {
+          color: red;
+        }
+      }
+    }
+  }
+  .point-detail-info-unit {
+    div.name-area {
+      div.name {
+        background-color: $theme-unit;
+      }
+    }
+  }
+  .point-detail-info-leader {
+    div.name-area {
+      div.name {
         background-color: $theme-leader;
       }
     }
