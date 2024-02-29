@@ -34,14 +34,85 @@
         </div>
       </div>
     </div>
+    <div class="point-detail-table">
+      <pointDetailTable :tableData="tableData" :columns="columns">
+        <!-- <template v-slot:name="slotProps">
+          <span style="color: red">{{ slotProps.item.name }}hhh</span>
+        </template>
+        <template v-slot:date="slotProps">
+          <span style="color: red">{{ slotProps.item.date }}hhh</span>
+        </template> -->
+      </pointDetailTable>
+    </div>
   </div>
 </template>
 
 <script>
+import pointDetailTable from './pointDetailTable.vue';
 export default {
   name: 'pointDetail',
   data() {
     return {
+      columns:[
+        {
+          prop: 'name',
+          label: '名称',
+        },
+        {
+          prop: 'date',
+          label: '日期',
+        },
+      ],
+      tableData: [
+        {
+          name: '陈世晏',
+          date: '2020-09-04',
+        },
+        {
+          name: 'xxx',
+          date: '09点04分',
+        },
+        {
+          name: '陈世晏',
+          date: '2020-09-04',
+        },
+        {
+          name: 'xxx',
+          date: '09点04分',
+        },
+        {
+          name: '陈世晏',
+          date: '2020-09-04',
+        },
+        {
+          name: 'xxx',
+          date: '09点04分',
+        },
+        {
+          name: '陈世晏',
+          date: '2020-09-04',
+        },
+        {
+          name: 'xxx',
+          date: '09点04分',
+        },
+        {
+          name: '陈世晏',
+          date: '2020-09-04',
+        },
+        {
+          name: 'xxx',
+          date: '09点04分',
+        },
+        {
+          name: '陈世晏',
+          date: '2020-09-04',
+        },
+        {
+          name: 'xxx',
+          date: '09点04分',
+        },
+      ],
       detail: {
         name: '反馈质量',
         score: 40,
@@ -66,6 +137,9 @@ export default {
         attentionText: '注：得分过程中的权重系数为：优秀（1）、一般（0.5）、差（2）',
       },
     };
+  },
+  components: {
+    pointDetailTable,
   },
   methods: {
     getRamdonColor() {
