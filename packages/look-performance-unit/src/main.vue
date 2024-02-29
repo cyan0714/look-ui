@@ -8,30 +8,24 @@
           v-model="statSelect"
           placeholder="请选择"
           popper-class="stat-select-dropdown"
-          @change="statChange"
-        >
+          @change="statChange">
           <el-option
             v-for="item in statOptions"
             :key="item.value"
             :label="item.label"
-            :value="item.value"
-          >
+            :value="item.value">
           </el-option>
         </el-select>
         <div class="stat-details">
-          <div
-            class="stat-details-item"
-            v-for="(item, index) in curStatSituation"
-            :key="index"
-          >
+          <div class="stat-details-item" v-for="(item, index) in curStatSituation" :key="index">
             <div class="details-item-img" @click="openPointRule(index)">
               <img src="./imgs/icon_stat_situation_unit.png" alt="" />
             </div>
             <div class="details-item-title" @click="openPointRule(index)">
-              {{ item.name }}
+              {{ item.indexName }}
             </div>
             <div class="details-item-point" @click="openPointRule(index)">
-              {{ item.point }}分
+              {{ item.indexOriginalScore }}分
             </div>
           </div>
         </div>
@@ -53,42 +47,36 @@
                 header-cell-class-name="rank-header-cell"
                 header-row-class-name="rank-header-row"
                 cell-class-name="common-cell"
-                :max-height="rankHeight"
-              >
+                :max-height="rankHeight">
                 <el-table-column
                   prop="rank"
                   label="排名"
                   width="60"
                   align="center"
-                  :resizable="false"
-                />
+                  :resizable="false" />
                 <el-table-column
                   prop="orgName"
                   label="单位名称"
                   align="center"
-                  :resizable="false"
-                />
+                  :resizable="false" />
                 <el-table-column
                   prop="excellentCount"
                   label="反馈质量优秀次数"
                   width="90"
                   align="center"
-                  :resizable="false"
-                />
+                  :resizable="false" />
                 <el-table-column
                   prop="diffcultyH"
                   label="事项难度系数1.1完成数"
                   width="110"
                   align="center"
-                  :resizable="false"
-                />
+                  :resizable="false" />
                 <el-table-column
                   prop="diffcultyL"
                   label="事项难度系数0.9完成数"
                   width="110"
                   align="center"
-                  :resizable="false"
-                />
+                  :resizable="false" />
               </el-table>
             </div>
           </div>
@@ -128,30 +116,18 @@
             header-cell-class-name="point-rank-header-cell"
             header-row-class-name="point-rank-header-row"
             cell-class-name="common-cell"
-            @cell-click="pointTableClick"
-          >
+            height="850px"
+            @cell-click="pointTableClick">
+            <el-table-column type="index" label="排名" align="center" width="50" />
+            <el-table-column prop="orgName" label="单位名称" align="center" :resizable="false" />
             <el-table-column
-              prop="rank"
-              label="排名"
-              width="60"
-              align="center"
-              :resizable="false"
-            />
-            <el-table-column
-              prop="orgName"
-              label="单位名称"
-              align="center"
-              :resizable="false"
-            />
-            <el-table-column
-              prop="point"
+              prop="allScore"
               label="绩效总分"
               width="110"
               align="center"
               sortable
-              sort-by="point"
-              :resizable="false"
-            />
+              sort-by="allScore"
+              :resizable="false" />
           </el-table>
         </div>
       </div>
@@ -165,12 +141,8 @@
       :visible.sync="pointRankListShow"
       top="5vh"
       width="90%"
-      :before-close="closePointRankPop"
-    >
-      <pointRankListDetail
-        :themeType="themeType"
-        :statSituationList="statSituationList"
-      />
+      :before-close="closePointRankPop">
+      <pointRankListDetail :themeType="themeType" :statSituationList="statSituationList" />
     </el-dialog>
 
     <!-- 绩效考核评分规则弹窗 -->
@@ -180,22 +152,25 @@
       :visible.sync="pointRuleShow"
       width="80%"
       :top="curOrg.orgName ? '5vh' : '10vh'"
-      center
-    >
+      center>
       <pointRule
         :themeType="themeType"
         :curIndex="pointRuleIndex"
         :statSituationList="statSituationList"
-        :curOrg="curOrg"
-      />
+        :curOrg="curOrg" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import pointRankListDetail from '../../look-performance-leader/src/components/pointRankListDetail.vue'
-import pointRule from '../../look-performance-leader/src/components/pointRule.vue'
-import { pointDetails } from '../../look-performance-leader/src/common/staticData'
+const baseUrl = 'http://192.168.10.28:6068/performance-appraisal';
+const token =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1YmU4MmJhMi02YzcyLTQ3NzAtYjAwOS0xYjZlYzlkOTAxMWMiLCJhcHBJZCI6IkdaTFNaWCIsInRlbmFudElkIjoiNDYwMjAwMDAzOCIsImFjY2Vzc1Rva2VuIjoiMzQwOTJiYmQ0YzIyZTE0OTc3YzM3MzEzNDFkZTJkZWQiLCJpYXQiOjE3MDkxOTMxODUsImV4cCI6MTcwOTIwMDM4NX0.DYuQVlejoIItVMLRBDUfjfrJCXX3wtHLXVRlcov285o';
+
+import pointRankListDetail from '../../look-performance-leader/src/components/pointRankListDetail.vue';
+import pointRule from '../../look-performance-leader/src/components/pointRule.vue';
+import { pointDetails } from '../../look-performance-leader/src/common/staticData';
+import { getSchemeIndexList, getOrgOverTimeReportList, getAllOrgScoreList } from './api/main';
 
 export default {
   name: 'look-performance-unit',
@@ -323,146 +298,88 @@ export default {
           name: '绩效考核分数60以下',
         },
       ], // 环形图数据数组
-      barData: {
-        orgName: [
-          '市委组织部',
-          '市工业和信息化局',
-          '市委宣传部',
-          '市科学和技术局',
-          '市财政局',
-          '市民政局',
-          '市公安局',
-          '市教育局',
-          '市委统战部',
-          '市委政法委',
-          '市信访局',
-          '市发展和改革委员会',
-        ],
-        slowCount: [15, 12, 9, 9, 9, 7, 7, 5, 3, 2, 2, 1],
-        overTimeCount: [10, 10, 7, 7, 1, 5, 3, 3, 4, 2, 1, 1],
-      }, // 横向柱状图数据数组
+      barData: [], // 横向柱状图数据数组
       pointRankHeight: 0, // 绩效总分排行榜高度
-      pointRankData: [
-        {
-          rank: 1,
-          orgName: '旅游和文化广电体育局',
-          point: 120,
-          pointDetails,
-        },
-        {
-          rank: 2,
-          orgName: '教育厅',
-          point: 110,
-          pointDetails,
-        },
-        {
-          rank: 3,
-          orgName: 'aaaa',
-          point: 100,
-          pointDetails,
-        },
-        {
-          rank: 4,
-          orgName: 'bbbbb',
-          point: 90,
-          pointDetails,
-        },
-        {
-          rank: 5,
-          orgName: 'cccc',
-          point: 80,
-          pointDetails,
-        },
-        {
-          rank: 6,
-          orgName: 'ddd',
-          point: 70,
-          pointDetails,
-        },
-        {
-          rank: 7,
-          orgName: 'eee',
-          point: 60,
-          pointDetails,
-        },
-        {
-          rank: 8,
-          orgName: 'fff',
-          point: 60,
-          pointDetails,
-        },
-        {
-          rank: 9,
-          orgName: 'ggg',
-          point: 50,
-          pointDetails,
-        },
-        {
-          rank: 10,
-          orgName: 'hhh',
-          point: 40,
-          pointDetails,
-        },
-        {
-          rank: 11,
-          orgName: 'iii',
-          point: 30,
-          pointDetails,
-        },
-        {
-          rank: 12,
-          orgName: 'ggg',
-          point: 50,
-          pointDetails,
-        },
-        {
-          rank: 13,
-          orgName: 'hhh',
-          point: 40,
-          pointDetails,
-        },
-        {
-          rank: 14,
-          orgName: 'iii',
-          point: 30,
-          pointDetails,
-        },
-      ], // 绩效总分排行榜数据数组
-      pointRankListShow: true, // 是否展示绩效总分排行榜榜单弹窗
-      pointRuleShow: true, // 是否显示绩效考核评分规则弹窗
+      pointRankData: [], // 绩效总分排行榜数据数组
+      pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
+      pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
       curOrg: {}, // 绩效考核总分当前选中单位
-    }
+    };
   },
   mounted() {
-    this.init()
+    this.init();
   },
   methods: {
+    // 获取各单位绩效总分排行榜数据
+    _getAllOrgScoreList() {
+      getAllOrgScoreList({
+        baseUrl,
+        token,
+        params: {},
+      }).then(res => {
+        this.pointRankData = res.data.data;
+      });
+    },
+    // 各单位推进缓慢次数统计
+    _getOrgOverTimeReportList() {
+      getOrgOverTimeReportList({
+        baseUrl,
+        token,
+        params: {
+          accessToken: '',
+          appId: '',
+          beginTime: '',
+          cycleId: '',
+          cycleNum: '',
+          endTime: '',
+          id: '',
+          indexCategory: '',
+          infoId: '',
+          nowDate: '',
+          orgId: '',
+          orgName: '',
+          taskId: '',
+          tenantId: '',
+        },
+      }).then(res => {
+        this.barData = res.data.data;
+        this.initBarEcharts();
+      });
+    },
+    // 获取当前用户指标
+    _getSchemeIndexList() {
+      getSchemeIndexList({ baseUrl, token }).then(res => {
+        this.curStatSituation = res.data.data;
+      });
+    },
     /*
      * @Description: 初始化方法
      */
     init() {
-      this.getRankTableHeight()
-      this.initPieEcharts()
-      this.initBarEcharts()
-      this.getPointRankHeight()
+      this._getSchemeIndexList();
+      this._getOrgOverTimeReportList();
+      this._getAllOrgScoreList();
+      this.getRankTableHeight();
+      this.initPieEcharts();
+      this.getPointRankHeight();
     },
     /*
      * @Description: 计算各单位反馈优秀质量次数排名表格最大高度
      */
     getRankTableHeight() {
-      this.rankHeight = this.$refs.rankTable.offsetHeight
+      this.rankHeight = this.$refs.rankTable.offsetHeight;
     },
     /*
      * @Description: 初始化环形图
      */
     initPieEcharts() {
-      let pieEchart = this.$echarts.init(this.$refs.pieEchart)
+      let pieEchart = this.$echarts.init(this.$refs.pieEchart);
       pieEchart.setOption({
         tooltip: {
           trigger: 'item',
           formatter: function (parms) {
-            var str = `${parms.marker} ${parms.data.name}：${parms.data.value}`
-            return str
+            var str = `${parms.marker} ${parms.data.name}：${parms.data.value}`;
+            return str;
           },
         },
         legend: {
@@ -491,13 +408,13 @@ export default {
             data: this.pieData,
           },
         ],
-      })
+      });
     },
     /*
      * @Description: 初始化横向柱状图
      */
     initBarEcharts() {
-      let barEchart = this.$echarts.init(this.$refs.barEchart)
+      let barEchart = this.$echarts.init(this.$refs.barEchart);
       barEchart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -568,7 +485,9 @@ export default {
         yAxis: {
           type: 'category',
           inverse: true,
-          data: this.barData.orgName,
+          data: this.barData.map(item => {
+            return item.orgName;
+          }),
         },
         series: [
           {
@@ -577,7 +496,13 @@ export default {
             itemStyle: {
               color: '#CB1C1D',
             },
-            data: this.barData.slowCount,
+            label: {
+              show: true,
+              position: 'right',
+            },
+            data: this.barData.map(item => {
+              return item.slowAdvanceNum;
+            }),
           },
           {
             name: '逾期次数',
@@ -585,48 +510,57 @@ export default {
             itemStyle: {
               color: '#FF9900',
             },
-            data: this.barData.overTimeCount,
+            label: {
+              show: true,
+              position: 'right',
+            },
+            data: this.barData.map(item => {
+              return item.overNum;
+            }),
           },
         ],
-      })
+      });
     },
     /*
      * @Description: 初始化绩效总分排行榜
      */
     getPointRankHeight() {
-      this.pointRankHeight = this.$refs.pointRankTable.offsetHeight
-      console.log("🚀 ~ getPointRankHeight ~ this.$refs.pointRankTable.offsetHeight:", this.$refs.pointRankTable.offsetHeight)
+      this.pointRankHeight = this.$refs.pointRankTable.offsetHeight;
+      console.log(
+        '🚀 ~ getPointRankHeight ~ this.$refs.pointRankTable.offsetHeight:',
+        this.$refs.pointRankTable.offsetHeight
+      );
     },
     /*
      * @Description: 考核情况统计下拉框切换情况
      */
     statChange(val) {
-      console.log(val)
+      console.log(val);
     },
     /*
      * @Description: 打开绩效总分排行榜榜单弹窗
      */
     openPointRankPop() {
-      this.pointRankListShow = true
+      this.pointRankListShow = true;
     },
     /*
      * @Description: 关闭绩效总分排行榜榜单弹窗
      */
     closePointRankPop() {
-      this.pointRankListShow = false
+      this.pointRankListShow = false;
     },
     /*
      * @Description: 打开绩效考核评分规则弹窗
      */
     openPointRule(index) {
       if (index === undefined) {
-        index = 0
+        index = 0;
       } else {
         this.curOrg = {};
         this.statSituationList = this.curStatSituation;
       }
-      this.pointRuleIndex = `${index}`
-      this.pointRuleShow = true
+      this.pointRuleIndex = `${index}`;
+      this.pointRuleShow = true;
     },
     /*
      * @Description: 单元格点击方法
@@ -641,12 +575,12 @@ export default {
         this.curOrg = row;
         this.statSituationList = row.pointDetails;
         setTimeout(() => {
-          this.openPointRule()
-        })
+          this.openPointRule();
+        });
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped src="./css/performanceUnit.scss"></style>
