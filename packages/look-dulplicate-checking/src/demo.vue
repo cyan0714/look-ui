@@ -61,7 +61,7 @@ export default {
           isShowViewBtn: 0,
           relations: [
             {
-              name: 'globe forest from earlier connected hang',
+              name: 'globe forest from earlier connected hangglobe forest from earlier connected hangglobe forest from earlier connected hangglobe forest from earlier connected hangglobe forest from earlier connected hang',
               id: 1
             },
             {

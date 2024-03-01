@@ -27,7 +27,7 @@
         <template v-if="item.status === '已关联'">
           <div class="rd-content">
             <div v-for="(relation, index) in item.relations" class="relation-relevance-item" :key="index">
-              <a class="double-row-ellip" @click.stop="handleRelationRowClick(relation)">{{ relation.name }}</a>
+              <a class="double-row-ellip" :title="relation.name" @click.stop="handleRelationRowClick(relation)">{{ relation.name }}</a>
               <span class="text-btn" @click.stop="handleRowCancel(relation)">取消关联</span>
             </div>
           </div>
@@ -217,6 +217,7 @@ export default {
         .text-btn {
           margin-left: 20px;
           color: red;
+          flex-shrink: 0;
         }
       }
     }
