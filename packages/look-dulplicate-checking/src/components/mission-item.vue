@@ -3,7 +3,7 @@
     <div class="left">
       <div class="txt-wrap">
         <div class="title">
-          <span @click.stop="handleMissionDetail">
+          <span @click="handleMissionDetail">
             {{ item.name }}
           </span>
         </div>
