@@ -84,6 +84,7 @@
               <section class="collapse-content">
                 <mission-item
                   v-for="(item, index) in noDealMission.dissimilar"
+                  :type="DISSIMILAR"
                   :item="item"
                   :key="index"
                   :class="[
@@ -143,6 +144,7 @@
               <section class="collapse-content">
                 <mission-item
                   v-for="(item, index) in hadDealMission.dissimilar"
+                  :type="DISSIMILAR"
                   :item="item"
                   :key="index"
                   :class="[

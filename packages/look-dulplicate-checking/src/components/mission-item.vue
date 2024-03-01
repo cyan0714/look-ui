@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { SIMILAR } from '../constants';
+
 export default {
   components: {},
   data() {
@@ -66,11 +68,15 @@ export default {
       type: Object,
       default: () => {},
     },
+    type: {
+      type: String,
+      default: SIMILAR,
+    },
   },
   inject: ['onCancelBtnClick', 'onViewDetailsClick', 'onNameClick', 'onRelationClick', 'onRelationRowClick', 'onCancelRowBtnClick'],
   computed: {
     hasList() {
-      return this.item.checkResultListLength > 0;
+      return this.type === SIMILAR && this.item.checkResultListLength > 0;
     }
   },
   created() {},

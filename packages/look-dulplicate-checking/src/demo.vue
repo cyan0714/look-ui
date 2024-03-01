@@ -104,7 +104,6 @@ export default {
           checked: false,
           tenantId: '4602000039',
           status: '',
-          checkResultListLength: 0,
         },
       ],
     };
