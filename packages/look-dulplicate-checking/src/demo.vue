@@ -58,7 +58,7 @@ export default {
           tenantId: '4602000038',
           status: '已关联',
           checkResultListLength: 0,
-          isShowViewBtn: 0,
+          isShowViewBtn: false,
           relations: [
             {
               name: 'globe forest from earlier connected hangglobe forest from earlier connected hangglobe forest from earlier connected hangglobe forest from earlier connected hangglobe forest from earlier connected hang',

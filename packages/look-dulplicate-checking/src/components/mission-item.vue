@@ -7,7 +7,7 @@
             {{ item.name }}
           </span>
         </div>
-        <div v-if="item.isShowViewBtn == undefined || item.isShowViewBtn == 1" class="txt-btn" @click.stop="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
+        <div v-if="item.isShowViewBtn === undefined || item.isShowViewBtn === true" class="txt-btn" @click.stop="handleViewDetail">查看详情<i class="el-icon-arrow-right"></i></div>
       </div>
       <div class="result">
         <div class="result-left">
