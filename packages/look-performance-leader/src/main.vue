@@ -216,7 +216,7 @@
 
     <!-- 绩效总分排行榜弹窗 -->
     <el-dialog
-      :class="['point-rank-dialog', `point-rank-${themeType}`]"
+      :class="['lookui-dialog', 'point-rank-dialog', `point-rank-${themeType}`]"
       title="绩效考核总分排行榜"
       v-if="pointRankListShow"
       :visible.sync="pointRankListShow"

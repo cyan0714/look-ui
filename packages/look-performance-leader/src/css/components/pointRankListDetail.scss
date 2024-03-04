@@ -1,7 +1,7 @@
 @import '../common.scss';
 
 #pointRankListDetail {
-  height: 85vh;
+  min-height: 50vh;
   width: 100%;
   padding: 10px 12px;
   box-sizing: border-box;
@@ -129,6 +129,8 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-top: 14px;
+    padding-bottom: 10px;
 
     ::v-deep .el-pagination {
       &.theme-leader-pagination {

@@ -18,13 +18,13 @@
         </el-select>
         <div class="stat-details">
           <div class="stat-details-item" v-for="(item, index) in curStatSituation" :key="index">
-            <div class="details-item-img" @click="openPointRule(index)">
+            <div class="details-item-img" @click="openPointRule(item, index)">
               <img src="./imgs/icon_stat_situation_unit.png" alt="" />
             </div>
-            <div class="details-item-title" @click="openPointRule(index)">
+            <div class="details-item-title" @click="openPointRule(item, index)">
               {{ item.indexName }}
             </div>
-            <div class="details-item-point" @click="openPointRule(index)">
+            <div class="details-item-point" @click="openPointRule(item, index)">
               {{ item.indexOriginalScore }}分
             </div>
           </div>
@@ -135,7 +135,7 @@
 
     <!-- 绩效总分排行榜弹窗 -->
     <el-dialog
-      :class="['point-rank-dialog', `point-rank-${themeType}`]"
+      :class="['lookui-dialog', 'point-rank-dialog', `point-rank-${themeType}`]"
       title="绩效考核总分排行榜"
       v-if="pointRankListShow"
       :visible.sync="pointRankListShow"
@@ -156,6 +156,7 @@
       <pointRule
         :themeType="themeType"
         :curIndex="pointRuleIndex"
+        :curIndexId="curIndexId"
         :statSituationList="statSituationList"
         :curOrg="curOrg" />
     </el-dialog>
@@ -163,14 +164,11 @@
 </template>
 
 <script>
-const baseUrl = 'http://192.168.10.28:6068/performance-appraisal';
-const token =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI1YmU4MmJhMi02YzcyLTQ3NzAtYjAwOS0xYjZlYzlkOTAxMWMiLCJhcHBJZCI6IkdaTFNaWCIsInRlbmFudElkIjoiNDYwMjAwMDAzOCIsImFjY2Vzc1Rva2VuIjoiMzQwOTJiYmQ0YzIyZTE0OTc3YzM3MzEzNDFkZTJkZWQiLCJpYXQiOjE3MDkxOTMxODUsImV4cCI6MTcwOTIwMDM4NX0.DYuQVlejoIItVMLRBDUfjfrJCXX3wtHLXVRlcov285o';
-
+import { baseUrl, token } from '@/constant-test';
 import pointRankListDetail from '../../look-performance-leader/src/components/pointRankListDetail.vue';
 import pointRule from '../../look-performance-leader/src/components/pointRule.vue';
 import { pointDetails } from '../../look-performance-leader/src/common/staticData';
-import { getSchemeIndexList, getOrgOverTimeReportList, getAllOrgScoreList } from './api/main';
+import { getSchemeIndexList, getIndexDetail, getOrgOverTimeReportList, getAllOrgScoreList } from './api/main';
 
 export default {
   name: 'look-performance-unit',
@@ -304,6 +302,7 @@ export default {
       pointRankListShow: false, // 是否展示绩效总分排行榜榜单弹窗
       pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
       curOrg: {}, // 绩效考核总分当前选中单位
+      curIndexId: '',
     };
   },
   mounted() {
@@ -552,7 +551,7 @@ export default {
     /*
      * @Description: 打开绩效考核评分规则弹窗
      */
-    openPointRule(index) {
+    openPointRule(item, index) {
       if (index === undefined) {
         index = 0;
       } else {
@@ -560,6 +559,7 @@ export default {
         this.statSituationList = this.curStatSituation;
       }
       this.pointRuleIndex = `${index}`;
+      this.curIndexId = item.indexId;
       this.pointRuleShow = true;
     },
     /*
@@ -573,9 +573,12 @@ export default {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件
         this.curOrg = row;
-        this.statSituationList = row.pointDetails;
+
+        // this.statSituationList = row.pointDetails;
+        this.statSituationList = this.curStatSituation;
+
         setTimeout(() => {
-          this.openPointRule();
+          this.openPointRule(this.statSituationList[0]);
         });
       }
     },
@@ -584,4 +587,4 @@ export default {
 </script>
 
 <style lang="scss" scoped src="./css/performanceUnit.scss"></style>
-<style lang="scss" scoped src="../../look-performance-leader/src/css/common.scss"></style>
+<style lang="scss" scoped src="../../look-performance-leader/src/css/common.scss"></style>@/constant-test

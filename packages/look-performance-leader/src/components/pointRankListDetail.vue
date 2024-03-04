@@ -6,8 +6,7 @@
           placeholder="请输入关键词"
           v-model="searchContent"
           :class="themeClass"
-          prefix-icon="el-icon-search"
-        >
+          prefix-icon="el-icon-search">
           <el-button slot="append" type="primary">搜索</el-button>
         </el-input>
       </div>
@@ -21,63 +20,71 @@
         v-if="pointRankHeight"
         class="lookui-table point-rank-table"
         :data="tableData"
-        :height="pointRankHeight"
-        :max-height="pointRankHeight"
+        v-loading="loading"
         :header-cell-class-name="`${themeClass}-header-cell`"
         :header-row-class-name="`${themeClass}-header-row`"
         cell-class-name="common-cell"
         border
         stripe
-        style="width: 100%"
+        style="width: 100%;height: 100%;"
         @sort-change="sortChange"
-        @cell-click="pointTableClick"
-      >
-        <el-table-column
-          prop="rank"
-          label="排名"
-          width="60"
-          align="center"
-          :resizable="false"
-        />
+        @cell-click="pointTableClick">
+        <el-table-column type="index" label="排名" width="60" align="center" :resizable="false" />
         <el-table-column
           prop="orgName"
           label="单位名称"
           align="center"
           width="500"
-          :resizable="false"
-        />
+          :resizable="false" />
         <el-table-column
-          v-for="(item, index) in tableData[0].pointDetails"
-          :key="index"
-          :label="`${item.name}得分`"
+          prop="FKSX"
+          label="反馈时效"
           align="center"
-          :resizable="false"
-        >
-          <template slot-scope="scope">
-            <div>{{ scope.row.pointDetails[index].point }}</div>
-          </template>
-        </el-table-column>
+          sortable="custom"
+          :resizable="false" />
         <el-table-column
-          prop="totalPoint"
+          prop="FKZL"
+          label="反馈质量"
+          align="center"
+          sortable="custom"
+          :resizable="false" />
+        <el-table-column
+          prop="TJQK"
+          label="推进情况"
+          align="center"
+          sortable="custom"
+          :resizable="false" />
+        <el-table-column
+          prop="RWSLJFX"
+          label="任务数量加分项"
+          align="center"
+          sortable="custom"
+          :resizable="false" />
+        <el-table-column
+          prop="RCJJFX"
+          label="日常加减分项"
+          align="center"
+          sortable="custom"
+          :resizable="false" />
+        <el-table-column
+          prop="allScore"
           label="绩效得分"
           align="center"
           sortable="custom"
-          :resizable="false"
-        />
+          :resizable="false" />
       </el-table>
-    </div>
-    <div class="footer">
-      <el-pagination
-        :class="`${themeClass}-pagination`"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.length"
-        background
-      />
+      <div class="footer" v-if="tableData.length >= queryParams.pageSize">
+        <el-pagination
+          :class="`${themeClass}-pagination lookui-pagination`"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          background />
+      </div>
     </div>
 
     <!-- 绩效考核评分规则弹窗 -->
@@ -88,20 +95,17 @@
       width="80%"
       :top="curOrg.orgName ? '5vh' : '10vh'"
       center
-      append-to-body
-    >
-      <pointRule
-        :themeType="themeType"
-        :statSituationList="statSituationList"
-        :curOrg="curOrg"
-      />
+      append-to-body>
+      <pointRule :themeType="themeType" :statSituationList="statSituationList" :curOrg="curOrg" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import pointRule from './pointRule.vue'
-import { pointDetails } from '../common/staticData'
+import pointRule from './pointRule.vue';
+import { pointDetails } from '../common/staticData';
+import { getAllOrgScorePageList } from '../api/main';
+import { baseUrl, token } from '@/constant-test';
 
 export default {
   name: 'pointRankListDetail',
@@ -120,111 +124,78 @@ export default {
   },
   data() {
     return {
+      loading: true,
+      total: 0,
       searchContent: '',
-      pointRankHeight: 0, // 表格高度
-      tableData: [
-        {
-          rank: 1,
-          orgName: '旅游和文化广电体育局',
-          totalPoint: 120, // 绩效得分（总分）
-          pointDetails,
-        },
-        {
-          rank: 2,
-          orgName: '教育厅',
-          pointDetails,
-          totalPoint: 100, // 绩效得分（总分）
-        },
-        {
-          rank: 3,
-          orgName: 'aaaa',
-          pointDetails,
-          totalPoint: 90, // 绩效得分（总分）
-        },
-        {
-          rank: 4,
-          orgName: 'bbbbb',
-          pointDetails,
-          totalPoint: 80, // 绩效得分（总分）
-        },
-        {
-          rank: 5,
-          orgName: 'cccc',
-          pointDetails,
-          totalPoint: 70, // 绩效得分（总分）
-        },
-        {
-          rank: 6,
-          orgName: 'ddd',
-          pointDetails,
-          totalPoint: 60, // 绩效得分（总分）
-        },
-        {
-          rank: 7,
-          orgName: 'eee',
-          pointDetails,
-          totalPoint: 50, // 绩效得分（总分）
-        },
-        {
-          rank: 8,
-          orgName: 'fff',
-          pointDetails,
-          totalPoint: 50, // 绩效得分（总分）
-        },
-        {
-          rank: 9,
-          orgName: 'ggg',
-          pointDetails,
-          totalPoint: 40, // 绩效得分（总分）
-        },
-        {
-          rank: 10,
-          orgName: 'hhh',
-          pointDetails,
-          totalPoint: 30, // 绩效得分（总分）
-        },
-      ],
+      pointRankHeight: 630, // 表格高度
+      tableData: [],
       currentPage: 1,
       pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
       curOrg: {}, // 绩效考核总分当前选中单位
-    }
+      queryParams: {
+        pageSize: 10,
+        current: 1,
+        data: {},
+      },
+    };
   },
   computed: {
     themeClass() {
-      return this.themeType == 'unit' ? 'theme-unit' : 'theme-leader'
+      return this.themeType == 'unit' ? 'theme-unit' : 'theme-leader';
     },
   },
   mounted() {
-    this.init()
+    this.init();
   },
   methods: {
+    _getAllOrgScorePageList() {
+      getAllOrgScorePageList({ baseUrl, token, params: this.queryParams }).then(res => {
+        this.loading = false;
+        this.tableData = res.data.data.records;
+        this.total = res.data.data.total;
+        this.tableData.forEach(item => {
+          item.FKSX = item.indexCategoryScoreList.find(
+            iten => iten.indexCategory === 'FKSX'
+          )?.score;
+          item.FKZL = item.indexCategoryScoreList.find(
+            iten => iten.indexCategory === 'FKZL'
+          )?.score;
+          item.TJQK = item.indexCategoryScoreList.find(
+            iten => iten.indexCategory === 'TJQK'
+          )?.score;
+          item.RWSLJFX = item.indexCategoryScoreList.find(
+            iten => iten.indexCategory === 'RWSLJFX'
+          )?.score;
+          item.RCJJFX = item.indexCategoryScoreList.find(
+            iten => iten.indexCategory === 'RCJJFX'
+          )?.score;
+        });
+      });
+    },
     /*
      * @Description: 组件初始化
      */
     init() {
-      this.initPointRankHeight()
+      console.log('xxxx');
+      this._getAllOrgScorePageList();
+      this.initPointRankHeight();
     },
     /*
      * @Description: 初始化表格最大高度
      */
-    initPointRankHeight() {
-      setTimeout(() => {
-        this.pointRankHeight = this.$refs.pointRankTable.offsetHeight
-      })
+    // initPointRankHeight() {
+    //   setTimeout(() => {
+    //     this.pointRankHeight = this.$refs.pointRankTable.offsetHeight
+    //   })
+    // },
+    handleSizeChange(pageSize) {
+      this.queryParams.pageSize = pageSize;
+      this.queryParams.current = 1;
+      this._getAllOrgScorePageList();
     },
-    /*
-     * @Description: 当修改每页数量时触发事件
-     * @param: val 每页数量
-     */
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
-    },
-    /*
-     * @Description: 当页数变动时触发事件
-     * @param: val 当前页
-     */
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+    handleCurrentChange(current) {
+      this.queryParams.current = current;
+      this._getAllOrgScorePageList();
     },
     /*
      * @Description: 排序条件
@@ -233,19 +204,19 @@ export default {
      * @param: order 正反
      */
     sortChange(column, prop, order) {
-      console.log(column, prop, order)
+      console.log(column, prop, order);
     },
     /*
      * @Description: 打开绩效考核评分规则弹窗
      */
     openPointRule(index) {
       if (index === undefined) {
-        index = 0
+        index = 0;
       } else {
-        this.curOrg = {}
+        this.curOrg = {};
       }
-      this.pointRuleIndex = `${index}`
-      this.pointRuleShow = true
+      this.pointRuleIndex = `${index}`;
+      this.pointRuleShow = true;
     },
     /*
      * @Description: 单元格点击方法
@@ -257,24 +228,20 @@ export default {
     pointTableClick(row, column, cell, event) {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件
-        this.curOrg = row
-        this.statSituationList = row.pointDetails
+        this.curOrg = row;
+        this.statSituationList = row.pointDetails;
         setTimeout(() => {
-          this.openPointRule()
-        })
+          this.openPointRule();
+        });
       }
     },
   },
-}
+};
 </script>
 
-<style
-  lang="scss"
-  scoped
-  src="../css/components/pointRankListDetail.scss"
-></style>
+<style lang="scss" scoped src="../css/components/pointRankListDetail.scss"></style>
 <style>
-.rank-point-rule-dialog .el-dialog__body{
+.rank-point-rule-dialog .el-dialog__body {
   padding-top: 0;
 }
 </style>

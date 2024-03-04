@@ -1,0 +1,8 @@
+const baseUrl = 'http://192.168.230.124:6068/performance-appraisal';
+const token =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyNGQyOTI3OC04MzczLTRiNTUtYWIzOC02ZDIzMWVkMmJiY2YiLCJhcHBJZCI6IkdaTFNaWCIsInRlbmFudElkIjoiNDYwMjAwMDAzOCIsImFjY2Vzc1Rva2VuIjoiOWE2NDkyNmY2OWM3NjE0MzA1M2VlYjQ1YmI4MTM2M2YiLCJpYXQiOjE3MDk1Mzk4MTAsImV4cCI6MTcwOTU0NzAxMH0.T-r73NM8OpJYCrfXdYmfdPUwMQRv-2EXFhkE5YeTsjo';
+
+export {
+  baseUrl,
+  token
+}

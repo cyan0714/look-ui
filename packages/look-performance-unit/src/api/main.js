@@ -34,3 +34,14 @@ export const getAllOrgScoreList = function ({ baseUrl, token, params }) {
     data: params,
   });
 };
+
+// 根据指标id获取详情
+export const getIndexDetail = function (baseUrl, token, id) {
+  return request({
+    url: `${baseUrl}/api/performance/index/get/${id}`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
