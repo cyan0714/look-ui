@@ -174,34 +174,91 @@
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-if="checkingResultList.length > 0">
-          <virtual-list
-            v-if="hasResizeObserver"
-            style="height: 100%; overflow-y: auto"
-            class="rcs-list"
-            data-key="taskId"
-            :data-sources="checkingResultList"
-            :data-component="CheckingResultItem">
-            <template #item="{ indey, item }">
-              <checking-result-item
-                :source="item"
-                :recommandTags="checkedTags"
-                :isShowBtns="currentMissionType == 0"
-                :key="indey"
-                @subscription-click="handleSubscribe"
-                @merging-click="handleMerge"
-                @insertion-click="handleInsert">
-                <template v-slot:operation-btns="slotProps">
-                  <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
-                </template>
-              </checking-result-item>
-            </template>
-          </virtual-list>
+          <div v-if="hasResizeObserver">
+            <!-- 前10条查重结果 -->
+            <virtual-list
+              style="height: 100%; overflow-y: auto"
+              class="rcs-list"
+              data-key="taskId"
+              :data-sources="this.checkingResultList.slice(0, 10)" 
+              :data-component="CheckingResultItem">
+              <template #item="{ indey, item }">
+                <checking-result-item
+                  :source="item"
+                  :recommandTags="checkedTags"
+                  :isShowBtns="currentMissionType == 0"
+                  :key="indey"
+                  @subscription-click="handleSubscribe"
+                  @merging-click="handleMerge"
+                  @insertion-click="handleInsert">
+                  <template v-slot:operation-btns="slotProps">
+                    <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                  </template>
+                </checking-result-item>
+              </template>
+            </virtual-list>
+            <div class="toggle-data-bar" v-if="this.checkingResultList.length > 10">
+              <div class="is-fold" v-if="isFold">
+                部分准确率不高的结果未予显示，请点击<span @click="showMore">查看更多</span>进行显示
+              </div>
+              <div class="is-unfold" v-else @click="handleFold">
+                收起<i class="el-icon-d-arrow-left"></i>
+              </div>
+            </div>
+            <!-- 后10条查重结果 -->
+            <virtual-list
+              v-if="!isFold"
+              style="height: 100%; overflow-y: auto"
+              class="rcs-list"
+              data-key="taskId"
+              :data-sources="this.checkingResultList.slice(10, this.checkingResultList.length)" 
+              :data-component="CheckingResultItem">
+              <template #item="{ indey, item }">
+                <checking-result-item
+                  :source="item"
+                  :recommandTags="checkedTags"
+                  :isShowBtns="currentMissionType == 0"
+                  :key="indey"
+                  @subscription-click="handleSubscribe"
+                  @merging-click="handleMerge"
+                  @insertion-click="handleInsert">
+                  <template v-slot:operation-btns="slotProps">
+                    <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                  </template>
+                </checking-result-item>
+              </template>
+            </virtual-list>
+          </div>
+          
+          <!-- 兼容处理 -->
           <div
             v-else
             style="height: 100%; overflow-y: auto"
           >
             <checking-result-item
-                v-for="(item, index) in checkingResultList"
+              v-for="(item, index) in this.checkingResultList.slice(0, 10)"
+              :source="item"
+              :recommandTags="checkedTags"
+              :isShowBtns="currentMissionType == 0"
+              :key="index"
+              @subscription-click="handleSubscribe"
+              @merging-click="handleMerge"
+              @insertion-click="handleInsert">
+              <template v-slot:operation-btns="slotProps">
+                <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+              </template>
+            </checking-result-item>
+            <div class="toggle-data-bar" v-if="this.checkingResultList.length > 10">
+              <div class="is-fold" v-if="isFold">
+                部分准确率不高的结果未予显示，请点击<span @click="showMore">查看更多</span>进行显示
+              </div>
+              <div class="is-unfold" v-else @click="handleFold">
+                收起<i class="el-icon-d-arrow-left"></i>
+              </div>
+            </div>
+            <template v-if="!isFold">
+              <checking-result-item
+                v-for="(item, index) in this.checkingResultList.slice(10, this.checkingResultList.length)"
                 :source="item"
                 :recommandTags="checkedTags"
                 :isShowBtns="currentMissionType == 0"
@@ -213,6 +270,7 @@
                   <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
                 </template>
               </checking-result-item>
+            </template>
           </div>
         </section>
         <section class="right-container-empty" v-else>
@@ -256,6 +314,7 @@ export default {
   },
   data() {
     return {
+      isFold: true,
       keywords: '',
       sources: ['name', 'tenantId'],
       loadingCheckResultList: false,
@@ -459,6 +518,12 @@ export default {
     });
   },
   methods: {
+    handleFold() {
+      this.isFold = true
+    },
+    showMore() {
+      this.isFold = false
+    },
     handleQuery() {
       if (this.keywords.trim() === '') {
         this.toggleTag(this.currentMissionType)
@@ -985,6 +1050,30 @@ export default {
           &::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background-color: #cfcbcb;
+          }
+        }
+        .toggle-data-bar {
+          display: flex;
+          justify-content: center;
+          padding: 30px 0;
+          background-color: #fff;
+          border-radius: 8px;
+          margin-bottom: 14px;
+          .is-fold {
+            span {
+              color: #506eda;
+              cursor: pointer;
+              font-weight: bold;
+              margin: 0 4px;
+              text-decoration: underline;
+            }
+          }
+          .is-unfold {
+            cursor: pointer;
+            i {
+              margin-left: 4px;
+              transform: rotate(90deg);
+            }
           }
         }
       }
