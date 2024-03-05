@@ -36,7 +36,7 @@
           >新增</el-button
         >
       </div>
-      <el-table :data="tableData" height="630" style="width: 100%" class="lookui-table">
+      <el-table v-loading="loadingApplication" :data="tableData" height="630" style="width: 100%" class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <el-table-column prop="appName" label="应用名称" align="center"></el-table-column>
         <el-table-column prop="appId" label="应用APPID" align="center"></el-table-column>
@@ -140,7 +140,7 @@
             >新增</el-button
           >
         </div>
-        <el-table :data="tableTenantData" height="530" style="width: 100%" class="lookui-table">
+        <el-table v-loading="loadingTenant" :data="tableTenantData" height="530" style="width: 100%" class="lookui-table">
           <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
           <el-table-column prop="tenantName" label="租户名称" align="center"></el-table-column>
           <el-table-column prop="tenantId" label="租户ID" align="center"></el-table-column>
@@ -216,7 +216,7 @@
 </template>
 
 <script>
-const baseUrl = 'http://192.168.10.28:7078';
+import { baseUrl, token } from '@/constant-test';
 import {
   add,
   detail,
@@ -232,6 +232,8 @@ export default {
   components: {},
   data() {
     return {
+      loadingApplication: true,
+      loadingTenant: true,
       dialogVisible: false,
       dialogTenantVisible: false,
       dialogTenantUpdateVisible: false,
@@ -295,7 +297,9 @@ export default {
   methods: {
     // 获取应用列表
     _getList() {
-      getList(baseUrl, this.queryParams).then(res => {
+      this.loadingApplication = true;
+      getList(baseUrl, token, this.queryParams).then(res => {
+        this.loadingApplication = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
       });
@@ -308,7 +312,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(baseUrl, row.id).then(res => {
+          remove(baseUrl, token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {
@@ -335,7 +339,7 @@ export default {
     handleConfirmAdd() {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
-          add(baseUrl, this.formAdd).then(res => {
+          add(baseUrl, token, this.formAdd).then(res => {
             if (res.data.code === '000000') {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
@@ -378,7 +382,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          removeTenant(baseUrl, row.id).then(res => {
+          removeTenant(baseUrl, token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {
@@ -394,7 +398,7 @@ export default {
     handleTenantUpdate(row) {
       this.currentTenantOperation = '修改';
       this.dialogTenantUpdateVisible = true;
-      detailTenant(baseUrl, row.id).then(res => {
+      detailTenant(baseUrl, token, row.id).then(res => {
         this.formTenantAdd = res.data.data;
       });
     },
@@ -415,7 +419,7 @@ export default {
         if (valid) {
           this.formTenantAdd.appId = this.currentAppId;
           if (this.currentTenantOperation === '新增') {
-            addTenant(baseUrl, this.formTenantAdd).then(res => {
+            addTenant(baseUrl, token, this.formTenantAdd).then(res => {
               if (res.data.code === '000000') {
                 this.$message.success('新增成功');
               } else {
@@ -425,7 +429,7 @@ export default {
               this._getTenantList(this.currentAppId);
             });
           } else {
-            addTenant(baseUrl, this.formTenantAdd).then(res => {
+            addTenant(baseUrl, token, this.formTenantAdd).then(res => {
               if (res.data.code === '000000') {
                 this.$message.success('修改成功');
               } else {
@@ -445,14 +449,16 @@ export default {
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
-      detail(baseUrl, row.id).then(res => {
+      detail(baseUrl, token, row.id).then(res => {
         this.formAdd = res.data.data;
       });
     },
     // 获取租户列表
     _getTenantList(id) {
+      this.loadingTenant = true;
       this.queryTenantParams.appTenantScheme.appId = id;
-      getTenantList(baseUrl, this.queryTenantParams).then(res => {
+      getTenantList(baseUrl, token, this.queryTenantParams).then(res => {
+        this.loadingTenant = false;
         this.tableTenantData = res.data.data.records;
         this.totalTenant = res.data.data.total;
       });

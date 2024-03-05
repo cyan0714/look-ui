@@ -36,7 +36,7 @@
           >新增</el-button
         >
       </div>
-      <el-table :data="tableData" height="630" style="width: 100%" class="lookui-table">
+      <el-table v-loading="loadingIndicator" :data="tableData" height="630" style="width: 100%" class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <el-table-column prop="name" label="指标名称" align="center"></el-table-column>
         <el-table-column prop="type" label="指标类型" align="center"></el-table-column>
@@ -225,13 +225,14 @@
 </template>
 
 <script>
-const baseUrl = 'http://192.168.10.28:7078';
+import { baseUrl, token } from '@/constant-test';
 import { add, detail, getList, remove } from '../api/manage-indicator';
 export default {
   name: 'manage-indicator',
   components: {},
   data() {
     return {
+      loadingIndicator: true,
       currentLevel2RowIndex: 0,
       currentOperation: '新增',
       currentLevel2Operation: '新增',
@@ -311,7 +312,9 @@ export default {
   methods: {
     // 获取指标列表
     _getList() {
-      getList(baseUrl, this.queryParams).then(res => {
+      this.loadingIndicator = true;
+      getList(baseUrl, token, this.queryParams).then(res => {
+        this.loadingIndicator = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
       });
@@ -330,7 +333,7 @@ export default {
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
-      detail(baseUrl, row.id).then(res => {
+      detail(baseUrl, token, row.id).then(res => {
         this.formAdd = res.data.data;
       });
     },
@@ -338,7 +341,7 @@ export default {
     handleConfirmAdd() {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
-          add(baseUrl, this.formAdd).then(res => {
+          add(baseUrl, token, this.formAdd).then(res => {
             if (res.data.code === '000000') {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
@@ -360,7 +363,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(baseUrl, row.id).then(res => {
+          remove(baseUrl, token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {

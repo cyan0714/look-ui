@@ -36,7 +36,7 @@
           >新增</el-button
         >
       </div>
-      <el-table :data="tableData" height="630" style="width: 100%" class="lookui-table">
+      <el-table v-loading="loadingScheme" :data="tableData" height="630" style="width: 100%" class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <el-table-column prop="schemeName" label="考核方案名称" align="center"></el-table-column>
         <el-table-column prop="id" label="方案ID" align="center"></el-table-column>
@@ -257,7 +257,7 @@
 </template>
 
 <script>
-const baseUrl = 'http://192.168.10.28:7078';
+import { baseUrl, token } from '@/constant-test';
 import { add, detail, getList, remove } from '../api/manage-scheme';
 import { getList as getIndexList } from '../api/manage-indicator';
 export default {
@@ -265,6 +265,7 @@ export default {
   components: {},
   data() {
     return {
+      loadingScheme: true,
       currentEditIndex: 0,
       selectionList: [],
       formIndex: {
@@ -388,7 +389,7 @@ export default {
       this._getIndexList();
     },
     _getIndexList() {
-      getIndexList(baseUrl, this.queryIndexParams).then(res => {
+      getIndexList(baseUrl, token, this.queryIndexParams).then(res => {
         this.tableIndexData = res.data.data.records;
         this.indexTotal = res.data.data.total;
       });
@@ -402,7 +403,9 @@ export default {
     },
     // 获取方案列表
     _getList() {
-      getList(baseUrl, this.queryParams).then(res => {
+      this.loadingScheme = true;
+      getList(baseUrl, token, this.queryParams).then(res => {
+        this.loadingScheme = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
       });
@@ -421,7 +424,7 @@ export default {
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
-      detail(baseUrl, row.id).then(res => {
+      detail(baseUrl, token, row.id).then(res => {
         this.formAdd = res.data.data;
         this.formAdd.schemeIndexList.forEach(item => (item.editable = false));
       });
@@ -431,7 +434,7 @@ export default {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
           this.formAdd.fullScore = this.computeFullScore;
-          add(baseUrl, this.formAdd).then(res => {
+          add(baseUrl, token, this.formAdd).then(res => {
             if (res.data.code === '000000') {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
@@ -453,7 +456,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(baseUrl, row.id).then(res => {
+          remove(baseUrl, token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {
