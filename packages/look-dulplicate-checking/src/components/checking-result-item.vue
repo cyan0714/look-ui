@@ -14,10 +14,10 @@
           {{ tag }}
         </div>
       </div>
-      <div class="source-and-request" v-if="source.requirement">
+      <!-- <div class="source-and-request" v-if="source.requirement">
         <div class="title">来源及要求:</div>
         <div class="text-area double-row-ellip">{{ source.requirement }}</div>
-      </div>
+      </div> -->
       <div class="other-info">
         <div class="left">
           <div class="leader-unit">
