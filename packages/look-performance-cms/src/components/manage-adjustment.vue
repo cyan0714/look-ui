@@ -49,7 +49,7 @@
       <el-table
         v-loading="loadingIntervention"
         :data="tableDataIntervention"
-        height="630"
+        :max-height="maxHeight"
         style="width: 100%"
         class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
@@ -343,6 +343,10 @@ export default {
     baseUrl: {
       type: String,
       default: '',
+    },
+    maxHeight: {
+      type: String,
+      default: '630',
     },
   },
   computed: {},

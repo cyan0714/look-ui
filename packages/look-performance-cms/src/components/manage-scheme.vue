@@ -36,7 +36,7 @@
           >新增</el-button
         >
       </div>
-      <el-table v-loading="loadingScheme" :data="tableData" height="630" style="width: 100%" class="lookui-table">
+      <el-table v-loading="loadingScheme" :data="tableData" :max-height="maxHeight" style="width: 100%" class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <el-table-column prop="schemeName" label="考核方案名称" align="center"></el-table-column>
         <el-table-column prop="id" label="方案ID" align="center"></el-table-column>
@@ -316,6 +316,10 @@ export default {
     baseUrl: {
       type: String,
       default: '',
+    },
+    maxHeight: {
+      type: String,
+      default: '630',
     },
   },
   computed: {

@@ -36,7 +36,7 @@
           >新增</el-button
         >
       </div>
-      <el-table v-loading="loadingApplication" :data="tableData" height="630" style="width: 100%" class="lookui-table">
+      <el-table v-loading="loadingApplication" :data="tableData" :max-height="maxHeight" style="width: 100%" class="lookui-table">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <el-table-column prop="appName" label="应用名称" align="center"></el-table-column>
         <el-table-column prop="appId" label="应用APPID" align="center"></el-table-column>
@@ -237,6 +237,10 @@ export default {
     baseUrl: {
       type: String,
       default: '',
+    },
+    maxHeight: {
+      type: String,
+      default: '630',
     },
   },
   data() {

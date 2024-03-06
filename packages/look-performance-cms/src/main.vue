@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="main-content">
-      <component :is="currentComponent" :token="token" :baseUrl="baseUrl"></component>
+      <component :is="currentComponent" :token="token" :baseUrl="baseUrl" :maxHeight="maxHeight"></component>
     </div>
   </div>
 </template>
@@ -67,6 +67,10 @@ export default {
       type: String,
       default: '',
     },
+    maxHeight: {
+      type: String,
+      default: '630',
+    },
   },
   computed: {},
   created() {},
@@ -86,7 +90,8 @@ export default {
   background-color: #f0f2f5;
   height: 100%;
   .main-nav {
-    width: 300px;
+    width: 20%;
+    min-width: 190px;
     background-color: #fff;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -110,7 +115,7 @@ export default {
     }
   }
   .main-content {
-    width: calc(100% - 310px);
+    width: calc(80% - 10px);
     background-color: #fff;
   }
 }
