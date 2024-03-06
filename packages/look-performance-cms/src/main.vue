@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="main-content">
-      <component :is="currentComponent"></component>
+      <component :is="currentComponent" :token="token" :baseUrl="baseUrl"></component>
     </div>
   </div>
 </template>
@@ -58,7 +58,16 @@ export default {
       ],
     };
   },
-  props: {},
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {},
   created() {},
   mounted() {},

@@ -257,7 +257,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import { add, detail, getList, remove } from '../api/manage-scheme';
 import { getList as getIndexList } from '../api/manage-indicator';
 export default {
@@ -309,7 +308,16 @@ export default {
       },
     };
   },
-  props: {},
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {
     computeFullScore() {
       // 未开启权重的情况下，满分就是满分分值总和；开启权重后，满分为权重分的总和
@@ -389,7 +397,7 @@ export default {
       this._getIndexList();
     },
     _getIndexList() {
-      getIndexList(baseUrl, token, this.queryIndexParams).then(res => {
+      getIndexList(this.baseUrl, this.token, this.queryIndexParams).then(res => {
         this.tableIndexData = res.data.data.records;
         this.indexTotal = res.data.data.total;
       });
@@ -404,7 +412,7 @@ export default {
     // 获取方案列表
     _getList() {
       this.loadingScheme = true;
-      getList(baseUrl, token, this.queryParams).then(res => {
+      getList(this.baseUrl, this.token, this.queryParams).then(res => {
         this.loadingScheme = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
@@ -424,7 +432,7 @@ export default {
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
-      detail(baseUrl, token, row.id).then(res => {
+      detail(this.baseUrl, this.token, row.id).then(res => {
         this.formAdd = res.data.data;
         this.formAdd.schemeIndexList.forEach(item => (item.editable = false));
       });
@@ -434,7 +442,7 @@ export default {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
           this.formAdd.fullScore = this.computeFullScore;
-          add(baseUrl, token, this.formAdd).then(res => {
+          add(this.baseUrl, this.token, this.formAdd).then(res => {
             if (res.data.code === '000000') {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
@@ -456,7 +464,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(baseUrl, token, row.id).then(res => {
+          remove(this.baseUrl, this.token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {

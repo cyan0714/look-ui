@@ -225,7 +225,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import { add, detail, getList, remove } from '../api/manage-indicator';
 export default {
   name: 'manage-indicator',
@@ -303,7 +302,16 @@ export default {
       tableData: [],
     };
   },
-  props: {},
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {},
   created() {},
   mounted() {
@@ -313,7 +321,7 @@ export default {
     // 获取指标列表
     _getList() {
       this.loadingIndicator = true;
-      getList(baseUrl, token, this.queryParams).then(res => {
+      getList(this.baseUrl, this.token, this.queryParams).then(res => {
         this.loadingIndicator = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
@@ -333,7 +341,7 @@ export default {
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
-      detail(baseUrl, token, row.id).then(res => {
+      detail(this.baseUrl, this.token, row.id).then(res => {
         this.formAdd = res.data.data;
       });
     },
@@ -341,7 +349,7 @@ export default {
     handleConfirmAdd() {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
-          add(baseUrl, token, this.formAdd).then(res => {
+          add(this.baseUrl, this.token, this.formAdd).then(res => {
             if (res.data.code === '000000') {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
@@ -363,7 +371,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(baseUrl, token, row.id).then(res => {
+          remove(this.baseUrl, this.token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {

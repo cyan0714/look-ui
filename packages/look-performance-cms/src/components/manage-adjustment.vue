@@ -144,6 +144,7 @@
         <el-form-item label="考核指标" prop="indexName">
           <el-input
             v-model="formIntervention.indexName"
+            placeholder="请选择"
             @focus="handleFocusIndexInput()"></el-input>
         </el-form-item>
         <el-form-item label="干预原因" prop="reason">
@@ -269,7 +270,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import { getList, addIntervene, getInterveneList } from '../api/manage-adjustment';
 import { getList as getAppicationList } from '../api/manage-application';
 import { getTenantList } from '../api/manage-application';
@@ -335,14 +335,23 @@ export default {
       },
     };
   },
-  props: {},
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {},
   created() {},
   watch: {
     'form.appId': function (newV, oldV) {
       if (newV !== '') {
         this.queryParamsTenant.appTenantScheme = { appId: newV };
-        getTenantList(baseUrl, token, this.queryParamsTenant).then(res => {
+        getTenantList(this.baseUrl, this.token, this.queryParamsTenant).then(res => {
           this.optionsTenant = res.data.data.records;
         });
       }
@@ -358,7 +367,7 @@ export default {
       this.queryParamsInterventionRecord.orgId = row.orgId;
       this.queryParamsInterventionRecord.indexId = indexId ? indexId : '';
 
-      getInterveneList(baseUrl, token, this.queryParamsInterventionRecord).then(res => {
+      getInterveneList(this.baseUrl, this.token, this.queryParamsInterventionRecord).then(res => {
         this.interventionRecords = res.data.data;
       });
     },
@@ -402,7 +411,7 @@ export default {
       this._getIndexList();
     },
     _getIndexList() {
-      getIndexList(baseUrl, token, this.queryIndexParams).then(res => {
+      getIndexList(this.baseUrl, this.token, this.queryIndexParams).then(res => {
         this.tableIndexData = res.data.data.records;
         this.indexTotal = res.data.data.total;
       });
@@ -420,7 +429,7 @@ export default {
     },
     handleScoreChange() {},
     handleConfirmIntervention() {
-      addIntervene(baseUrl, token, this.formIntervention).then(res => {
+      addIntervene(this.baseUrl, this.token, this.formIntervention).then(res => {
         if (res.data.code === '000000') {
           this.$message.success('干预成功');
           this.dialogIntervention = false;
@@ -450,13 +459,13 @@ export default {
     },
     _getList() {
       this.loadingIntervention = true;
-      getAppicationList(baseUrl, token, this.queryParamsApplication).then(res => {
+      getAppicationList(this.baseUrl, this.token, this.queryParamsApplication).then(res => {
         this.optionsApplication = res.data.data.records;
       });
-      getTenantList(baseUrl, token, this.queryParamsTenant).then(res => {
+      getTenantList(this.baseUrl, this.token, this.queryParamsTenant).then(res => {
         this.optionsTenant = res.data.data.records;
       });
-      getList(baseUrl, token, this.queryParams).then(res => {
+      getList(this.baseUrl, this.token, this.queryParams).then(res => {
         this.loadingIntervention = false;
         this.tableDataIntervention = res.data.data.records;
         this.totalIntervention = res.data.data.total;

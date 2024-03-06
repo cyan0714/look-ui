@@ -216,7 +216,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import {
   add,
   detail,
@@ -230,6 +229,16 @@ import {
 export default {
   name: 'manage-application',
   components: {},
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       loadingApplication: true,
@@ -298,7 +307,7 @@ export default {
     // 获取应用列表
     _getList() {
       this.loadingApplication = true;
-      getList(baseUrl, token, this.queryParams).then(res => {
+      getList(this.baseUrl, this.token, this.queryParams).then(res => {
         this.loadingApplication = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
@@ -312,7 +321,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(baseUrl, token, row.id).then(res => {
+          remove(this.baseUrl, this.token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {
@@ -339,7 +348,7 @@ export default {
     handleConfirmAdd() {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
-          add(baseUrl, token, this.formAdd).then(res => {
+          add(this.baseUrl, this.token, this.formAdd).then(res => {
             if (res.data.code === '000000') {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
@@ -382,7 +391,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          removeTenant(baseUrl, token, row.id).then(res => {
+          removeTenant(this.baseUrl, this.token, row.id).then(res => {
             if (res.data.code === '000000') {
               this.$message.success('删除成功');
             } else {
@@ -398,7 +407,7 @@ export default {
     handleTenantUpdate(row) {
       this.currentTenantOperation = '修改';
       this.dialogTenantUpdateVisible = true;
-      detailTenant(baseUrl, token, row.id).then(res => {
+      detailTenant(this.baseUrl, this.token, row.id).then(res => {
         this.formTenantAdd = res.data.data;
       });
     },
@@ -419,7 +428,7 @@ export default {
         if (valid) {
           this.formTenantAdd.appId = this.currentAppId;
           if (this.currentTenantOperation === '新增') {
-            addTenant(baseUrl, token, this.formTenantAdd).then(res => {
+            addTenant(this.baseUrl, this.token, this.formTenantAdd).then(res => {
               if (res.data.code === '000000') {
                 this.$message.success('新增成功');
               } else {
@@ -429,7 +438,7 @@ export default {
               this._getTenantList(this.currentAppId);
             });
           } else {
-            addTenant(baseUrl, token, this.formTenantAdd).then(res => {
+            addTenant(this.baseUrl, this.token, this.formTenantAdd).then(res => {
               if (res.data.code === '000000') {
                 this.$message.success('修改成功');
               } else {
@@ -449,7 +458,7 @@ export default {
     handleUpdate(row) {
       this.currentOperation = '修改';
       this.dialogVisible = true;
-      detail(baseUrl, token, row.id).then(res => {
+      detail(this.baseUrl, this.token, row.id).then(res => {
         this.formAdd = res.data.data;
       });
     },
@@ -457,7 +466,7 @@ export default {
     _getTenantList(id) {
       this.loadingTenant = true;
       this.queryTenantParams.appTenantScheme.appId = id;
-      getTenantList(baseUrl, token, this.queryTenantParams).then(res => {
+      getTenantList(this.baseUrl, this.token, this.queryTenantParams).then(res => {
         this.loadingTenant = false;
         this.tableTenantData = res.data.data.records;
         this.totalTenant = res.data.data.total;
