@@ -164,7 +164,7 @@
         <div class="left">
           <img :src="require(`./imgs/icon_4.png`)" alt="" />
           <span class="txt">查重结果: </span>
-          <span class="count"> {{ currentInstance?.checkResultListLength }}</span>
+          <span class="count"> {{ checkingResultList.length + newCheckingResultList.length }}</span>
         </div>
         <div class="right">
           <span class="txt">关键字:</span>
@@ -173,7 +173,7 @@
         </div>
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
-        <section class="right-container-section" v-if="checkingResultList.length > 0">
+        <section class="right-container-section" v-if="(checkingResultList.length > 0) || (newCheckingResultList.length > 0)">
           <!-- <div v-if="hasResizeObserver" style="height: 100%;">
             <virtual-list
               style="height: 100%; overflow-y: auto"
@@ -236,19 +236,21 @@
           <div
             style="height: 100%; overflow-y: auto"
           >
-            <checking-result-item
-              v-for="(item, index) in checkingResultList"
-              :source="item"
-              :recommandTags="checkedTags"
-              :isShowBtns="currentMissionType == 0"
-              :key="index"
-              @subscription-click="handleSubscribe"
-              @merging-click="handleMerge"
-              @insertion-click="handleInsert">
-              <template v-slot:operation-btns="slotProps">
-                <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
-              </template>
-            </checking-result-item>
+            <template v-if="checkingResultList?.length > 0">
+              <checking-result-item
+                v-for="(item, index) in checkingResultList"
+                :source="item"
+                :recommandTags="checkedTags"
+                :isShowBtns="currentMissionType == 0"
+                :key="index"
+                @subscription-click="handleSubscribe"
+                @merging-click="handleMerge"
+                @insertion-click="handleInsert">
+                <template v-slot:operation-btns="slotProps">
+                  <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                </template>
+              </checking-result-item>
+            </template>
             <div class="toggle-data-bar">
               <div class="is-fold" v-if="isFold">
                 部分准确率不高的结果未予显示，请点击<span @click="showMore">查看更多</span>进行显示
@@ -554,8 +556,11 @@ export default {
         this.toggleTag(this.currentMissionType)
         return
       }
+      console.log('keywords', this.keywords);
       this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
+      console.log('before', this.newCheckingResultList);
       this.newCheckingResultList = this.newCheckingResultList.filter(item => item.name.includes(this.keywords.trim()))
+      console.log('xxx', this.newCheckingResultList);
     },
     customCheckboxChange(flag, tag) {
       tag.checked = flag;
