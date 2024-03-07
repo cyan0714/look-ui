@@ -45,3 +45,14 @@ export const getIndexDetail = function (baseUrl, token, id) {
     },
   });
 };
+
+// 获取单位集合
+export const getOrgList = function (baseUrl, token, id) {
+  return request({
+    url: `${baseUrl}/api/performance/getOrgList`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

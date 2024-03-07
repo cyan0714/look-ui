@@ -164,7 +164,7 @@
         <div class="left">
           <img :src="require(`./imgs/icon_4.png`)" alt="" />
           <span class="txt">查重结果: </span>
-          <span class="count"> {{ checkingResultList.length }}</span>
+          <span class="count"> {{ currentInstance?.checkResultListLength }}</span>
         </div>
         <div class="right">
           <span class="txt">关键字:</span>
@@ -175,12 +175,11 @@
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-if="checkingResultList.length > 0">
           <div v-if="hasResizeObserver">
-            <!-- 前10条查重结果 -->
             <virtual-list
               style="height: 100%; overflow-y: auto"
               class="rcs-list"
               data-key="taskId"
-              :data-sources="this.checkingResultList.slice(0, 10)" 
+              :data-sources="checkingResultList" 
               :data-component="CheckingResultItem">
               <template #item="{ indey, item }">
                 <checking-result-item
@@ -197,7 +196,7 @@
                 </checking-result-item>
               </template>
             </virtual-list>
-            <div class="toggle-data-bar" v-if="this.checkingResultList.length > 10">
+            <div class="toggle-data-bar">
               <div class="is-fold" v-if="isFold">
                 部分准确率不高的结果未予显示，请点击<span @click="showMore">查看更多</span>进行显示
               </div>
@@ -205,29 +204,33 @@
                 收起<i class="el-icon-d-arrow-left"></i>
               </div>
             </div>
-            <!-- 后10条查重结果 -->
-            <virtual-list
-              v-if="!isFold"
-              style="height: 100%; overflow-y: auto"
-              class="rcs-list"
-              data-key="taskId"
-              :data-sources="this.checkingResultList.slice(10, this.checkingResultList.length)" 
-              :data-component="CheckingResultItem">
-              <template #item="{ indey, item }">
-                <checking-result-item
-                  :source="item"
-                  :recommandTags="checkedTags"
-                  :isShowBtns="currentMissionType == 0"
-                  :key="indey"
-                  @subscription-click="handleSubscribe"
-                  @merging-click="handleMerge"
-                  @insertion-click="handleInsert">
-                  <template v-slot:operation-btns="slotProps">
-                    <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
-                  </template>
-                </checking-result-item>
-              </template>
-            </virtual-list>
+            <template v-if="newCheckingResultList?.length > 0">
+              <virtual-list
+                v-if="!isFold"
+                style="height: 100%; overflow-y: auto"
+                class="rcs-list"
+                data-key="taskId"
+                :data-sources="newCheckingResultList" 
+                :data-component="CheckingResultItem">
+                <template #item="{ indey, item }">
+                  <checking-result-item
+                    :source="item"
+                    :recommandTags="checkedTags"
+                    :isShowBtns="currentMissionType == 0"
+                    :key="indey"
+                    @subscription-click="handleSubscribe"
+                    @merging-click="handleMerge"
+                    @insertion-click="handleInsert">
+                    <template v-slot:operation-btns="slotProps">
+                      <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                    </template>
+                  </checking-result-item>
+                </template>
+              </virtual-list>
+            </template>
+            <div v-if="newCheckingResultList.length === 0 && paramsData.module === 6" style="display: flex; justify-content: center;">
+              <look-empty />
+            </div>
           </div>
           
           <!-- 兼容处理 -->
@@ -236,7 +239,7 @@
             style="height: 100%; overflow-y: auto"
           >
             <checking-result-item
-              v-for="(item, index) in this.checkingResultList.slice(0, 10)"
+              v-for="(item, index) in checkingResultList"
               :source="item"
               :recommandTags="checkedTags"
               :isShowBtns="currentMissionType == 0"
@@ -248,7 +251,7 @@
                 <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
               </template>
             </checking-result-item>
-            <div class="toggle-data-bar" v-if="this.checkingResultList.length > 10">
+            <div class="toggle-data-bar">
               <div class="is-fold" v-if="isFold">
                 部分准确率不高的结果未予显示，请点击<span @click="showMore">查看更多</span>进行显示
               </div>
@@ -256,13 +259,13 @@
                 收起<i class="el-icon-d-arrow-left"></i>
               </div>
             </div>
-            <template v-if="!isFold">
+            <template v-if="newCheckingResultList?.length > 0 && !isFold">
               <checking-result-item
-                v-for="(item, index) in this.checkingResultList.slice(10, this.checkingResultList.length)"
+                v-for="(item, index) in newCheckingResultList"
                 :source="item"
                 :recommandTags="checkedTags"
                 :isShowBtns="currentMissionType == 0"
-                :key="index"
+                :key="generateRandomKey()"
                 @subscription-click="handleSubscribe"
                 @merging-click="handleMerge"
                 @insertion-click="handleInsert">
@@ -271,6 +274,9 @@
                 </template>
               </checking-result-item>
             </template>
+            <div v-if="newCheckingResultList.length === 0 && paramsData.module === 6" style="display: flex; justify-content: center;">
+              <look-empty />
+            </div>
           </div>
         </section>
         <section class="right-container-empty" v-else>
@@ -343,7 +349,8 @@ export default {
       checkedCustomTags: [],
       tags: ['任务标题', '任务标签', '事项来源及依据'],
       allCheckingResultList: [],
-      checkingResultList: [],
+      checkingResultList: [], // this.paramsData.module 为7的查重结果列表
+      newCheckingResultList: [], // this.paramsData.module 为6的查重结果列表
       noDealMission: {
         similar: [], // 存在相似任务列表
         dissimilar: [], // 无相似任务列表
@@ -437,6 +444,7 @@ export default {
           keyId: 'taskId',
           modelIndex: 'common_task',
           modelType: 'task',
+          module: 7,
           names: '',
           size: 10000,
         };
@@ -468,6 +476,10 @@ export default {
   },
   activated() {},
   created() {
+    this.data.forEach(item => {
+      item.checkResultListLength = 0;
+    });
+    
     this.shouldSendRequest = false
 
     // 初始化时是否给 this.paramsData.names 添加传入的自定义字段
@@ -518,11 +530,22 @@ export default {
     });
   },
   methods: {
+    generateRandomKey() {
+      return Math.random().toString(36).substr(2, 9);
+    },
     handleFold() {
       this.isFold = true
     },
     showMore() {
       this.isFold = false
+      if (this.paramsData.module === 7) {
+        this.paramsData.module = 6
+        if (this.currentMissionType === 0) {
+          this.fetchCheckingResultList(this.currentNoDealSimilarIndex)
+        } else {
+          this.fetchCheckingResultList(this.currentDealSimilarIndex)
+        }
+      }
     },
     handleQuery() {
       if (this.keywords.trim() === '') {
@@ -596,13 +619,13 @@ export default {
             // 未处理任务(存在相似任务)中每个任务的查重结果数
             this.noDealMission.similar.forEach(iten => {
               if (item.keyId == iten.taskId) {
-                iten.checkResultListLength = item.size;
+                iten.checkResultListLength += item.size;
               }
             });
             // 已处理任务(存在相似任务)中每个任务的查重结果数
             this.hadDealMission.similar.forEach(iten => {
               if (item.keyId == iten.taskId) {
-                iten.checkResultListLength = item.size;
+                iten.checkResultListLength += item.size;
               }
             });
           });
@@ -634,8 +657,13 @@ export default {
           ? this.noDealMission.similar[index]?.taskId
           : this.hadDealMission.similar[index]?.taskId;
           const resObj =
-          this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
-          this.checkingResultList = resObj.hitRes || [];
+            this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
+
+          if (this.paramsData.module === 6) {
+            this.newCheckingResultList = resObj.hitRes || [];
+          } else {
+            this.checkingResultList = resObj.hitRes || [];
+          }
           this.loadingCheckResultList = false;
         } else {
           this.checkingResultList = [];
