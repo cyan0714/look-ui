@@ -1,5 +1,5 @@
 <template>
-  <div id="performanceUnit">
+  <div id="performanceUnit" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
     <div class="stat">
       <div class="stat-title">绩效考核情况统计</div>
       <div class="stat-situation">
@@ -49,7 +49,7 @@
                 cell-class-name="common-cell"
                 :max-height="rankHeight">
                 <el-table-column
-                  prop="rank"
+                  type="index"
                   label="排名"
                   width="60"
                   align="center"
@@ -60,19 +60,19 @@
                   align="center"
                   :resizable="false" />
                 <el-table-column
-                  prop="excellentCount"
+                  prop="excellentQuantity"
                   label="反馈质量优秀次数"
                   width="90"
                   align="center"
                   :resizable="false" />
                 <el-table-column
-                  prop="diffcultyH"
+                  prop="finish11"
                   label="事项难度系数1.1完成数"
                   width="110"
                   align="center"
                   :resizable="false" />
                 <el-table-column
-                  prop="diffcultyL"
+                  prop="finish09"
                   label="事项难度系数0.9完成数"
                   width="110"
                   align="center"
@@ -168,7 +168,14 @@ import { baseUrl, token } from '@/constant-test';
 import pointRankListDetail from '../../look-performance-leader/src/components/pointRankListDetail.vue';
 import pointRule from '../../look-performance-leader/src/components/pointRule.vue';
 import { pointDetails } from '../../look-performance-leader/src/common/staticData';
-import { getSchemeIndexList, getIndexDetail, getOrgOverTimeReportList, getAllOrgScoreList } from './api/main';
+import {
+  getSchemeIndexList,
+  getIndexDetail,
+  getOrgOverTimeReportList,
+  getAllOrgScoreList,
+  getScoreRatio,
+  getOrgQualityPageList,
+} from '../../look-performance-leader/src/api/main';
 
 export default {
   name: 'look-performance-unit',
@@ -178,6 +185,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       themeType: 'unit', // 页面类型
       statSelect: 1, // 下拉框选值
       statOptions: [
@@ -243,36 +251,7 @@ export default {
       ],
       statSituationList: [],
       pointRuleIndex: 0, // 绩效考核评分规则弹窗默认下标
-      rankData: [
-        {
-          rank: 1,
-          orgName: '旅游和文化广电体育局',
-          excellentCount: 10,
-          diffcultyH: 8,
-          diffcultyL: 2,
-        },
-        {
-          rank: 2,
-          orgName: '教育厅',
-          excellentCount: 9,
-          diffcultyH: 6,
-          diffcultyL: 3,
-        },
-        {
-          rank: 3,
-          orgName: 'aaaa',
-          excellentCount: 8,
-          diffcultyH: 6,
-          diffcultyL: 2,
-        },
-        {
-          rank: 4,
-          orgName: 'bbbbb',
-          excellentCount: 6,
-          diffcultyH: 4,
-          diffcultyL: 2,
-        },
-      ],
+      rankData: [],
       rankHeight: 0, // 各单位反馈优秀质量次数排名表格最大高度
       pieData: [
         {
@@ -303,63 +282,84 @@ export default {
       pointRuleShow: false, // 是否显示绩效考核评分规则弹窗
       curOrg: {}, // 绩效考核总分当前选中单位
       curIndexId: '',
+      params: {
+        pageSize: 4,
+        current: 1,
+        data: {},
+      },
     };
   },
   mounted() {
     this.init();
   },
   methods: {
+    async _getOrgQualityPageList() {
+      try {
+        const res = await getOrgQualityPageList({
+          baseUrl,
+          token,
+          params: this.params,
+        });
+        this.rankData = res.data.data.records;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async _getScoreRatio() {
+      try {
+        const res = await getScoreRatio({ baseUrl, token, params: {} });
+        res.data.data.forEach((item, index) => {
+          this.pieData[index].value = item.ratio;
+        });
+        this.initPieEcharts();
+      } catch (error) {
+        console.error(error);
+      }
+    },
     // 获取各单位绩效总分排行榜数据
-    _getAllOrgScoreList() {
-      getAllOrgScoreList({
-        baseUrl,
-        token,
-        params: {},
-      }).then(res => {
+    async _getAllOrgScoreList() {
+      try {
+        const res = await getAllOrgScoreList({
+          baseUrl,
+          token,
+          params: {},
+        });
         this.pointRankData = res.data.data;
-      });
+      } catch (error) {
+        console.error(error);
+      }
     },
     // 各单位推进缓慢次数统计
-    _getOrgOverTimeReportList() {
-      getOrgOverTimeReportList({
-        baseUrl,
-        token,
-        params: {
-          accessToken: '',
-          appId: '',
-          beginTime: '',
-          cycleId: '',
-          cycleNum: '',
-          endTime: '',
-          id: '',
-          indexCategory: '',
-          infoId: '',
-          nowDate: '',
-          orgId: '',
-          orgName: '',
-          taskId: '',
-          tenantId: '',
-        },
-      }).then(res => {
+    async _getOrgOverTimeReportList() {
+      try {
+        const res = await getOrgOverTimeReportList({
+          baseUrl,
+          token,
+          params: {},
+        });
         this.barData = res.data.data;
         this.initBarEcharts();
-      });
+      } catch (error) {
+        console.error(error);
+      }
     },
     // 获取当前用户指标
-    _getSchemeIndexList() {
-      getSchemeIndexList({ baseUrl, token }).then(res => {
+    async _getSchemeIndexList() {
+      try {
+        const res = await getSchemeIndexList({ baseUrl, token });
         this.curStatSituation = res.data.data;
-      });
+      } catch (error) {
+        console.error(error);
+      }
     },
-    /*
-     * @Description: 初始化方法
-     */
-    init() {
-      this._getSchemeIndexList();
-      this._getOrgOverTimeReportList();
-      this._getAllOrgScoreList();
+    async init() {
+      await this._getSchemeIndexList();
+      await this._getOrgOverTimeReportList();
+      await this._getAllOrgScoreList();
+      await this._getScoreRatio();
+      await this._getOrgQualityPageList();
+      this.loading = false;
       this.getRankTableHeight();
-      this.initPieEcharts();
       this.getPointRankHeight();
     },
     /*
@@ -368,9 +368,6 @@ export default {
     getRankTableHeight() {
       this.rankHeight = this.$refs.rankTable.offsetHeight;
     },
-    /*
-     * @Description: 初始化环形图
-     */
     initPieEcharts() {
       let pieEchart = this.$echarts.init(this.$refs.pieEchart);
       pieEchart.setOption({
@@ -587,4 +584,5 @@ export default {
 </script>
 
 <style lang="scss" scoped src="./css/performanceUnit.scss"></style>
-<style lang="scss" scoped src="../../look-performance-leader/src/css/common.scss"></style>@/constant-test
+<style lang="scss" scoped src="../../look-performance-leader/src/css/common.scss"></style>
+@/constant-test

@@ -1,7 +1,7 @@
 import request from '/utils/request';
 
 // 获取当前用户指标
-export const getSchemeIndexList = function ({baseUrl, token, params}) {
+export const getSchemeIndexList = function ({ baseUrl, token }) {
   return request({
     url: `${baseUrl}/api/performance/scheme-index/getSchemeIndexList`,
     method: 'post',
@@ -69,5 +69,40 @@ export const getOrgScoreDetail = function (baseUrl, token, orgId) {
     data: {
       orgId
     }
+  });
+};
+
+// 获取单位集合
+export const getOrgList = function (baseUrl, token, id) {
+  return request({
+    url: `${baseUrl}/api/performance/getOrgList`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+// 各单位绩效考核分数占比
+export const getScoreRatio = function ({ baseUrl, token, params }) {
+  return request({
+    url: `${baseUrl}/api/performance/getScoreRatio`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: params
+  });
+};
+
+// 各单位反馈质量优秀次数排名
+export const getOrgQualityPageList = function ({ baseUrl, token, params }) {
+  return request({
+    url: `${baseUrl}/api/performance/getOrgQualityPageList?current=${params.current}&pageSize=${params.pageSize}`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: params.data
   });
 };

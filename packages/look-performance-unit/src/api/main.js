@@ -56,3 +56,30 @@ export const getOrgList = function (baseUrl, token, id) {
     },
   });
 };
+
+// 各单位绩效考核分数占比
+export const getScoreRatio = function (baseUrl, token, data) {
+  return request({
+    url: `${baseUrl}/api/performance/getScoreRatio`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data
+  });
+};
+
+// 各单位反馈质量优秀次数排名
+export const getOrgQualityPageList = function ({ baseUrl, token, params }) {
+  return request({
+    url: `${baseUrl}/api/performance/getOrgQualityPageList?current=${params.current}&pageSize=${params.pageSize}`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: params.data
+  });
+};
+
+
+

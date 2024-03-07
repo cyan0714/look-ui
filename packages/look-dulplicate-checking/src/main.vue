@@ -174,19 +174,19 @@
       </header>
       <section class="right-container-block" v-loading="loadingCheckResultList">
         <section class="right-container-section" v-if="checkingResultList.length > 0">
-          <div v-if="hasResizeObserver">
+          <!-- <div v-if="hasResizeObserver" style="height: 100%;">
             <virtual-list
               style="height: 100%; overflow-y: auto"
               class="rcs-list"
               data-key="taskId"
               :data-sources="checkingResultList" 
-              :data-component="CheckingResultItem">
+              :data-component="CheckingResultItem"
+              @tobottom="scrollToBottom">
               <template #item="{ indey, item }">
                 <checking-result-item
                   :source="item"
                   :recommandTags="checkedTags"
                   :isShowBtns="currentMissionType == 0"
-                  :key="indey"
                   @subscription-click="handleSubscribe"
                   @merging-click="handleMerge"
                   @insertion-click="handleInsert">
@@ -217,7 +217,6 @@
                     :source="item"
                     :recommandTags="checkedTags"
                     :isShowBtns="currentMissionType == 0"
-                    :key="indey"
                     @subscription-click="handleSubscribe"
                     @merging-click="handleMerge"
                     @insertion-click="handleInsert">
@@ -231,11 +230,10 @@
             <div v-if="newCheckingResultList.length === 0 && paramsData.module === 6" style="display: flex; justify-content: center;">
               <look-empty />
             </div>
-          </div>
+          </div> -->
           
           <!-- 兼容处理 -->
           <div
-            v-else
             style="height: 100%; overflow-y: auto"
           >
             <checking-result-item
@@ -530,6 +528,9 @@ export default {
     });
   },
   methods: {
+    scrollToBottom() {
+      console.log('到底了');
+    },
     generateRandomKey() {
       return Math.random().toString(36).substr(2, 9);
     },
