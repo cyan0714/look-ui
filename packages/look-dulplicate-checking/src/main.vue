@@ -263,7 +263,7 @@
                 :source="item"
                 :recommandTags="checkedTags"
                 :isShowBtns="currentMissionType == 0"
-                :key="generateRandomKey()"
+                :key="`more${index}`"
                 @subscription-click="handleSubscribe"
                 @merging-click="handleMerge"
                 @insertion-click="handleInsert">
@@ -346,7 +346,8 @@ export default {
       checkedTags: ['任务标题'],
       checkedCustomTags: [],
       tags: ['任务标题', '任务标签', '事项来源及依据'],
-      allCheckingResultList: [],
+      allCheckingResultList: [], // this.paramsData.module 为7的所有查重结果列表
+      newAllCheckingResultList: [], // this.paramsData.module 为6的所有查重结果列表
       checkingResultList: [], // this.paramsData.module 为7的查重结果列表
       newCheckingResultList: [], // this.paramsData.module 为6的查重结果列表
       noDealMission: {
@@ -554,6 +555,7 @@ export default {
         return
       }
       this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
+      this.newCheckingResultList = this.newCheckingResultList.filter(item => item.name.includes(this.keywords.trim()))
     },
     customCheckboxChange(flag, tag) {
       tag.checked = flag;
@@ -601,7 +603,11 @@ export default {
           },
         }) => {
           // 所有查重结果列表数据
-          this.allCheckingResultList = similarity;
+          if (this.paramsData.module === 7) {
+            this.allCheckingResultList = similarity;
+          } else {
+            this.newAllCheckingResultList = similarity;
+          }
 
           const keyIds = similarity.map(item => item.keyId);
           // 未处理的相似任务
@@ -657,13 +663,18 @@ export default {
           this.currentMissionType === 0
           ? this.noDealMission.similar[index]?.taskId
           : this.hadDealMission.similar[index]?.taskId;
-          const resObj =
-            this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
-
-          if (this.paramsData.module === 6) {
-            this.newCheckingResultList = resObj.hitRes || [];
-          } else {
+          
+          if (this.allCheckingResultList.length > 0) {
+            const resObj =
+              this.allCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
             this.checkingResultList = resObj.hitRes || [];
+            
+          }
+          if (this.newAllCheckingResultList.length > 0) {
+            const newResObj =
+              this.newAllCheckingResultList.find(item => item.keyId == currentMissionKeyId) || {};
+            this.newCheckingResultList = newResObj.hitRes || [];
+            
           }
           this.loadingCheckResultList = false;
         } else {
