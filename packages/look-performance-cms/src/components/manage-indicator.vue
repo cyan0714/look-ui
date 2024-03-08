@@ -49,9 +49,13 @@
         <el-table-column prop="maxScore" label="最高分" align="center"></el-table-column>
         <el-table-column prop="minScore" label="最低分" align="center"></el-table-column>
         <el-table-column
-          prop="assessmentCriterion"
+          prop="indexCategory"
           label="考核标准"
-          align="center"></el-table-column>
+          align="center">
+          <template slot-scope="scope">
+            <span>{{ options.find(item => item.value === scope.row.indexCategory)?.label }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="scoringRules"
           label="计分规则"
@@ -90,8 +94,8 @@
       <el-dialog
         :title="`${currentOperation}考核指标`"
         class="lookui-dialog index-dialog"
-        width="50%"
-        top="50px"
+        width="60%"
+        top="30px"
         destroy-on-close
         append-to-body
         :visible.sync="dialogVisible">
@@ -119,8 +123,8 @@
               <el-input v-model="formAdd.minScore"></el-input>分
             </el-form-item>
           </div>
-          <el-form-item label="考核标准" prop="assessmentCriterion">
-            <el-select v-model="formAdd.assessmentCriterion" placeholder="请选择">
+          <el-form-item label="考核标准" prop="indexCategory">
+            <el-select v-model="formAdd.indexCategory" placeholder="请选择">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -132,6 +136,24 @@
           <el-form-item label="计分规则" prop="scoringRules">
             <el-input type="textarea" v-model="formAdd.scoringRules"></el-input>
           </el-form-item>
+          <div class="data-group">
+            <el-form-item label="数据来源类型" prop="dataFromType">
+                <el-select v-model="formAdd.dataFromType" placeholder="请选择">
+                  <el-option
+                    v-for="item in dataFromTypes"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="数据来源API" label-width="130px" prop="dataFromApi">
+              <el-input v-model="formAdd.dataFromApi"></el-input>
+            </el-form-item>
+            <el-form-item label="穿透页地址" prop="penetrationUrl">
+              <el-input v-model="formAdd.penetrationUrl"></el-input>
+            </el-form-item>
+          </div>
           <el-form-item label="二级指标维护" prop="indexLevel2List" label-width="120px">
             <div class="operation-btns">
               <el-button
@@ -203,16 +225,22 @@
           <el-form-item label="二级指标名称" prop="name">
             <el-input v-model="formLevel2Add.name"></el-input>
           </el-form-item>
+          <el-form-item label="二级指标编码" prop="code">
+            <el-input v-model="formLevel2Add.code"></el-input>
+          </el-form-item>
           <el-form-item label="指标属性" prop="type">
             <el-radio-group v-model="formLevel2Add.type" class="index-level2-radio-group-type">
               <el-radio class="lookui-radio" :label="1">加分项</el-radio>
               <el-radio class="lookui-radio" :label="2">减分项</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="排序" prop="pri">
+            <el-input v-model.number="formLevel2Add.pri" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="分值" prop="score">
             <i class="el-icon-plus" v-if="formLevel2Add.type == 1"></i>
             <i class="el-icon-minus" v-else></i>
-            <el-input v-model.number="formLevel2Add.score" autocomplete="off"></el-input>分
+            <el-input class="score-input" v-model.number="formLevel2Add.score" autocomplete="off"></el-input>分
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -226,37 +254,28 @@
 
 <script>
 import { add, detail, getList, remove } from '../api/manage-indicator';
+import { indexCategory } from '../constant';
+
 export default {
   name: 'manage-indicator',
   components: {},
   data() {
     return {
+      dataFromTypes: [
+        {
+          label: '业务系统接口',
+          value: 1
+        },
+        {
+          label: '数据中心',
+          value: 2
+        },
+      ],
       loadingIndicator: true,
       currentLevel2RowIndex: 0,
       currentOperation: '新增',
       currentLevel2Operation: '新增',
-      options: [
-        {
-          value: 'RCJJFX',
-          label: '日常加减分项',
-        },
-        {
-          value: 'FKSX',
-          label: '反馈时效',
-        },
-        {
-          value: 'FKZL',
-          label: '反馈质量',
-        },
-        {
-          value: 'TJQK',
-          label: '推进情况',
-        },
-        {
-          value: 'RWSLJFX',
-          label: '任务数量加分项',
-        },
-      ],
+      options: indexCategory,
       dialogVisible: false,
       dialogIndex2Level: false,
       rules: {
@@ -264,13 +283,18 @@ export default {
         type: [{ required: true, message: '请选择', trigger: 'blur' }],
         originalScore: [{ required: true, message: '请输入初始分值', trigger: 'blur' }],
         maxScore: [{ required: true, message: '请输入最高分值', trigger: 'blur' }],
-        assessmentCriterion: [{ required: true, message: '请选择考核标准', trigger: 'blur' }],
+        indexCategory: [{ required: true, message: '请选择考核标准', trigger: 'blur' }],
         scoringRules: [{ required: true, message: '请输入计分规则', trigger: 'blur' }],
         indexLevel2List: [{ required: true, message: '请添加二级指标', trigger: 'blur' }],
       },
       rulesLevel2: {
-        name: [{ required: true, message: '请输入租户名称', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        code: [{ required: true, message: '请输入编码', trigger: 'blur' }],
         type: [{ required: true, message: '请选择', trigger: 'blur' }],
+        pri: [
+          { required: true, message: '请输入排序', trigger: 'blur' },
+          { type: 'number', message: '请输入数字', trigger: 'blur' },
+        ],
         score: [
           { required: true, message: '请输入分值', trigger: 'blur' },
           { type: 'number', message: '请输入数字', trigger: 'blur' },
@@ -467,7 +491,7 @@ export default {
 
 <style lang="scss" src="../css/common.scss"></style>
 <style lang="scss">
-.score-group {
+.score-group, .data-group {
   display: flex;
   > div {
     .el-form-item__content {
@@ -493,7 +517,7 @@ export default {
   .el-form-item__content {
     display: flex;
     align-items: center;
-    .el-input {
+    .score-input {
       margin-left: 8px;
       margin-right: 8px;
     }

@@ -236,20 +236,25 @@
           <div
             style="height: 100%; overflow-y: auto"
           >
-            <template v-if="checkingResultList?.length > 0">
-              <checking-result-item
-                v-for="(item, index) in checkingResultList"
-                :source="item"
-                :recommandTags="checkedTags"
-                :isShowBtns="currentMissionType == 0"
-                :key="index"
-                @subscription-click="handleSubscribe"
-                @merging-click="handleMerge"
-                @insertion-click="handleInsert">
-                <template v-slot:operation-btns="slotProps">
-                  <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
-                </template>
-              </checking-result-item>
+            <template>
+              <template v-if="checkingResultList?.length > 0">
+                <checking-result-item
+                  v-for="(item, index) in checkingResultList"
+                  :source="item"
+                  :recommandTags="checkedTags"
+                  :isShowBtns="currentMissionType == 0"
+                  :key="index"
+                  @subscription-click="handleSubscribe"
+                  @merging-click="handleMerge"
+                  @insertion-click="handleInsert">
+                  <template v-slot:operation-btns="slotProps">
+                    <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                  </template>
+                </checking-result-item>
+              </template>
+              <div v-else style="display: flex; justify-content: center;">
+                <look-empty />
+              </div>
             </template>
             <div class="toggle-data-bar">
               <div class="is-fold" v-if="isFold">
@@ -259,24 +264,26 @@
                 收起<i class="el-icon-d-arrow-left"></i>
               </div>
             </div>
-            <template v-if="newCheckingResultList?.length > 0 && !isFold">
-              <checking-result-item
-                v-for="(item, index) in newCheckingResultList"
-                :source="item"
-                :recommandTags="checkedTags"
-                :isShowBtns="currentMissionType == 0"
-                :key="`more${index}`"
-                @subscription-click="handleSubscribe"
-                @merging-click="handleMerge"
-                @insertion-click="handleInsert">
-                <template v-slot:operation-btns="slotProps">
-                  <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
-                </template>
-              </checking-result-item>
+            <template v-if="!isFold">
+              <template v-if="newCheckingResultList.length > 0">
+                <checking-result-item
+                  v-for="(item, index) in newCheckingResultList"
+                  :source="item"
+                  :recommandTags="checkedTags"
+                  :isShowBtns="currentMissionType == 0"
+                  :key="`more${index}`"
+                  @subscription-click="handleSubscribe"
+                  @merging-click="handleMerge"
+                  @insertion-click="handleInsert">
+                  <template v-slot:operation-btns="slotProps">
+                    <slot name="operating-btns" :source="slotProps.source" :currentInstance="currentInstance"></slot>
+                  </template>
+                </checking-result-item>
+              </template>
+              <div v-else style="display: flex; justify-content: center;">
+                <look-empty />
+              </div>
             </template>
-            <div v-if="newCheckingResultList.length === 0 && paramsData.module === 6" style="display: flex; justify-content: center;">
-              <look-empty />
-            </div>
           </div>
         </section>
         <section class="right-container-empty" v-else>
@@ -556,11 +563,8 @@ export default {
         this.toggleTag(this.currentMissionType)
         return
       }
-      console.log('keywords', this.keywords);
       this.checkingResultList = this.checkingResultList.filter(item => item.name.includes(this.keywords.trim()))
-      console.log('before', this.newCheckingResultList);
       this.newCheckingResultList = this.newCheckingResultList.filter(item => item.name.includes(this.keywords.trim()))
-      console.log('xxx', this.newCheckingResultList);
     },
     customCheckboxChange(flag, tag) {
       tag.checked = flag;
