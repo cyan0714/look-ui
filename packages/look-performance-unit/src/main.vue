@@ -116,7 +116,7 @@
             header-cell-class-name="point-rank-header-cell"
             header-row-class-name="point-rank-header-row"
             cell-class-name="common-cell"
-            height="850px"
+            height="100%"
             @cell-click="pointTableClick">
             <el-table-column type="index" label="排名" align="center" width="50" />
             <el-table-column prop="orgName" label="单位名称" align="center" :resizable="false" />
