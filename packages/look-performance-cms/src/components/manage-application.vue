@@ -196,15 +196,20 @@
           <el-form-item label="租户名称" prop="tenantName">
             <el-input v-model="formTenantAdd.tenantName"></el-input>
           </el-form-item>
-          <el-form-item label="租户ID" prop="tenantId">
-            <el-input v-model="formTenantAdd.tenantId"></el-input>
+          <el-form-item label="方案名称" prop="schemeId">
+            <el-select v-model="formTenantAdd.schemeId" placeholder="请选择">
+              <el-option
+                v-for="item in schemeList"
+                :key="item.id"
+                :label="item.schemeName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+            <!-- <el-input v-model="formTenantAdd.schemeName"></el-input> -->
           </el-form-item>
-          <el-form-item label="方案名称" prop="schemeName">
-            <el-input v-model="formTenantAdd.schemeName"></el-input>
-          </el-form-item>
-          <el-form-item label="方案ID" prop="schemeId">
+          <!-- <el-form-item label="方案ID" prop="schemeId">
             <el-input v-model="formTenantAdd.schemeId"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="handleConfirmTenantAdd">提交</el-button>
@@ -226,6 +231,7 @@ import {
   detailTenant,
   removeTenant,
 } from '../api/manage-application';
+import { getList as getSchemeList } from '../api/manage-scheme';
 export default {
   name: 'manage-application',
   components: {},
@@ -245,6 +251,7 @@ export default {
   },
   data() {
     return {
+      schemeList: [],
       currentAppId: '',
       loadingApplication: true,
       loadingTenant: true,
@@ -259,9 +266,8 @@ export default {
       },
       rulesTenant: {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' }],
-        tenantId: [{ required: true, message: '请输入租户ID', trigger: 'blur' }],
-        schemeName: [{ required: true, message: '请输入方案名称', trigger: 'blur' }],
-        schemeId: [{ required: true, message: '请输入方案ID', trigger: 'blur' }],
+        // schemeName: [{ required: true, message: '请输入方案名称', trigger: 'blur' }],
+        schemeId: [{ required: true, message: '请选择方案', trigger: 'blur' }],
       },
       formAdd: {
         appName: '',
@@ -272,7 +278,7 @@ export default {
       formTenantAdd: {
         tenantName: '',
         tenantId: '',
-        schemeName: '',
+        // schemeName: '',
         schemeId: '',
       },
       total: 0,
@@ -310,6 +316,12 @@ export default {
     this._getList();
   },
   methods: {
+    _getSchemeList() {
+      getSchemeList(this.baseUrl, this.token, { current: 1, pageSize: -1 }).then(res => {
+        console.log('res', res.data);
+        this.schemeList = res.data.data.records;
+      });
+    },
     // 获取应用列表
     _getList() {
       this.loadingApplication = true;
@@ -388,6 +400,7 @@ export default {
       this.dialogTenantVisible = true;
       this.currentAppId = row.appId;
       this._getTenantList(this.currentAppId);
+      this._getSchemeList();
     },
     // 删除某个应用下的某个租户
     handleTenantRemove(row) {
@@ -424,7 +437,7 @@ export default {
       this.formTenantAdd = {
         tenantName: '',
         tenantId: '',
-        schemeName: '',
+        // schemeName: '',
         schemeId: '',
       };
     },
