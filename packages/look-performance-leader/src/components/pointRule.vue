@@ -28,7 +28,7 @@
             align="center"
             :resizable="false">
             <template>
-              <div @click="openPointDetail(item)">{{ item.score.toFixed(2) }}</div>
+              <div @click="openPointDetail(item)">{{ item.score }}</div>
             </template>
           </el-table-column>
         </el-table>
@@ -153,7 +153,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import pointDetail from './pointDetail.vue';
 import { getIndexDetail, getOrgScoreDetail } from '../api/main';
 export default {
@@ -181,6 +180,14 @@ export default {
     curOrg: {
       type: Object,
       default: () => {},
+    },
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -230,13 +237,14 @@ export default {
       this._getIndexDetail(tab.indexId);
     },
     _getIndexDetail(id) {
-      getIndexDetail(baseUrl, token, id).then(res => {
+      console.log('id', id);
+      getIndexDetail({ baseUrl: this.baseUrl, token: this.token, id }).then(res => {
         this.scoringRules = res.data.data.scoringRules;
         this.loadingRule = false;
       });
     },
     _getOrgScoreDetail() {
-      getOrgScoreDetail(baseUrl, token, this.curOrg.orgId).then(res => {
+      getOrgScoreDetail({ baseUrl: this.baseUrl, token: this.token, orgId: this.curOrg.orgId }).then(res => {
         const result = res.data.data;
 
         // 绩效得分详情

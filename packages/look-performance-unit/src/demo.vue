@@ -1,12 +1,17 @@
 <template>
-  <look-performance-unit></look-performance-unit>
+  <look-performance-unit :token="token" :baseUrl="baseUrl"></look-performance-unit>
 </template>
 
 <script>
+import { baseUrl, token } from '@/constant-test';
+
 export default {
   components: {},
   data() {
-    return {}
+    return {
+      token,
+      baseUrl,
+    }
   },
   props: {},
   computed: {},

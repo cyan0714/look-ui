@@ -18,13 +18,13 @@
         </el-select>
         <div class="stat-details">
           <div class="stat-details-item" v-for="(item, index) in curStatSituation" :key="index">
-            <div class="details-item-img" @click="openPointRule(index)">
+            <div class="details-item-img" @click="openPointRule(item, index)">
               <img src="./imgs/icon_stat_situation.png" alt="" />
             </div>
-            <div class="details-item-title" @click="openPointRule(index)">
+            <div class="details-item-title" @click="openPointRule(item, index)">
               {{ item.indexName }}
             </div>
-            <div class="details-item-point" @click="openPointRule(index)">
+            <div class="details-item-point" @click="openPointRule(item, index)">
               {{ item.indexOriginalScore }}分
             </div>
           </div>
@@ -223,7 +223,8 @@
       top="5vh"
       width="90%"
       :before-close="closePointRankPop">
-      <pointRankListDetail :themeType="themeType" :statSituationList="statSituationList" />
+      <pointRankListDetail :themeType="themeType" :statSituationList="statSituationList" :token="token"
+        :baseUrl="baseUrl" />
     </el-dialog>
 
     <!-- 绩效考核评分规则弹窗 -->
@@ -235,6 +236,9 @@
       :top="curOrg.orgName ? '5vh' : '10vh'"
       center>
       <pointRule
+        :token="token"
+        :baseUrl="baseUrl"
+        :curIndexId="curIndexId"
         :themeType="themeType"
         :curIndex="pointRuleIndex"
         :statSituationList="statSituationList"
@@ -244,7 +248,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import pointRankListDetail from './components/pointRankListDetail.vue';
 import pointRule from './components/pointRule.vue';
 import { pointDetails } from './common/staticData';
@@ -262,8 +265,19 @@ export default {
     pointRankListDetail,
     pointRule,
   },
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
+      curIndexId: '',
       loading: true,
       barData: [],
       themeType: 'leader', // 页面类型
@@ -412,8 +426,8 @@ export default {
     async _getOrgQualityPageList() {
       try {
         const res = await getOrgQualityPageList({
-          baseUrl,
-          token,
+          baseUrl: this.baseUrl,
+          token: this.token,
           params: this.params,
         });
         this.rankData = res.data.data.records;
@@ -423,7 +437,7 @@ export default {
     },
     async _getScoreRatio() {
       try {
-        const res = await getScoreRatio({ baseUrl, token, params: {} });
+        const res = await getScoreRatio({ baseUrl: this.baseUrl, token: this.token, params: {} });
         res.data.data.forEach((item, index) => {
           this.pieData[index].value = item.ratio;
         });
@@ -436,8 +450,8 @@ export default {
     async _getAllOrgScoreList() {
       try {
         const res = await getAllOrgScoreList({
-          baseUrl,
-          token,
+          baseUrl: this.baseUrl,
+          token: this.token,
           params: {},
         });
         this.pointRankData = res.data.data;
@@ -449,8 +463,8 @@ export default {
     async _getOrgOverTimeReportList() {
       try {
         const res = await getOrgOverTimeReportList({
-          baseUrl,
-          token,
+          baseUrl: this.baseUrl,
+          token: this.token,
           params: {},
         });
         this.barData = res.data.data;
@@ -462,7 +476,7 @@ export default {
     // 获取当前用户指标
     async _getSchemeIndexList() {
       try {
-        const res = await getSchemeIndexList({ baseUrl, token });
+        const res = await getSchemeIndexList({ baseUrl: this.baseUrl, token: this.token });
         this.curStatSituation = res.data.data;
       } catch (error) {
         console.error(error);
@@ -677,7 +691,7 @@ export default {
     /*
      * @Description: 打开绩效考核评分规则弹窗
      */
-    openPointRule(index) {
+    openPointRule(item, index) {
       if (index === undefined) {
         index = 0;
       } else {
@@ -685,6 +699,7 @@ export default {
         this.statSituationList = this.curStatSituation;
       }
       this.pointRuleIndex = `${index}`;
+      this.curIndexId = item.indexId;
       this.pointRuleShow = true;
     },
     /*
@@ -698,9 +713,9 @@ export default {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件
         this.curOrg = row;
-        this.statSituationList = row.pointDetails;
+        this.statSituationList = this.curStatSituation;
         setTimeout(() => {
-          this.openPointRule();
+          this.openPointRule(this.statSituationList[0]);
         });
       }
     },

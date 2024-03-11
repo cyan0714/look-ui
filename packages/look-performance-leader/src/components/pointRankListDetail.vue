@@ -96,7 +96,8 @@
       :top="curOrg.orgName ? '5vh' : '10vh'"
       center
       append-to-body>
-      <pointRule :themeType="themeType" :statSituationList="statSituationList" :curOrg="curOrg" />
+      <pointRule :token="token"
+        :baseUrl="baseUrl" :curIndexId="curIndexId" :curIndex="pointRuleIndex" :themeType="themeType" :statSituationList="statSituationList" :curOrg="curOrg" />
     </el-dialog>
 
     <!-- 录入软指标弹窗 -->
@@ -183,12 +184,21 @@ export default {
       type: Array,
       default: () => [],
     },
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
   },
   components: {
     pointRule,
   },
   data() {
     return {
+      pointRuleIndex: 0,
       orgList: [],
       softIndexList: [],
       enteringSoftIndexShow: false,
@@ -281,9 +291,8 @@ export default {
      * @Description: 组件初始化
      */
     init() {
-      console.log('xxxx');
       this._getAllOrgScorePageList();
-      this.initPointRankHeight();
+      // this.initPointRankHeight();
     },
     /*
      * @Description: 初始化表格最大高度
@@ -314,13 +323,14 @@ export default {
     /*
      * @Description: 打开绩效考核评分规则弹窗
      */
-    openPointRule(index) {
+    openPointRule(item, index) {
       if (index === undefined) {
         index = 0;
       } else {
         this.curOrg = {};
       }
       this.pointRuleIndex = `${index}`;
+      this.curIndexId = item.indexId;
       this.pointRuleShow = true;
     },
     /*
@@ -334,9 +344,8 @@ export default {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件
         this.curOrg = row;
-        this.statSituationList = row.pointDetails;
         setTimeout(() => {
-          this.openPointRule();
+          this.openPointRule(this.statSituationList[0]);
         });
       }
     },

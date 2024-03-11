@@ -142,7 +142,8 @@
       top="5vh"
       width="90%"
       :before-close="closePointRankPop">
-      <pointRankListDetail :themeType="themeType" :statSituationList="statSituationList" />
+      <pointRankListDetail :token="token"
+        :baseUrl="baseUrl" :themeType="themeType" :statSituationList="statSituationList" />
     </el-dialog>
 
     <!-- 绩效考核评分规则弹窗 -->
@@ -154,6 +155,8 @@
       :top="curOrg.orgName ? '5vh' : '10vh'"
       center>
       <pointRule
+        :token="token"
+        :baseUrl="baseUrl"
         :themeType="themeType"
         :curIndex="pointRuleIndex"
         :curIndexId="curIndexId"
@@ -164,7 +167,6 @@
 </template>
 
 <script>
-import { baseUrl, token } from '@/constant-test';
 import pointRankListDetail from '../../look-performance-leader/src/components/pointRankListDetail.vue';
 import pointRule from '../../look-performance-leader/src/components/pointRule.vue';
 import { pointDetails } from '../../look-performance-leader/src/common/staticData';
@@ -182,6 +184,16 @@ export default {
   components: {
     pointRankListDetail,
     pointRule,
+  },
+  props: {
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -296,8 +308,8 @@ export default {
     async _getOrgQualityPageList() {
       try {
         const res = await getOrgQualityPageList({
-          baseUrl,
-          token,
+          baseUrl: this.baseUrl,
+          token: this.token,
           params: this.params,
         });
         this.rankData = res.data.data.records;
@@ -307,7 +319,7 @@ export default {
     },
     async _getScoreRatio() {
       try {
-        const res = await getScoreRatio({ baseUrl, token, params: {} });
+        const res = await getScoreRatio({ baseUrl: this.baseUrl, token: this.token, params: {} });
         res.data.data.forEach((item, index) => {
           this.pieData[index].value = item.ratio;
         });
@@ -320,8 +332,8 @@ export default {
     async _getAllOrgScoreList() {
       try {
         const res = await getAllOrgScoreList({
-          baseUrl,
-          token,
+          baseUrl: this.baseUrl,
+          token: this.token,
           params: {},
         });
         this.pointRankData = res.data.data;
@@ -333,8 +345,8 @@ export default {
     async _getOrgOverTimeReportList() {
       try {
         const res = await getOrgOverTimeReportList({
-          baseUrl,
-          token,
+          baseUrl: this.baseUrl,
+          token: this.token,
           params: {},
         });
         this.barData = res.data.data;
@@ -346,7 +358,7 @@ export default {
     // 获取当前用户指标
     async _getSchemeIndexList() {
       try {
-        const res = await getSchemeIndexList({ baseUrl, token });
+        const res = await getSchemeIndexList({ baseUrl: this.baseUrl, token: this.token });
         this.curStatSituation = res.data.data;
       } catch (error) {
         console.error(error);

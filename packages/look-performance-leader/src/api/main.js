@@ -48,7 +48,7 @@ export const getAllOrgScorePageList = function ({ baseUrl, token, params }) {
 };
 
 // 根据指标id获取详情
-export const getIndexDetail = function (baseUrl, token, id) {
+export const getIndexDetail = function ({ baseUrl, token, id }) {
   return request({
     url: `${baseUrl}/api/performance/index/get/${id}`,
     method: 'get',
@@ -59,7 +59,7 @@ export const getIndexDetail = function (baseUrl, token, id) {
 };
 
 // 根据机构id获取详情
-export const getOrgScoreDetail = function (baseUrl, token, orgId) {
+export const getOrgScoreDetail = function ({ baseUrl, token, orgId }) {
   return request({
     url: `${baseUrl}/api/performance/getOrgScoreDetail`,
     method: 'post',
