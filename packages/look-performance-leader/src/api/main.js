@@ -73,13 +73,14 @@ export const getOrgScoreDetail = function (baseUrl, token, orgId) {
 };
 
 // 获取单位集合
-export const getOrgList = function (baseUrl, token, id) {
+export const getOrgList = function ({ baseUrl, token }) {
   return request({
     url: `${baseUrl}/api/performance/getOrgList`,
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    data: {}
   });
 };
 
@@ -104,5 +105,31 @@ export const getOrgQualityPageList = function ({ baseUrl, token, params }) {
       Authorization: `Bearer ${token}`,
     },
     data: params.data
+  });
+};
+
+// 获取指标列表
+export const getIndexList = function ({ baseUrl, token, data }) {
+  return request({
+    url: `${baseUrl}/api/performance/index/page?current=${data.current}&pageSize=${data.pageSize}`,
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      ...data.app
+    }
+  });
+};
+
+// 录入软指标
+export const addSoftIndex = function ({ baseUrl, token, data }) {
+  return request({
+    url: `${baseUrl}/api/daily/assessment/add`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: data
   });
 };

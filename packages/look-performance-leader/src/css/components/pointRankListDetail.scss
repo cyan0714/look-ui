@@ -43,10 +43,16 @@
       }
     }
 
-    .unit-area {
+    .theme-unit-area {
       ::v-deep .el-button {
         color: #fff;
         background-color: $theme-unit;
+      }
+    }
+    .theme-leader-area {
+      ::v-deep .el-button {
+        color: #fff;
+        background-color: $theme-leader;
       }
     }
   }
