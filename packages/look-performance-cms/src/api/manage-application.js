@@ -57,7 +57,7 @@ export const getTenantList = function (baseUrl, token, data) {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      ...data.appTenantScheme
+      ...data.data
     }
   });
 };

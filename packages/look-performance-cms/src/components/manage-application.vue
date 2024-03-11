@@ -245,6 +245,7 @@ export default {
   },
   data() {
     return {
+      currentAppId: '',
       loadingApplication: true,
       loadingTenant: true,
       dialogVisible: false,
@@ -284,8 +285,9 @@ export default {
         pageSize: 10,
       },
       queryTenantParams: {
-        appTenantScheme: {
+        data: {
           tenantName: '',
+          appId: '',
         },
         current: 1,
         pageSize: 10,
@@ -469,7 +471,7 @@ export default {
     // 获取租户列表
     _getTenantList(id) {
       this.loadingTenant = true;
-      this.queryTenantParams.appTenantScheme.appId = id;
+      this.queryTenantParams.data.appId = id;
       getTenantList(this.baseUrl, this.token, this.queryTenantParams).then(res => {
         this.loadingTenant = false;
         this.tableTenantData = res.data.data.records;
@@ -479,7 +481,10 @@ export default {
     // 搜索租户
     handleTenantQuery() {
       this.queryTenantParams = {
-        tenant: this.formTenant,
+        data: {
+          tenantName: this.formTenant.tenantName,
+          appId: this.currentAppId,
+        },
         current: 1,
         pageSize: 10,
       };
