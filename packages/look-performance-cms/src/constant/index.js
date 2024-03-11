@@ -1,4 +1,4 @@
-const indexCategory = [
+const indexCategories = [
   {
     value: 'RCJJFX',
     label: '日常加减分项',
@@ -22,5 +22,5 @@ const indexCategory = [
 ];
 
 export {
-  indexCategory
+  indexCategories
 }

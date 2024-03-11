@@ -49,6 +49,9 @@
 
 <script>
 import pointDetailTable from './pointDetailTable.vue';
+import { getOrgOriginalDataPageList } from '../api/main';
+import { indexCategories } from '../../../look-performance-cms/src/constant';
+
 export default {
   name: 'pointDetail',
   data() {
@@ -141,7 +144,25 @@ export default {
   components: {
     pointDetailTable,
   },
+  mounted() {
+    this.init();
+  },
   methods: {
+    init() {
+      const params = {
+        current: 1,
+        pageSize: 10,
+        data: {
+          // orgId: this.curOrg.orgId,
+          orgId: '9029596',
+          // indexCategory: indexCategories.find(item => item.label === this.currentIndexItem.indexName).value,
+          indexCategory: 'FKSX',
+        }
+      }
+      getOrgOriginalDataPageList({ baseUrl: this.baseUrl, token: this.token, params }).then(res => {
+        console.log('列表', res);
+      });
+    },
     getRamdonColor() {
       // 随机返回 hex 的颜色值，但不包括#ffffff;
       return (
@@ -160,7 +181,19 @@ export default {
     },
     curOrg: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
+    },
+    token: {
+      type: String,
+      default: '',
+    },
+    baseUrl: {
+      type: String,
+      default: '',
+    },
+    currentIndexItem: {
+      type: Object,
+      default: () => ({}),
     },
   },
 };

@@ -147,7 +147,7 @@
       width="70%"
       top="10vh"
       append-to-body>
-      <pointDetail :themeType="themeType" :statSituationList="statSituationList" :curOrg="curOrg" />
+      <pointDetail :themeType="themeType" :statSituationList="statSituationList" :token="token" :baseUrl="baseUrl" :currentIndexItem="currentIndexItem" :curOrg="curOrg" />
     </el-dialog>
   </div>
 </template>
@@ -192,6 +192,7 @@ export default {
   },
   data() {
     return {
+      currentIndexItem: {},
       loadingPoint: true,
       loadingCount: true,
       statSituationList2: [
@@ -272,11 +273,9 @@ export default {
       this._getIndexDetail(this.curIndexId);
       this._getOrgScoreDetail();
     },
-    openPointDetail(type) {
-      console.log(type);
-      if (type.name != '任务数量') {
-        this.pointDetailShow = true;
-      }
+    openPointDetail(item) {
+      this.currentIndexItem = item;
+      this.pointDetailShow = true;
     },
   },
 };

@@ -171,7 +171,6 @@
 import pointRule from './pointRule.vue';
 import { pointDetails } from '../common/staticData';
 import { addSoftIndex, getAllOrgScorePageList, getIndexList, getOrgList } from '../api/main';
-import { baseUrl, token } from '@/constant-test';
 
 export default {
   name: 'pointRankListDetail',
@@ -237,7 +236,7 @@ export default {
     handleConfirmAdd() {
       this.$refs.addSoftIndexParams.validate(valid => {
         if (valid) {
-          addSoftIndex({ baseUrl, token, data: this.addSoftIndexParams }).then(res => {
+          addSoftIndex({ baseUrl: this.baseUrl, token: this.token, data: this.addSoftIndexParams }).then(res => {
             if (res.data.code == '000000') {
               this.$message.success('录入成功');
               this.enteringSoftIndexShow = false;
@@ -256,15 +255,15 @@ export default {
           type: 2, // 1: 硬指标 2: 软指标
         },
       };
-      getIndexList({ baseUrl, token, data }).then(res => {
+      getIndexList({ baseUrl: this.baseUrl, token: this.token, data }).then(res => {
         this.softIndexList = res.data.data.records;
       });
-      getOrgList({ baseUrl, token }).then(res => {
+      getOrgList({ baseUrl: this.baseUrl, token: this.token }).then(res => {
         this.orgList = res.data.data;
       });
     },
     _getAllOrgScorePageList() {
-      getAllOrgScorePageList({ baseUrl, token, params: this.queryParams }).then(res => {
+      getAllOrgScorePageList({ baseUrl: this.baseUrl, token: this.token, params: this.queryParams }).then(res => {
         this.loading = false;
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;

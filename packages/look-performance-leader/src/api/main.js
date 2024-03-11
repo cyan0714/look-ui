@@ -133,3 +133,15 @@ export const addSoftIndex = function ({ baseUrl, token, data }) {
     data: data
   });
 };
+
+// 分页-根据指标类型获取各单位该指标原始数据
+export const getOrgOriginalDataPageList = function ({ baseUrl, token, params }) {
+  return request({
+    url: `${baseUrl}/api/performance/getOrgOriginalDataPageList?current=${params.current}&pageSize=${params.pageSize}`,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: params.data
+  });
+};

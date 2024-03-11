@@ -39,15 +39,13 @@
             </div>
             <div class="group-item-content" ref="rankTable">
               <el-table
-                v-if="rankHeight"
                 class="lookui-table rank-table"
                 :data="rankData"
                 stripe
                 border
                 header-cell-class-name="rank-header-cell"
                 header-row-class-name="rank-header-row"
-                cell-class-name="common-cell"
-                :max-height="rankHeight">
+                cell-class-name="common-cell">
                 <el-table-column
                   type="index"
                   label="排名"
@@ -189,7 +187,6 @@
         </div>
         <div class="point-rank-list-content" ref="pointRankTable">
           <el-table
-            v-if="pointRankHeight"
             class="lookui-table point-rank-table"
             :data="pointRankData"
             stripe
@@ -197,7 +194,6 @@
             header-cell-class-name="point-rank-header-cell"
             header-row-class-name="point-rank-header-row"
             cell-class-name="common-cell"
-            :max-height="pointRankHeight"
             @cell-click="pointTableClick">
             <el-table-column type="index" label="排名" align="center" width="50" />
             <el-table-column prop="orgName" label="单位名称" align="center" :resizable="false" />
@@ -489,17 +485,17 @@ export default {
       await this._getScoreRatio();
       await this._getOrgQualityPageList();
       this.loading = false;
-      this.getRankTableHeight();
+      // this.getRankTableHeight();
       this.getRedTableHeight();
       this.getBlackTableHeight();
-      this.getPointRankHeight();
+      // this.getPointRankHeight();
     },
     /*
      * @Description: 计算各单位反馈优秀质量次数排名表格最大高度
      */
-    getRankTableHeight() {
-      this.rankHeight = this.$refs.rankTable.offsetHeight;
-    },
+    // getRankTableHeight() {
+    //   this.rankHeight = this.$refs.rankTable.offsetHeight;
+    // },
     /*
      * @Description: 初始化环形图
      */

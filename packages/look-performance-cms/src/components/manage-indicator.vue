@@ -254,7 +254,7 @@
 
 <script>
 import { add, detail, getList, remove } from '../api/manage-indicator';
-import { indexCategory } from '../constant';
+import { indexCategories } from '../constant';
 
 export default {
   name: 'manage-indicator',
@@ -275,7 +275,7 @@ export default {
       currentLevel2RowIndex: 0,
       currentOperation: '新增',
       currentLevel2Operation: '新增',
-      options: indexCategory,
+      options: indexCategories,
       dialogVisible: false,
       dialogIndex2Level: false,
       rules: {
