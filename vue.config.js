@@ -1,4 +1,6 @@
 const { defineConfig } = require('@vue/cli-service');
+const path = require('path');
+
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
@@ -16,5 +18,20 @@ module.exports = defineConfig({
     optimization: {
       minimize: true,
     },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
+    }
   },
+  chainWebpack: config => {
+    config.module
+      .rule('images')
+      .test(/\.(jpg|png|gif|svg)$/)
+      .set('parser', {
+        dataUrlCondition: {
+          maxSize: 20 * 1024 // 20KB
+        }
+      })
+  }
 });

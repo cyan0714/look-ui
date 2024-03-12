@@ -238,7 +238,6 @@ export default {
       this._getIndexDetail(tab.indexId);
     },
     _getIndexDetail(id) {
-      console.log('id', id);
       getIndexDetail({ baseUrl: this.baseUrl, token: this.token, id }).then(res => {
         this.scoringRules = res.data.data.scoringRules;
         this.loadingRule = false;
@@ -271,7 +270,9 @@ export default {
       this.loadingRule = true;
       this.typeIndex = this.curIndex;
       this._getIndexDetail(this.curIndexId);
-      this._getOrgScoreDetail();
+      if (Object.keys(this.curOrg).length > 0) {
+        this._getOrgScoreDetail();
+      }
     },
     openPointDetail(item) {
       this.currentIndexItem = item;

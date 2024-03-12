@@ -19,7 +19,4 @@ export default {
 </script>
 
 <style scoped >
-.lookui-test {
-  color: red;
-}
 </style>

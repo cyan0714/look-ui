@@ -240,7 +240,8 @@
           <el-form-item label="分值" prop="score">
             <i class="el-icon-plus" v-if="formLevel2Add.type == 1"></i>
             <i class="el-icon-minus" v-else></i>
-            <el-input class="score-input" v-model.number="formLevel2Add.score" autocomplete="off"></el-input>分
+            <el-input-number class="score-input" v-model="formLevel2Add.score" controls-position="right"></el-input-number>
+            分
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -297,7 +298,6 @@ export default {
         ],
         score: [
           { required: true, message: '请输入分值', trigger: 'blur' },
-          { type: 'number', message: '请输入数字', trigger: 'blur' },
         ],
       },
       formAdd: {
