@@ -17,7 +17,7 @@
           </el-option>
         </el-select>
         <div class="stat-details">
-          <div class="stat-details-item" v-for="(item, index) in curStatSituation" :key="index">
+          <div class="stat-details-item" v-for="(item, index) in statSituationList" :key="index">
             <div class="details-item-img" @click="openPointRule(item, index)">
               <img src="./imgs/icon_stat_situation.png" alt="" />
             </div>
@@ -292,7 +292,7 @@ export default {
           label: '按年统计',
         },
       ],
-      curStatSituation: [
+      statSituationList: [
         {
           name: '反馈时效',
           point: 30,
@@ -339,7 +339,7 @@ export default {
           ],
         }, // 绩效考核情况统计得分
       ],
-      statSituationList: [],
+      // statSituationList: [],
       pointRuleIndex: 0, // 绩效考核评分规则弹窗默认下标
       rankData: [],
       rankHeight: 0, // 各单位反馈优秀质量次数排名表格最大高度
@@ -473,7 +473,7 @@ export default {
     async _getSchemeIndexList() {
       try {
         const res = await getSchemeIndexList({ baseUrl: this.baseUrl, token: this.token });
-        this.curStatSituation = res.data.data;
+        this.statSituationList = res.data.data;
       } catch (error) {
         console.error(error);
       }
@@ -692,24 +692,15 @@ export default {
         index = 0;
       } else {
         this.curOrg = {};
-        this.statSituationList = this.curStatSituation;
       }
       this.pointRuleIndex = `${index}`;
       this.curIndexId = item.indexId;
       this.pointRuleShow = true;
     },
-    /*
-     * @Description: 单元格点击方法
-     * @param: row 行数据
-     * @param: column 列对象
-     * @param: cell 单元格document对象
-     * @param: event 事件对象
-     */
     pointTableClick(row, column, cell, event) {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件
         this.curOrg = row;
-        this.statSituationList = this.curStatSituation;
         setTimeout(() => {
           this.openPointRule(this.statSituationList[0]);
         });

@@ -12,7 +12,7 @@
       </div>
       <div :class="`${themeClass}-area`">
         <el-button class="input-btn">导入</el-button>
-        <el-button class="input-index-btn" @click="enteringSoftIndex">录入软指标</el-button>
+        <el-button class="input-index-btn" @click="enterSoftIndex">录入软指标</el-button>
       </div>
     </div>
     <div class="main-content" ref="pointRankTable">
@@ -169,7 +169,6 @@
 
 <script>
 import pointRule from './pointRule.vue';
-import { pointDetails } from '../common/staticData';
 import { addSoftIndex, getAllOrgScorePageList, getIndexList, getOrgList } from '../api/main';
 import { successCode } from '../../../look-performance-cms/src/constant';
 
@@ -234,6 +233,7 @@ export default {
     this.init();
   },
   methods: {
+    // 确认录入软指标
     handleConfirmAdd() {
       this.$refs.addSoftIndexParams.validate(valid => {
         if (valid) {
@@ -247,7 +247,8 @@ export default {
         }
       });
     },
-    enteringSoftIndex() {
+    // 点击录入软指标按钮
+    enterSoftIndex() {
       this.enteringSoftIndexShow = true;
       const data = {
         current: 1,
@@ -263,6 +264,7 @@ export default {
         this.orgList = res.data.data;
       });
     },
+
     _getAllOrgScorePageList() {
       getAllOrgScorePageList({ baseUrl: this.baseUrl, token: this.token, params: this.queryParams }).then(res => {
         this.loading = false;
@@ -292,21 +294,9 @@ export default {
         });
       });
     },
-    /*
-     * @Description: 组件初始化
-     */
     init() {
       this._getAllOrgScorePageList();
-      // this.initPointRankHeight();
     },
-    /*
-     * @Description: 初始化表格最大高度
-     */
-    // initPointRankHeight() {
-    //   setTimeout(() => {
-    //     this.pointRankHeight = this.$refs.pointRankTable.offsetHeight
-    //   })
-    // },
     handleSizeChange(pageSize) {
       this.queryParams.pageSize = pageSize;
       this.queryParams.current = 1;
@@ -338,13 +328,6 @@ export default {
       this.curIndexId = item.indexId;
       this.pointRuleShow = true;
     },
-    /*
-     * @Description: 单元格点击方法
-     * @param: row 行数据
-     * @param: column 列对象
-     * @param: cell 单元格document对象
-     * @param: event 事件对象
-     */
     pointTableClick(row, column, cell, event) {
       if (column?.property == 'orgName') {
         // 点击单位时   才能进一步触发事件

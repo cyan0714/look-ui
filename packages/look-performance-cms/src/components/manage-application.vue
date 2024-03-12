@@ -320,7 +320,6 @@ export default {
   methods: {
     _getSchemeList() {
       getSchemeList(this.baseUrl, this.token, { current: 1, pageSize: -1 }).then(res => {
-        console.log('res', res.data);
         this.schemeList = res.data.data.records;
       });
     },

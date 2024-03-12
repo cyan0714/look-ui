@@ -1,6 +1,7 @@
 <template>
   <div id="pointDetailTable">
     <el-table class="lookui-table" :data="tableData" height="430" style="width: 100%">
+      <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column
         v-for="(item, index) in columns"
         :prop="item.prop"
@@ -22,7 +23,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="queryParams.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="12"
+        :total="total"
         background>
       </el-pagination>
     </div>
@@ -48,6 +49,10 @@ export default {
     columns: {
       type: Array,
       default: () => [],
+    },
+    total: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {},

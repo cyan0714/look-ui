@@ -28,7 +28,7 @@
             align="center"
             :resizable="false">
             <template>
-              <div @click="openPointDetail(item)">{{ item.score }}</div>
+              <div @click="openPointDetail(item)" style="cursor: pointer;">{{ item.score }}</div>
             </template>
           </el-table-column>
         </el-table>
@@ -59,34 +59,6 @@
               <div>{{ item?.count.join('/') }}</div>
             </template>
           </el-table-column>
-          <!-- 
-          <el-table-column
-            prop="qualityStat"
-            label="反馈质量情况"
-            align="center"
-            :resizable="false"
-            class-name="quality-stat-cell"
-          >
-            <template slot-scope="scope">
-              <div class="quality-stat-list">
-                <div class="quality-stat-excellent">
-                  {{ scope.row.qualityExcellent }}
-                </div>
-                /
-                <div class="quality-stat-well">
-                  {{ scope.row.qualityExcellent }}
-                </div>
-                /
-                <div class="quality-stat-noramal">
-                  {{ scope.row.qualityExcellent }}
-                </div>
-                /
-                <div class="quality-stat-poor">
-                  {{ scope.row.qualityExcellent }}
-                </div>
-              </div>
-            </template>
-          </el-table-column> -->
         </el-table>
       </div>
     </div>
@@ -275,6 +247,9 @@ export default {
       }
     },
     openPointDetail(item) {
+      if (item.indexCategory === "RWSLJFX") {
+        return
+      }
       this.currentIndexItem = item;
       this.pointDetailShow = true;
     },
