@@ -254,7 +254,7 @@
 
 <script>
 import { add, detail, getList, remove } from '../api/manage-indicator';
-import { indexCategories } from '../constant';
+import { indexCategories, successCode } from '../constant';
 
 export default {
   name: 'manage-indicator',
@@ -378,7 +378,7 @@ export default {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
           add(this.baseUrl, this.token, this.formAdd).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
               this.$message.error(res.data.mesg);
@@ -400,7 +400,7 @@ export default {
       })
         .then(() => {
           remove(this.baseUrl, this.token, row.id).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success('删除成功');
             } else {
               this.$message.error(res.data.mesg);

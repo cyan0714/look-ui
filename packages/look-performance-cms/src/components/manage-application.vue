@@ -232,6 +232,8 @@ import {
   removeTenant,
 } from '../api/manage-application';
 import { getList as getSchemeList } from '../api/manage-scheme';
+import { successCode } from '../constant';
+
 export default {
   name: 'manage-application',
   components: {},
@@ -340,7 +342,7 @@ export default {
       })
         .then(() => {
           remove(this.baseUrl, this.token, row.id).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success('删除成功');
             } else {
               this.$message.error(res.data.mesg);
@@ -367,7 +369,7 @@ export default {
       this.$refs.formAdd.validate(valid => {
         if (valid) {
           add(this.baseUrl, this.token, this.formAdd).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
               this.$message.error(res.data.mesg);
@@ -411,7 +413,7 @@ export default {
       })
         .then(() => {
           removeTenant(this.baseUrl, this.token, row.id).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success('删除成功');
             } else {
               this.$message.error(res.data.mesg);
@@ -448,7 +450,7 @@ export default {
           this.formTenantAdd.appId = this.currentAppId;
           if (this.currentTenantOperation === '新增') {
             addTenant(this.baseUrl, this.token, this.formTenantAdd).then(res => {
-              if (res.data.code === '000000') {
+              if (res.data.code === successCode) {
                 this.$message.success('新增成功');
               } else {
                 this.$message.error(res.data.mesg);
@@ -458,7 +460,7 @@ export default {
             });
           } else {
             addTenant(this.baseUrl, this.token, this.formTenantAdd).then(res => {
-              if (res.data.code === '000000') {
+              if (res.data.code === successCode) {
                 this.$message.success('修改成功');
               } else {
                 this.$message.error(res.data.mesg);

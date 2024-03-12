@@ -20,7 +20,9 @@ const indexCategories = [
     label: '任务数量加分项',
   },
 ];
+const successCode = '000000';
 
 export {
-  indexCategories
+  indexCategories,
+  successCode
 }

@@ -1,1 +1,0 @@
-const successCode = '000000';

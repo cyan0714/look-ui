@@ -259,6 +259,8 @@
 <script>
 import { add, detail, getList, remove } from '../api/manage-scheme';
 import { getList as getIndexList } from '../api/manage-indicator';
+import { successCode } from '../constant';
+
 export default {
   name: 'manage-scheme',
   components: {},
@@ -447,7 +449,7 @@ export default {
         if (valid) {
           this.formAdd.fullScore = this.computeFullScore;
           add(this.baseUrl, this.token, this.formAdd).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success(`${this.currentOperation}成功`);
             } else {
               this.$message.error(res.data.mesg);
@@ -469,7 +471,7 @@ export default {
       })
         .then(() => {
           remove(this.baseUrl, this.token, row.id).then(res => {
-            if (res.data.code === '000000') {
+            if (res.data.code === successCode) {
               this.$message.success('删除成功');
             } else {
               this.$message.error(res.data.mesg);

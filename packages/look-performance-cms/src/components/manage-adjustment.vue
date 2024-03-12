@@ -274,6 +274,8 @@ import { getList, addIntervene, getInterveneList } from '../api/manage-adjustmen
 import { getList as getAppicationList } from '../api/manage-application';
 import { getTenantList } from '../api/manage-application';
 import { getList as getIndexList } from '../api/manage-indicator';
+import { successCode } from '../constant';
+
 export default {
   components: {},
   data() {
@@ -434,7 +436,7 @@ export default {
     handleScoreChange() {},
     handleConfirmIntervention() {
       addIntervene(this.baseUrl, this.token, this.formIntervention).then(res => {
-        if (res.data.code === '000000') {
+        if (res.data.code === successCode) {
           this.$message.success('干预成功');
           this.dialogIntervention = false;
           this._getList();

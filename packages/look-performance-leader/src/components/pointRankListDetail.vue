@@ -171,6 +171,7 @@
 import pointRule from './pointRule.vue';
 import { pointDetails } from '../common/staticData';
 import { addSoftIndex, getAllOrgScorePageList, getIndexList, getOrgList } from '../api/main';
+import { successCode } from '../../../look-performance-cms/src/constant';
 
 export default {
   name: 'pointRankListDetail',
@@ -237,7 +238,7 @@ export default {
       this.$refs.addSoftIndexParams.validate(valid => {
         if (valid) {
           addSoftIndex({ baseUrl: this.baseUrl, token: this.token, data: this.addSoftIndexParams }).then(res => {
-            if (res.data.code == '000000') {
+            if (res.data.code == successCode) {
               this.$message.success('录入成功');
               this.enteringSoftIndexShow = false;
               this._getAllOrgScorePageList();
@@ -268,18 +269,23 @@ export default {
         this.tableData = res.data.data.records;
         this.total = res.data.data.total;
         this.tableData.forEach(item => {
+          // 反馈时效
           item.FKSX = item.indexCategoryScoreList.find(
             iten => iten.indexCategory === 'FKSX'
           )?.score;
+          // 反馈质量
           item.FKZL = item.indexCategoryScoreList.find(
             iten => iten.indexCategory === 'FKZL'
           )?.score;
+          // 推进情况
           item.TJQK = item.indexCategoryScoreList.find(
             iten => iten.indexCategory === 'TJQK'
           )?.score;
+          // 任务数量加分项
           item.RWSLJFX = item.indexCategoryScoreList.find(
             iten => iten.indexCategory === 'RWSLJFX'
           )?.score;
+          // 日常加减分项
           item.RCJJFX = item.indexCategoryScoreList.find(
             iten => iten.indexCategory === 'RCJJFX'
           )?.score;
